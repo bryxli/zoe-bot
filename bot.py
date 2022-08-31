@@ -46,7 +46,7 @@ async def on_ready() -> None:
     print(f"Python version: {platform.python_version()}")
     print(f"Running on: {platform.system()} {platform.release()} ({os.name})")
     print("-------------------")
-    await bot.change_presence(activity=discord.Game("lol"))
+    await bot.change_presence(activity=discord.Game("$speak"))
     status_task.start()
 
 @tasks.loop(minutes = 10.0)
@@ -69,7 +69,7 @@ async def status_task() -> None:
                         participants = lol_watcher.match.by_id(my_region, match_id)["info"]["participants"]
                         player_user = list(filter(lambda participant: participant["puuid"] == str(player["puuid"]), participants))[0]
                         try:
-                            kda = (float(player_user["kills"]) + float(player_user["assists"])) / float(player_user["deaths"])
+                            kda = round((float(player_user["kills"]) + float(player_user["assists"])) / float(player_user["deaths"]),2)
                         except DivisionByZero as error:
                             kda = "perfect"
                         if player_user["win"]:
