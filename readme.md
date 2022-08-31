@@ -9,3 +9,5 @@ $adduser <league username> - add to server database
 $deluser <league username> - delete from server database  
 $reset - wipe server information from database  
 $speak - zoe will talk to you  
+  
+hosted on gcp
