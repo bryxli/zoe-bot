@@ -19,7 +19,7 @@ else:
     with open("config.json") as file:
         config = json.load(file)
 
-intents = discord.Intents.default()
+intents = discord.Intents.all()
 
 bot = Bot(command_prefix=commands.when_mentioned_or(config["prefix"]), intents=intents, help_command=None)
 lol_watcher = LolWatcher(config["league_token"])
