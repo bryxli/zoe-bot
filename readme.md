@@ -1,4 +1,4 @@
-# Zoe Bot  
+# Zoe Bot ![image](images/icon.png) 
 
 **[Discord Invite Link](https://discord.com/api/oauth2/authorize?client_id=1014214102459093105&permissions=2048&scope=bot)**  
 
@@ -16,5 +16,5 @@ $speak - zoe will talk to you
   
 hosted on gcp  
 
-![image](https://user-images.githubusercontent.com/51398314/187583535-9699ac53-a7db-4fc6-b06b-2db1dc0c39cc.png)  
-![image](https://user-images.githubusercontent.com/51398314/187584253-39e94364-482e-4748-86a0-13c72ec4e9b7.png)  
+![image](images/console.png)  
+![image](images/discord.png)  
