@@ -65,7 +65,6 @@ async def status_task() -> None:
                     player = lol_watcher.summoner.by_name(my_region, user[0])
                     match_id = lol_watcher.match.matchlist_by_puuid(my_region, player["puuid"], count = 1)[0]
                     if match_id != user[1]:
-                        cursor.execute("UPDATE '" + server[0] + "' SET previous = '" + match_id + "'")
                         participants = lol_watcher.match.by_id(my_region, match_id)["info"]["participants"]
                         player_user = list(filter(lambda participant: participant["puuid"] == str(player["puuid"]), participants))[0]
                         try:
@@ -76,6 +75,7 @@ async def status_task() -> None:
                             await channel.send("my guy " + player_user["summonerName"] + " got a " + str(kda) + " kda on " + player_user["championName"] + " peepoClap")
                         else:
                             await channel.send("i believe in u " + player_user["summonerName"] + " you will do better next time")
+                        cursor.execute("UPDATE '" + server[0] + "' SET previous = '" + match_id + "' WHERE user_id = '" + player_user["summonerName"] + "'")
                 except ApiError as error:
                     print("Riot API Error:",error)
         bot.db.commit()
