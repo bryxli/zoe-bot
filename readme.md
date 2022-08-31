@@ -15,4 +15,4 @@ $speak - zoe will talk to you
 hosted on gcp  
 
 ![image](https://user-images.githubusercontent.com/51398314/187583535-9699ac53-a7db-4fc6-b06b-2db1dc0c39cc.png)  
-![image](https://user-images.githubusercontent.com/51398314/187584004-38aeea0d-3474-4742-a975-9cb3b2d4662e.png)  
+![image](https://user-images.githubusercontent.com/51398314/187584253-39e94364-482e-4748-86a0-13c72ec4e9b7.png)  
