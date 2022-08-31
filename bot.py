@@ -94,7 +94,7 @@ async def setup(ctx):
         bot.db.commit()
         cursor.close()
         print("Successfully inserted " + str(guild_id) + " into serverlist. Messages will be printed in channel: " + str(channel_id))
-        await ctx.send("setup complete")
+        await ctx.message.add_reaction(u"\U0001F44D")
     except sqlite3.Error as error:
         print("Failed to insert data into sqlite table.", error)
 
@@ -107,7 +107,7 @@ async def reset(ctx):
         cursor.execute("DROP TABLE '" + str(guild_id) + "'")
         bot.db.commit()
         cursor.close()
-        print("Successfully deleted " + str(guild_id) + " from database.")
+        await ctx.message.add_reaction(u"\U0001F44D")
     except sqlite3.Error as error:
         print("Failed to reset:",error)
 
@@ -120,7 +120,7 @@ async def adduser(ctx, arg):
         cursor.execute("INSERT INTO '" + str(guild_id) + "' (user_id) VALUES ('" + str(user_id) + "')")
         bot.db.commit()
         cursor.close()
-        print(("Successfully inserted " + user_id + " into userlist."))
+        await ctx.message.add_reaction(u"\U0001F44D")
     except sqlite3.Error as error:
         print("Failed to insert data into sqlite table.", error)
 
@@ -133,7 +133,7 @@ async def deluser(ctx, arg):
         cursor.execute("DELETE FROM '" + str(guild_id) + "' WHERE user_id = '" + str(user_id) + "'")
         bot.db.commit()
         cursor.close()
-        print(("Successfully deleted " + user_id + " from userlist."))
+        await ctx.message.add_reaction(u"\U0001F44D")
     except sqlite3.Error as error:
         print("Failed to delete data from sqlite table.", error)  
 
