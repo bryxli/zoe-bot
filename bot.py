@@ -1,3 +1,4 @@
+from decimal import DivisionByZero
 import json
 import os
 import platform
@@ -48,7 +49,7 @@ async def on_ready() -> None:
     await bot.change_presence(activity=discord.Game("lol"))
     status_task.start()
 
-@tasks.loop(minutes=10.0)
+@tasks.loop(minutes = 10.0)
 async def status_task() -> None:
     try:
         cursor = bot.db.cursor()
@@ -67,7 +68,10 @@ async def status_task() -> None:
                         cursor.execute("UPDATE '" + server[0] + "' SET previous = '" + match_id + "'")
                         participants = lol_watcher.match.by_id(my_region, match_id)["info"]["participants"]
                         player_user = list(filter(lambda participant: participant["puuid"] == str(player["puuid"]), participants))[0]
-                        kda = (float(player_user["kills"]) + float(player_user["assists"])) / float(player_user["deaths"])
+                        try:
+                            kda = (float(player_user["kills"]) + float(player_user["assists"])) / float(player_user["deaths"])
+                        except DivisionByZero as error:
+                            kda = "perfect"
                         if player_user["win"]:
                             await channel.send("my guy " + player_user["summonerName"] + " got a " + str(kda) + " kda on " + player_user["championName"] + " peepoClap")
                         else:
