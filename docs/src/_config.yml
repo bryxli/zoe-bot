@@ -19,18 +19,20 @@
 # in the templates via {{ site.myvariable }}.
 
 title: zoe
-email: bryanzero765@gmail.com
 description: >- # this means to ignore newlines until "baseurl:"
   zoe-bot.
 baseurl: "/zoe-bot" # the subpath of your site, e.g. /blog
 url: "https://bryxli.github.io" # the base hostname & protocol for your site, e.g. http://example.com
-twitter_username: bryli00
-github_username:  bryxli
+
 
 # Build settings
 theme: minima
+remote_theme: pages-themes/architect@v0.2.0
 plugins:
   - jekyll-feed
+  - jekyll-remote-theme # add this line to the plugins list if you already have one
+
+
 
 # Exclude from processing.
 # The following items will not be processed, by default.
