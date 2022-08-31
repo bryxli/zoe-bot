@@ -1,10 +1,10 @@
-from decimal import DivisionByZero
 import json
 import os
 import platform
 import sqlite3
 import sys
 import random
+from decimal import DivisionByZero
 
 from contextlib import closing
 
