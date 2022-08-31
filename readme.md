@@ -1,4 +1,4 @@
-# Zoe Bot  <img src=images/zoe.png width="50" height="50">
+# Zoe Bot  <img src=docs/images/zoe.png width="50" height="50">
 
 **[Discord Invite Link](https://discord.com/api/oauth2/authorize?client_id=1014214102459093105&permissions=2048&scope=bot)**  
 
@@ -16,11 +16,11 @@ $speak - zoe will talk to you
 **Images**
 <figure>
     <figcaption>console output</figcaption>
-    <img src=images/console.png>
+    <img src=docs/images/console.png>
 </figure>
 <figure>
     <figcaption>discord output</figcaption>
-    <img src=images/discord.png>
+    <img src=docs/images/discord.png>
 </figure>
 
 hosted on gcp
