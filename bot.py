@@ -46,7 +46,7 @@ async def on_ready() -> None:
     print(f"Python version: {platform.python_version()}")
     print(f"Running on: {platform.system()} {platform.release()} ({os.name})")
     print("-------------------")
-    await bot.change_presence(activity=discord.Game("$speak"))
+    await bot.change_presence(activity=discord.Game("?speak"))
     status_task.start()
 
 @tasks.loop(minutes = 10.0)
