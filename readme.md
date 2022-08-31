@@ -7,11 +7,11 @@ zoe shouts out game results in her channel.
 
 **Commands**  
 ***Before anything, run setup or the other commands will not work***   
-$setup - zoe will speak in this channel  
-$adduser \<league username> - add to server database  
-$deluser \<league username> - delete from server database  
-$reset - wipe server from database  
-$speak - zoe will talk to you  
+?setup - zoe will speak in this channel  
+?adduser \<league username> - add to server database  
+?deluser \<league username> - delete from server database  
+?reset - wipe server from database  
+?speak - zoe will talk to you  
 
 **Images**
 <figure>
