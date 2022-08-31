@@ -44,9 +44,10 @@ async def on_ready() -> None:
     print(f"Python version: {platform.python_version()}")
     print(f"Running on: {platform.system()} {platform.release()} ({os.name})")
     print("-------------------")
+    await bot.change_presence(activity=discord.Game("lol"))
     status_task.start()
 
-@tasks.loop(seconds=10)
+@tasks.loop(minutes=10.0)
 async def status_task() -> None:
     try:
         cursor = bot.db.cursor()
