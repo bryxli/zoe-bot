@@ -53,13 +53,11 @@ async def status_task() -> None:
         cursor.execute("SELECT * FROM serverlist")
         serverlist = cursor.fetchall()
         for server in serverlist:
-            print(server)
             guild = bot.get_guild(int(server[0]))
             channel = guild.get_channel(int(server[1]))
             cursor.execute("SELECT * FROM '" + server[0] + "'")
             userlist = cursor.fetchall()
             for user in userlist:
-                print(user)
                 try:
                     player = lol_watcher.summoner.by_name(my_region, user[0])
                     match_id = lol_watcher.match.matchlist_by_puuid(my_region, player["puuid"], count = 1)[0]
