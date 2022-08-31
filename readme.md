@@ -13,3 +13,5 @@ $reset - wipe server from database
 $speak - zoe will talk to you  
   
 hosted on gcp
+
+![image](https://user-images.githubusercontent.com/51398314/187583535-9699ac53-a7db-4fc6-b06b-2db1dc0c39cc.png)
