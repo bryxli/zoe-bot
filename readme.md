@@ -1,4 +1,4 @@
-# ![image](images/icon.png) Zoe Bot  
+# Zoe Bot  <img align="right" width="100" height="100" src=images/icon.png>
 
 **[Discord Invite Link](https://discord.com/api/oauth2/authorize?client_id=1014214102459093105&permissions=2048&scope=bot)**  
 
