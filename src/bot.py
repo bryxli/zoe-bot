@@ -69,7 +69,7 @@ async def status_task() -> None:
                         player_user = list(filter(lambda participant: participant["puuid"] == str(player["puuid"]), participants))[0]
                         try:
                             kda = round((float(player_user["kills"]) + float(player_user["assists"])) / float(player_user["deaths"]),2)
-                        except DivisionByZero as error:
+                        except ZeroDivisionError as error:
                             kda = "perfect"
                         if player_user["win"]:
                             await channel.send("my guy " + player_user["summonerName"] + " got a " + str(kda) + " kda on " + player_user["championName"] + " peepoClap")
