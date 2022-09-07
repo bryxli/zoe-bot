@@ -94,7 +94,7 @@ async def setup(ctx):
         cursor.close()
         print("Successfully inserted " + str(guild_id) + " into serverlist. Messages will be printed in channel: " + str(channel_id))
         await ctx.message.add_reaction(u"\U0001F44D")
-        await ctx.send("i will send messages here reminder: zoe only speaks once every five minutes!")
+        await ctx.send("i will send messages here (reminder: zoe only speaks once every five minutes!)")
     except sqlite3.Error as error:
         print("Failed to insert data into sqlite table.", error)
 
@@ -107,6 +107,7 @@ async def reset(ctx):
         cursor.execute("DROP TABLE '" + str(guild_id) + "'")
         bot.db.commit()
         cursor.close()
+        print("Successfully deleted " + str(guild_id) + " from serverlist.")
         await ctx.message.add_reaction(u"\U0001F44D")
     except sqlite3.Error as error:
         print("Failed to reset:",error)
@@ -142,6 +143,21 @@ async def deluser(ctx, arg):
         await ctx.message.add_reaction(u"\U0001F44D")
     except sqlite3.Error as error:
         print("Failed to delete data from sqlite table.", error)  
+
+@bot.command()
+async def userlist(ctx):
+    guild_id = ctx.guild.id
+    try:
+        cursor = bot.db.cursor()
+        cursor.execute("SELECT * FROM '" + str(guild_id) + "'")
+        userlist = cursor.fetchall()
+        users = ""
+        for user in userlist:
+            users += str(user[0]) + "\n"
+        print("Successfully printed userlist:\n" + users)
+        await ctx.send(users)
+    except sqlite3.Error as error:
+        print("Failed to retrieve data from sqlite table.")
 
 @bot.command()
 async def speak(ctx):
