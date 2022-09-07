@@ -93,8 +93,7 @@ async def setup(ctx):
         bot.db.commit()
         cursor.close()
         print("Successfully inserted " + str(guild_id) + " into serverlist. Messages will be printed in channel: " + str(channel_id))
-        await ctx.message.add_reaction(u"\U0001F44D")
-        await ctx.send("i will send messages here (reminder: zoe only speaks once every five minutes!)")
+        await ctx.send("i will send messages here (reminder: zoe only speaks once every five minutes!)\nunlocked commands: ?reset ?adduser ?deluser ?userlist")
     except sqlite3.Error as error:
         print("Failed to insert data into sqlite table.", error)
 
@@ -154,6 +153,8 @@ async def userlist(ctx):
         users = ""
         for user in userlist:
             users += str(user[0]) + "\n"
+        if users == "":
+            users = "userlist empty!"
         print("Successfully printed userlist:\n" + users)
         await ctx.send(users)
     except sqlite3.Error as error:
@@ -166,7 +167,14 @@ async def speak(ctx):
 
 @bot.command()
 async def help(ctx):
-    await ctx.send("Commands\nBefore anything, run setup or the other commands will not work\n?setup - zoe will speak in this channel\n?reset - wipe server from database\n?adduser <league username> - add to server database\n?deluser <league username> - delete from server database\n?userlist - show server userlist\n?speak - zoe will talk to you")
+    guild_id = ctx.guild.id
+    post_setup = "?reset - wipe server from database\n?adduser <league username> - add to server database\n?deluser <league username> - delete from server database\n?userlist - show server userlist\n"
+    try:
+        cursor = bot.db.cursor()
+        cursor.execute("SELECT * FROM '" + str(guild_id) + "'")
+    except sqlite3.Error as error:
+        post_setup = ""
+    await ctx.send("Commands\n?setup - zoe will speak in this channel\n" + post_setup + "?speak - zoe will talk to you")
 
 @bot.event
 async def on_command_completion(context: Context) -> None:
