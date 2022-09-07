@@ -1,4 +1,3 @@
 add more responses to win/lose game
 when adding name, find real username in riot api -> store real username in db
-when deleting name, ignore case when comparing
-add console response to add delete user
+	when deleting name, ignore case when comparing

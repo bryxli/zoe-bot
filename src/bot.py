@@ -119,6 +119,7 @@ async def adduser(ctx, arg):
         cursor.execute("INSERT INTO '" + str(guild_id) + "' (user_id) VALUES ('" + str(user_id) + "')")
         bot.db.commit()
         cursor.close()
+        print("Successfully inserted " + str(user_id) + " into " + str(guild_id))
         await ctx.message.add_reaction(u"\U0001F44D")
     except sqlite3.Error as error:
         print("Failed to insert data into sqlite table.", error)
@@ -132,6 +133,7 @@ async def deluser(ctx, arg):
         cursor.execute("DELETE FROM '" + str(guild_id) + "' WHERE user_id = '" + str(user_id) + "'")
         bot.db.commit()
         cursor.close()
+        print("Successfully deleted " + str(user_id) + " from " + str(guild_id))
         await ctx.message.add_reaction(u"\U0001F44D")
     except sqlite3.Error as error:
         print("Failed to delete data from sqlite table.", error)  
