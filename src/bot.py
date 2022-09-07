@@ -166,7 +166,7 @@ async def speak(ctx):
 
 @bot.command()
 async def help(ctx):
-    await ctx.send("Commands\nBefore anything, run setup or the other commands will not work\n?setup - zoe will speak in this channel\n?adduser <league username> - add to server database\n?deluser <league username> - delete from server database\n?reset - wipe server from database\n?speak - zoe will talk to you")
+    await ctx.send("Commands\nBefore anything, run setup or the other commands will not work\n?setup - zoe will speak in this channel\n?reset - wipe server from database\n?adduser <league username> - add to server database\n?deluser <league username> - delete from server database\n?userlist - show server userlist\n?speak - zoe will talk to you")
 
 @bot.event
 async def on_command_completion(context: Context) -> None:
