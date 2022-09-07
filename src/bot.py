@@ -115,6 +115,8 @@ async def adduser(ctx, arg):
     guild_id = ctx.guild.id
     user_id = arg
     try:
+        player = lol_watcher.summoner.by_name(my_region, arg)
+        user_id = player["name"]
         cursor = bot.db.cursor()
         cursor.execute("INSERT INTO '" + str(guild_id) + "' (user_id) VALUES ('" + str(user_id) + "')")
         bot.db.commit()
@@ -123,6 +125,8 @@ async def adduser(ctx, arg):
         await ctx.message.add_reaction(u"\U0001F44D")
     except sqlite3.Error as error:
         print("Failed to insert data into sqlite table.", error)
+    except ApiError as error:
+        await ctx.send("Name not found!")
 
 @bot.command()
 async def deluser(ctx, arg):
@@ -130,7 +134,7 @@ async def deluser(ctx, arg):
     user_id = arg
     try:
         cursor = bot.db.cursor()
-        cursor.execute("DELETE FROM '" + str(guild_id) + "' WHERE user_id = '" + str(user_id) + "'")
+        cursor.execute("DELETE FROM '" + str(guild_id) + "' WHERE user_id = '" + str(user_id) + "' COLLATE NOCASE")
         bot.db.commit()
         cursor.close()
         print("Successfully deleted " + str(user_id) + " from " + str(guild_id))
