@@ -155,6 +155,7 @@ async def userlist(ctx):
             users += str(user[0]) + "\n"
         if users == "":
             users = "userlist empty!"
+        cursor.close()
         print("Successfully printed userlist:\n" + users)
         await ctx.send(users)
     except sqlite3.Error as error:
@@ -172,6 +173,7 @@ async def help(ctx):
     try:
         cursor = bot.db.cursor()
         cursor.execute("SELECT * FROM '" + str(guild_id) + "'")
+        cursor.close()
     except sqlite3.Error as error:
         post_setup = ""
     await ctx.send("Commands\n?setup - zoe will speak in this channel\n" + post_setup + "?speak - zoe will talk to you")
