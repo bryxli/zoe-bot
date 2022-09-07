@@ -2,7 +2,7 @@
 
 **[Discord Invite Link](https://discord.com/api/oauth2/authorize?client_id=1014214102459093105&permissions=2048&scope=bot)**  
 
-zoe will let you know when you win or lose. i guess she is just that smart. zoe checks every ten minutes, she can't be doing it all day!  
+zoe will let you know when you win or lose. i guess she is just that smart. zoe checks every five minutes, she can't be doing it all day!  
 zoe shouts out game results in her channel.
 
 **Commands**  

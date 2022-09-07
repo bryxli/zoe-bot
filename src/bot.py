@@ -48,7 +48,7 @@ async def on_ready() -> None:
     await bot.change_presence(activity=discord.Game("?help"))
     status_task.start()
 
-@tasks.loop(minutes = 10.0)
+@tasks.loop(minutes = 5.0)
 async def status_task() -> None:
     try:
         cursor = bot.db.cursor()
@@ -94,6 +94,7 @@ async def setup(ctx):
         cursor.close()
         print("Successfully inserted " + str(guild_id) + " into serverlist. Messages will be printed in channel: " + str(channel_id))
         await ctx.message.add_reaction(u"\U0001F44D")
+        await ctx.send("i will send messages here reminder: zoe only speaks once every five minutes!")
     except sqlite3.Error as error:
         print("Failed to insert data into sqlite table.", error)
 
