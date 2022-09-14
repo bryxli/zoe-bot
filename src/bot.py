@@ -56,27 +56,30 @@ async def status_task() -> None:
         serverlist = cursor.fetchall()
         for server in serverlist:
             guild = bot.get_guild(int(server[0]))
-            channel = guild.get_channel(int(server[1]))
-            cursor.execute("SELECT * FROM '" + server[0] + "'")
-            userlist = cursor.fetchall()
-            for user in userlist:
-                try:
-                    player = lol_watcher.summoner.by_name(my_region, user[0])
-                    match_id = lol_watcher.match.matchlist_by_puuid(my_region, player["puuid"], count = 1)[0]
-                    if match_id != user[1]:
-                        participants = lol_watcher.match.by_id(my_region, match_id)["info"]["participants"]
-                        player_user = list(filter(lambda participant: participant["puuid"] == str(player["puuid"]), participants))[0]
-                        try:
-                            kda = round((float(player_user["kills"]) + float(player_user["assists"])) / float(player_user["deaths"]),2)
-                        except ZeroDivisionError as error:
-                            kda = "perfect"
-                        if player_user["win"]:
-                            await channel.send("my guy " + player_user["summonerName"] + " got a " + str(kda) + " kda on " + player_user["championName"] + " peepoClap")
-                        else:
-                            await channel.send("i believe in u " + player_user["summonerName"] + " you will do better next time")
-                        cursor.execute("UPDATE '" + server[0] + "' SET previous = '" + match_id + "' WHERE user_id = '" + player_user["summonerName"] + "'")
-                except ApiError as error:
-                    print("Riot API Error:",error)
+            try:
+                channel = guild.get_channel(int(server[1]))
+                cursor.execute("SELECT * FROM '" + server[0] + "'")
+                userlist = cursor.fetchall()
+                for user in userlist:
+                    try:
+                        player = lol_watcher.summoner.by_name(my_region, user[0])
+                        match_id = lol_watcher.match.matchlist_by_puuid(my_region, player["puuid"], count = 1)[0]
+                        if match_id != user[1]:
+                            participants = lol_watcher.match.by_id(my_region, match_id)["info"]["participants"]
+                            player_user = list(filter(lambda participant: participant["puuid"] == str(player["puuid"]), participants))[0]
+                            try:
+                                kda = round((float(player_user["kills"]) + float(player_user["assists"])) / float(player_user["deaths"]),2)
+                            except ZeroDivisionError as error:
+                                kda = "perfect"
+                            if player_user["win"]:
+                                await channel.send("my guy " + player_user["summonerName"] + " got a " + str(kda) + " kda on " + player_user["championName"] + " peepoClap")
+                            else:
+                                await channel.send("i believe in u " + player_user["summonerName"] + " you will do better next time")
+                            cursor.execute("UPDATE '" + server[0] + "' SET previous = '" + match_id + "' WHERE user_id = '" + player_user["summonerName"] + "'")
+                    except ApiError as error:
+                        print("Riot API Error:",error)
+            except AttributeError as error:
+                print(error)
         bot.db.commit()
         cursor.close()
     except sqlite3.Error as error:
