@@ -1,1 +1,2 @@
 add more responses to win/lose game
+bug when someone resets server, results in nulls in database

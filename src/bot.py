@@ -78,6 +78,8 @@ async def status_task() -> None:
                             cursor.execute("UPDATE '" + server[0] + "' SET previous = '" + match_id + "' WHERE user_id = '" + player_user["summonerName"] + "'")
                     except ApiError as error:
                         print("Riot API Error:",error)
+                    except Exception as exception:
+                        print(exception)
             except AttributeError as error:
                 print(error)
         bot.db.commit()
