@@ -125,6 +125,10 @@ async def adduser(ctx, arg):
         player = lol_watcher.summoner.by_name(my_region, arg)
         user_id = player["name"]
         cursor = bot.db.cursor()
+        cursor.execute("SELECT * FROM '" + str(guild_id) + "'")
+        userlist = cursor.fetchall()
+        if user_id in userlist:
+            raise EnvironmentError(user_id)
         cursor.execute("INSERT INTO '" + str(guild_id) + "' (user_id) VALUES ('" + str(user_id) + "')")
         bot.db.commit()
         cursor.close()
@@ -133,7 +137,9 @@ async def adduser(ctx, arg):
     except sqlite3.Error as error:
         print("Failed to insert data into sqlite table.", error)
     except ApiError as error:
-        await ctx.send("Name not found!")
+        await ctx.send("name not found")
+    except EnvironmentError as error:
+        await ctx.send(user_id + "has already been added")
 
 @bot.command()
 async def deluser(ctx, arg):
