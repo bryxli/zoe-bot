@@ -80,6 +80,8 @@ async def status_task() -> None:
                         print("Riot API Error:",error)
                     except Exception as exception:
                         print(exception)
+                        print(player)
+                        print(lol_watcher.match.matchlist_by_puuid(my_region, player["puuid"], count = 1))
             except AttributeError as error:
                 print(error)
         bot.db.commit()
