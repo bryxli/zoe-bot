@@ -93,7 +93,7 @@ async def status_task() -> None:
                                         t = Template(random.choice(custom["lose"]))
                                         await channel.send(t.substitute(summonername=player_user["summonerName"], kda=str(kda), championname = player_user["championName"]))
                             else:
-                                await channel.send(player_user["summonerName"] + ": " + ("Win\n" if player_user["win"] else "Loss\n") + player_user["championName"] + " KDA: " + str(kda))
+                                await channel.send(player_user["summonerName"] + ": " + ("Win\t" if player_user["win"] else "Loss\t") + player_user["championName"] + " KDA: " + str(kda))
                             cursor.execute("UPDATE '" + server[0] + "' SET previous = '" + match_id + "' WHERE user_id = '" + player_user["summonerName"] + "'")
                     except ApiError as error:
                         print("Riot API Error:",error)
