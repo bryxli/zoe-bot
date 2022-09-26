@@ -63,7 +63,10 @@ async def status_task() -> None:
                 for user in userlist:
                     try:
                         player = lol_watcher.summoner.by_name(my_region, user[0])
-                        match_id = lol_watcher.match.matchlist_by_puuid(my_region, player["puuid"], count = 1)[0]
+                        try:
+                            match_id = lol_watcher.match.matchlist_by_puuid(my_region, player["puuid"], count = 1)[0]
+                        except IndexError as error:
+                            continue
                         if match_id != user[1]:
                             participants = lol_watcher.match.by_id(my_region, match_id)["info"]["participants"]
                             player_user = list(filter(lambda participant: participant["puuid"] == str(player["puuid"]), participants))[0]
@@ -78,12 +81,8 @@ async def status_task() -> None:
                             cursor.execute("UPDATE '" + server[0] + "' SET previous = '" + match_id + "' WHERE user_id = '" + player_user["summonerName"] + "'")
                     except ApiError as error:
                         print("Riot API Error:",error)
-                    except Exception as exception:
-                        print(exception)
-                        print(player)
-                        print(lol_watcher.match.matchlist_by_puuid(my_region, player["puuid"], count = 1))
             except AttributeError as error:
-                print(error)
+                print("Database needs to be cleaned, implement a script here.", error)
         bot.db.commit()
         cursor.close()
     except sqlite3.Error as error:
