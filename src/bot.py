@@ -58,7 +58,7 @@ async def status_task() -> None:
             guild = bot.get_guild(int(server[0]))
             try:
                 channel = guild.get_channel(int(server[1]))
-                cursor.execute("SELECT * FROM '" + server[0] + "'")
+                cursor.execute("SELECT * FROM '" + server[0] + "' ORDER BY RAND()")
                 userlist = cursor.fetchall()
                 for user in userlist:
                     try:
