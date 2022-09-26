@@ -143,8 +143,8 @@ async def adduser(ctx, arg):
         cursor = bot.db.cursor()
         cursor.execute("SELECT * FROM '" + str(guild_id) + "'")
         userlist = cursor.fetchall()
-        for user in userlist:
-            if user_id == userlist[0][0]:
+        for i in range(len(userlist)):
+            if user_id == userlist[i][0]:
                 raise EnvironmentError(user_id)
         cursor.execute("INSERT INTO '" + str(guild_id) + "' (user_id) VALUES ('" + str(user_id) + "')")
         bot.db.commit()
