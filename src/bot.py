@@ -4,19 +4,19 @@ import platform
 import sqlite3
 import sys
 import random
-
-from contextlib import closing
-from string import Template
 import functools
 import typing
 import asyncio
+import logging
+
+from contextlib import closing
+from string import Template
+from riotwatcher import LolWatcher, ApiError
 
 import discord
 from discord.ext import tasks, commands
 from discord.ext.commands import Bot
 from discord.ext.commands import Context
-
-from riotwatcher import LolWatcher, ApiError
 
 if not os.path.isfile("config.json"):
     sys.exit("'config.json' not found! Please add it and try again.")
@@ -31,6 +31,8 @@ else:
     with open("templates/custom.json") as file:
         custom = json.load(file)
     custom_exists = True
+
+logging.basicConfig(filename='logs/log.log', filemode='w', format='%(asctime)s - %(message)s')
 
 intents = discord.Intents.all()
 
@@ -70,7 +72,7 @@ async def status_task() -> None:
             guild = bot.get_guild(int(server[0]))
             try:
                 channel = guild.get_channel(int(server[1]))
-                cursor.execute("SELECT * FROM '" + server[0] + "' ORDER BY RANDOM()")
+                cursor.execute(f"SELECT * FROM '{server[0]}' ORDER BY RANDOM()")
                 userlist = cursor.fetchall()
                 for user in userlist:
                     try:
@@ -96,12 +98,13 @@ async def status_task() -> None:
                                         t = Template(random.choice(custom["lose"]))
                                         await channel.send(t.substitute(summonername=player_user["summonerName"], kda=kda, championname = player_user["championName"]))
                             else:
-                                await channel.send(player_user["summonerName"] + ": " + ("Win\t" if player_user["win"] else "Loss\t") + player_user["championName"] + " KDA: " + str(kda))
-                            cursor.execute("UPDATE '" + server[0] + "' SET previous = '" + match_id + "' WHERE user_id = '" + player_user["summonerName"] + "'")
+                                win_loss = "Win" if player_user["win"] else "Loss"
+                                await channel.send(f"{player_user['summonerName']}: {win_loss}\t{player_user['championName']} KDA: {kda}")
+                            cursor.execute(f"UPDATE '{server[0]}' SET previous = '{match_id}' WHERE user_id = '{player_user['summonerName']}'")
                     except ApiError as error:
                         print("Riot API Error:",error)
             except AttributeError as error:
-                print("Database needs to be cleaned, implement a script here.", error)
+                print("Database needs to be cleaned.", error)
         bot.db.commit()
         cursor.close()
     except sqlite3.Error as error:
@@ -127,78 +130,82 @@ def find_participants(match_id):
 
 @bot.command()
 async def setup(ctx):
-    guild_id = ctx.guild.id
-    channel_id = ctx.channel.id
+    guild_id = str(ctx.guild.id)
+    channel_id = str(ctx.channel.id)
     try:
         cursor = bot.db.cursor()
-        cursor.execute("INSERT INTO serverlist (guild_id,channel_id) VALUES ('" + str(guild_id) + "','" + str(channel_id) + "')")
-        cursor.execute("CREATE TABLE IF NOT EXISTS '" + str(guild_id) + "' ('user_id' varchar(255) NOT NULL, 'previous' varchar(255) NOT NULL DEFAULT 'NA', 'created_at' timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP)")
+        cursor.execute(f"INSERT INTO serverlist (guild_id,channel_id) VALUES ('{guild_id }','{channel_id}')")
+        cursor.execute(f"CREATE TABLE IF NOT EXISTS '{guild_id}' ('user_id' varchar(255) NOT NULL, 'previous' varchar(255) NOT NULL DEFAULT 'NA', 'created_at' timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP)")
         bot.db.commit()
         cursor.close()
-        print("Successfully inserted " + str(guild_id) + " into serverlist. Messages will be printed in channel: " + str(channel_id))
+        logging.warning(f"{ctx.author} inserted {ctx.guild.name} ({guild_id})")
+        print(f"Successfully inserted {guild_id} into serverlist. Messages will be printed in channel: {channel_id}")
         await ctx.send("i will send messages here (reminder: zoe only speaks once every five minutes!)\nunlocked commands: ?reset ?adduser ?deluser ?userlist")
     except sqlite3.Error as error:
         print("Failed to insert data into sqlite table.", error)
 
 @bot.command()
 async def reset(ctx):
-    guild_id = ctx.guild.id
+    guild_id = str(ctx.guild.id)
     try:
         cursor = bot.db.cursor()
-        cursor.execute("DELETE FROM serverlist WHERE guild_id='" + str(guild_id) + "'")
-        cursor.execute("DROP TABLE '" + str(guild_id) + "'")
+        cursor.execute(f"DELETE FROM serverlist WHERE guild_id='{guild_id}'")
+        cursor.execute(f"DROP TABLE '{guild_id}'")
         bot.db.commit()
         cursor.close()
-        print("Successfully deleted " + str(guild_id) + " from serverlist.")
+        logging.warning(f"{ctx.author} deleted {ctx.guild.name} ({guild_id})")
+        print(f"Successfully deleted {guild_id} from serverlist.")
         await ctx.message.add_reaction(u"\U0001F44D")
     except sqlite3.Error as error:
         print("Failed to reset:",error)
 
 @bot.command()
 async def adduser(ctx, arg):
-    guild_id = ctx.guild.id
-    user_id = arg
+    guild_id = str(ctx.guild.id)
+    user_id = str(arg)
     try:
         player = await find_player(arg)
         user_id = player["name"]
         cursor = bot.db.cursor()
-        cursor.execute("SELECT * FROM '" + str(guild_id) + "'")
+        cursor.execute(f"SELECT * FROM '{guild_id}'")
         userlist = cursor.fetchall()
         for i in range(len(userlist)):
             if user_id == userlist[i][0]:
                 raise EnvironmentError(user_id)
-        cursor.execute("INSERT INTO '" + str(guild_id) + "' (user_id) VALUES ('" + str(user_id) + "')")
+        cursor.execute(f"INSERT INTO '{guild_id}' (user_id) VALUES ('{user_id}')")
         bot.db.commit()
         cursor.close()
-        print("Successfully inserted " + str(user_id) + " into " + str(guild_id))
+        logging.warning(f"{ctx.author} inserted user {user_id} into {ctx.guild.name} ({guild_id})")
+        print(f"Successfully inserted {user_id} into {guild_id}")
         await ctx.message.add_reaction(u"\U0001F44D")
     except sqlite3.Error as error:
         print("Failed to insert data into sqlite table.", error)
     except ApiError as error:
         await ctx.send("name not found")
     except EnvironmentError as error: 
-        await ctx.send(user_id + " has already been added")
+        await ctx.send(f"{user_id} has already been added")
 
 @bot.command()
 async def deluser(ctx, arg):
-    guild_id = ctx.guild.id
-    user_id = arg
+    guild_id = str(ctx.guild.id)
+    user_id = str(arg)
     try:
         cursor = bot.db.cursor()
-        cursor.execute("DELETE FROM '" + str(guild_id) + "' WHERE user_id = '" + str(user_id) + "' COLLATE NOCASE")
+        cursor.execute("DELETE FROM '{guild_id}' WHERE user_id = '{user_id}' COLLATE NOCASE")
         bot.db.commit()
         cursor.close()
-        print("Successfully deleted " + str(user_id) + " from " + str(guild_id))
+        logging.warning(f"{ctx.author} deleted user {user_id} from {ctx.guild.name} ({guild_id})")
+        print(f"Successfully deleted {user_id} from {guild_id}")
         await ctx.message.add_reaction(u"\U0001F44D")
     except sqlite3.Error as error:
         print("Failed to delete data from sqlite table.", error)  
 
 @bot.command()
 async def userlist(ctx):
-    guild_id = ctx.guild.id
+    guild_id = str(ctx.guild.id)
     try:
         cursor = bot.db.cursor()
-        cursor.execute("SELECT * FROM '" + str(guild_id) + "'")
+        cursor.execute(f"SELECT * FROM '{guild_id}'")
         userlist = cursor.fetchall()
         users = ""
         for user in userlist:
@@ -221,15 +228,15 @@ async def speak(ctx):
 
 @bot.command()
 async def help(ctx):
-    guild_id = ctx.guild.id
+    guild_id = str(ctx.guild.id)
     post_setup = "?reset - wipe server from database\n?adduser <league username> - add to server database\n?deluser <league username> - delete from server database\n?userlist - show server userlist\n"
     try:
         cursor = bot.db.cursor()
-        cursor.execute("SELECT * FROM '" + str(guild_id) + "'")
+        cursor.execute(f"SELECT * FROM '{guild_id}'")
         cursor.close()
     except sqlite3.Error as error:
         post_setup = ""
-    await ctx.send("Commands\n?setup - zoe will speak in this channel\n" + post_setup + "?speak - zoe will talk to you")
+    await ctx.send(f"Commands\n?setup - zoe will speak in this channel\n{post_setup}?speak - zoe will talk to you")
 
 @bot.event
 async def on_command_completion(context: Context) -> None:
