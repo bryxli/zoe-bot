@@ -32,6 +32,10 @@ else:
         custom = json.load(file)
     custom_exists = True
 
+if not os.path.isfile("logs/log.log"):
+    with open("log.log") as log:
+        print("'logs/log.log' not found! Creating log in src/logs.")
+        
 logging.basicConfig(filename='logs/log.log', filemode='w', format='%(asctime)s - %(message)s')
 
 intents = discord.Intents.all()

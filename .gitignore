@@ -1,4 +1,4 @@
 config.json
 src/database/database.db
 src/templates/custom.json
-src/logs
+src/logs/log.log
