@@ -26,11 +26,10 @@ else:
 
 if not os.path.isfile("templates/custom.json"):
     print("'templates/custom.json' not found! Using default responses.")
-    custom_exists = False
+    custom = None
 else:
     with open("templates/custom.json") as file:
         custom = json.load(file)
-    custom_exists = True
 
 if not os.path.isfile("logs/log.log"):
     f = open("logs/log.log", "x")
@@ -92,15 +91,19 @@ async def status_task() -> None:
                                 kda = str(round((float(player_user["kills"]) + float(player_user["assists"])) / float(player_user["deaths"]),2))
                             except ZeroDivisionError as error:
                                 kda = "perfect"
-                            if custom_exists:
+                            if custom is not None:
                                 if player_user["win"]:
                                     if len(custom["win"]) > 0:
                                         t = Template(random.choice(custom["win"]))
                                         await channel.send(t.substitute(summonername=player_user["summonerName"], kda=kda, championname = player_user["championName"]))
+                                    else:
+                                        await channel.send(f"{player_user['summonerName']}: Win\t{player_user['championName']} KDA: {kda}")
                                 else:
                                     if len(custom["lose"]) > 0:
                                         t = Template(random.choice(custom["lose"]))
                                         await channel.send(t.substitute(summonername=player_user["summonerName"], kda=kda, championname = player_user["championName"]))
+                                    else:
+                                        await channel.send(f"{player_user['summonerName']}: Loss\t{player_user['championName']} KDA: {kda}")
                             else:
                                 win_loss = "Win" if player_user["win"] else "Loss"
                                 await channel.send(f"{player_user['summonerName']}: {win_loss}\t{player_user['championName']} KDA: {kda}")
@@ -224,7 +227,7 @@ async def userlist(ctx):
 
 @bot.command()
 async def speak(ctx):
-    if custom_exists and len(custom["speak"]) > 0:
+    if custom is not None and len(custom["speak"]) > 0:
         await ctx.send(random.choice(custom["speak"]))
     else:
         first_move = ["Hey guys, so, cosmic change time, possible armageddon, twilight of the gods, blah blah blah. You've been heralded.","There are so many weirdos here... It's awesome!","I bring a message for you all: a warning, a sigil. But first, I wanna see the sparkle flies.","Hello? Hey, I'm over here if you want to aim a high-velocity attack against me! Maybe you'll hit me this time!","Anyone wanna go into that ankle-deep liquid? Hello? Hellooooo!!","Here we go on an adventure, through this place! Even though we don't know the name of it! It doesn't matter!","The sky is billions of explosions burning far away! How could you not wanna see them?? I did. They were pretty cool.","This will be fine! Don't worry about it Zoe, things break all the time. Like reality, planets... y'know, stuff.","The sun and moon rise in time, to ash and mirth. The mountain takes... all. Change comes.","When the beings here look up, do they think we're looking back?! We really aren't.","Heyyyy! I'm gonna have new friends, new friends here, and it's gonna be awesome 'cause they are awesome and we'll have an awesome party with cake and stuff! Should I make chocolate mooncake or strawberry mooncake? CHOCOLATE STRAWBERRY CAKE!!","There's this illusion of the reality, but it's not really really real, like it's beside and inside and inside and beside, but never on top... Nevermind, just kidding, but not really..","Ohh! I like how the atmospheric refraction is favoring intense short waves today!","The sky called to me. So I went! It was pretty cool. I like this too, though.","Psst! Hey! Can you tell me your secrets? I promise not to tell them to... everyone!","There are holes in reality. And... in donuts.","We don't try to understand the sense it doesn't make, so we're trying to share that with you. You're welcome.","There is a day we must all fulfill our destiny. ...That day is taco day!!","So, there's these, like, yinger and yangerons, and they spin in this projected pattern which intersects fourth-dimensionally. But it isn't a measurable function. It's got a whoosh, whoom, whoooooooooh!"]
