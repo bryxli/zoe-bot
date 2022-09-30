@@ -7,6 +7,9 @@ import random
 
 from contextlib import closing
 from string import Template
+import functools
+import typing
+import asyncio
 
 import discord
 from discord.ext import tasks, commands
@@ -71,27 +74,27 @@ async def status_task() -> None:
                 userlist = cursor.fetchall()
                 for user in userlist:
                     try:
-                        player = lol_watcher.summoner.by_name(my_region, user[0])
+                        player = await find_player(user[0])
                         try:
-                            match_id = lol_watcher.match.matchlist_by_puuid(my_region, player["puuid"], count = 1)[0]
+                            match_id = await find_match(player["puuid"])
                         except IndexError as error:
                             continue
                         if match_id != user[1]:
-                            participants = lol_watcher.match.by_id(my_region, match_id)["info"]["participants"]
+                            participants = await find_participants(match_id)
                             player_user = list(filter(lambda participant: participant["puuid"] == str(player["puuid"]), participants))[0]
                             try:
-                                kda = round((float(player_user["kills"]) + float(player_user["assists"])) / float(player_user["deaths"]),2)
+                                kda = str(round((float(player_user["kills"]) + float(player_user["assists"])) / float(player_user["deaths"]),2))
                             except ZeroDivisionError as error:
                                 kda = "perfect"
                             if custom_exists:
                                 if player_user["win"]:
                                     if len(custom["win"]) > 0:
                                         t = Template(random.choice(custom["win"]))
-                                        await channel.send(t.substitute(summonername=player_user["summonerName"], kda=str(kda), championname = player_user["championName"]))
+                                        await channel.send(t.substitute(summonername=player_user["summonerName"], kda=kda, championname = player_user["championName"]))
                                 else:
                                     if len(custom["lose"]) > 0:
                                         t = Template(random.choice(custom["lose"]))
-                                        await channel.send(t.substitute(summonername=player_user["summonerName"], kda=str(kda), championname = player_user["championName"]))
+                                        await channel.send(t.substitute(summonername=player_user["summonerName"], kda=kda, championname = player_user["championName"]))
                             else:
                                 await channel.send(player_user["summonerName"] + ": " + ("Win\t" if player_user["win"] else "Loss\t") + player_user["championName"] + " KDA: " + str(kda))
                             cursor.execute("UPDATE '" + server[0] + "' SET previous = '" + match_id + "' WHERE user_id = '" + player_user["summonerName"] + "'")
@@ -103,6 +106,24 @@ async def status_task() -> None:
         cursor.close()
     except sqlite3.Error as error:
         print("Failed to retrieve data from sqlite table.", error)
+
+def to_thread(func: typing.Callable) -> typing.Coroutine:
+    @functools.wraps(func)
+    async def wrapper(*args, **kwargs):
+        return await asyncio.to_thread(func, *args, **kwargs)
+    return wrapper
+
+@to_thread
+def find_player(id):
+    return lol_watcher.summoner.by_name(my_region, id)
+
+@to_thread
+def find_match(puuid):
+    return lol_watcher.match.matchlist_by_puuid(my_region, puuid)[0]
+
+@to_thread
+def find_participants(match_id):
+    return lol_watcher.match.by_id(my_region, match_id)["info"]["participants"]
 
 @bot.command()
 async def setup(ctx):
@@ -138,7 +159,7 @@ async def adduser(ctx, arg):
     guild_id = ctx.guild.id
     user_id = arg
     try:
-        player = lol_watcher.summoner.by_name(my_region, arg)
+        player = await find_player(arg)
         user_id = player["name"]
         cursor = bot.db.cursor()
         cursor.execute("SELECT * FROM '" + str(guild_id) + "'")
@@ -155,7 +176,7 @@ async def adduser(ctx, arg):
         print("Failed to insert data into sqlite table.", error)
     except ApiError as error:
         await ctx.send("name not found")
-    except EnvironmentError as error: # does not work after deleting then inserting again?
+    except EnvironmentError as error: 
         await ctx.send(user_id + " has already been added")
 
 @bot.command()
