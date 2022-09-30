@@ -33,7 +33,7 @@ else:
     custom_exists = True
 
 if not os.path.isfile("logs/log.log"):
-    f = open("/logs/log.log", "x")
+    f = open("logs/log.log", "x")
     f.close()
         
 logging.basicConfig(filename='logs/log.log', filemode='w', format='%(asctime)s - %(message)s')
