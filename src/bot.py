@@ -33,8 +33,8 @@ else:
     custom_exists = True
 
 if not os.path.isfile("logs/log.log"):
-    with open("log.log") as log:
-        print("'logs/log.log' not found! Creating log in src/logs.")
+    f = open("log.log", "x")
+    f.close()
         
 logging.basicConfig(filename='logs/log.log', filemode='w', format='%(asctime)s - %(message)s')
 
