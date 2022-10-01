@@ -78,10 +78,9 @@ async def status_task() -> None:
                 channel = guild.get_channel(int(server[1]))
                 cursor.execute(f"SELECT * FROM '{server[0]}' ORDER BY RANDOM()")
                 userlist = cursor.fetchall()
-                cursor.execute(f"SELECT region FROM serverlist WHERE guild_id='{server[0]}'")
-                region = cursor.fetchall()[0][0]
                 for user in userlist:
                     try:
+                        region = server[3]
                         player = await find_player(region, user[0])
                         try:
                             match_id = await find_match(region, player["puuid"])
