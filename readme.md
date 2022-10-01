@@ -9,10 +9,13 @@ zoe shouts out game results in her channel.
 ***Before anything, run setup or the other commands will not work***   
 ?setup - zoe will speak in this channel  
 ?reset - wipe server from database  
+?region - list current region and region codes  
+?setregion \<region> - set server region  
 ?adduser \<league username> - add to server database  
 ?deluser \<league username> - delete from server database  
 ?userlist - show server userlist  
 ?speak - zoe will talk to you  
+?help - help menu
 
 **Images**
 <figure>
