@@ -41,7 +41,8 @@ intents = discord.Intents.all()
 
 bot = Bot(command_prefix=commands.when_mentioned_or(config["prefix"]), intents=intents, help_command=None)
 lol_watcher = LolWatcher(config["league_token"])
-my_region = "na1"
+default_region = "na1"
+regionlist = ['br1', 'eun1', 'euw1', 'jp1', 'kr', 'la1', 'la2', 'na1', 'oc1', 'tr1', 'ru']
 
 def init_db():
     with closing(connect_db()) as db:
@@ -77,15 +78,17 @@ async def status_task() -> None:
                 channel = guild.get_channel(int(server[1]))
                 cursor.execute(f"SELECT * FROM '{server[0]}' ORDER BY RANDOM()")
                 userlist = cursor.fetchall()
+                cursor.execute(f"SELECT region FROM serverlist WHERE guild_id='{server[0]}'")
+                region = cursor.fetchall()[0][0]
                 for user in userlist:
                     try:
-                        player = await find_player(user[0])
+                        player = await find_player(region, user[0])
                         try:
-                            match_id = await find_match(player["puuid"])
+                            match_id = await find_match(region, player["puuid"])
                         except IndexError as error:
                             continue
                         if match_id != user[1]:
-                            participants = await find_participants(match_id)
+                            participants = await find_participants(region, match_id)
                             player_user = list(filter(lambda participant: participant["puuid"] == str(player["puuid"]), participants))[0]
                             try:
                                 kda = str(round((float(player_user["kills"]) + float(player_user["assists"])) / float(player_user["deaths"]),2))
@@ -124,16 +127,16 @@ def to_thread(func: typing.Callable) -> typing.Coroutine:
     return wrapper
 
 @to_thread
-def find_player(id):
-    return lol_watcher.summoner.by_name(my_region, id)
+def find_player(region, id):
+    return lol_watcher.summoner.by_name(region, id)
 
 @to_thread
-def find_match(puuid):
-    return lol_watcher.match.matchlist_by_puuid(my_region, puuid)[0]
+def find_match(region, puuid):
+    return lol_watcher.match.matchlist_by_puuid(region, puuid)[0]
 
 @to_thread
-def find_participants(match_id):
-    return lol_watcher.match.by_id(my_region, match_id)["info"]["participants"]
+def find_participants(region, match_id):
+    return lol_watcher.match.by_id(region, match_id)["info"]["participants"]
 
 @bot.command()
 async def setup(ctx):
@@ -141,13 +144,13 @@ async def setup(ctx):
     channel_id = str(ctx.channel.id)
     try:
         cursor = bot.db.cursor()
-        cursor.execute(f"INSERT INTO serverlist (guild_id,channel_id) VALUES ('{guild_id }','{channel_id}')")
+        cursor.execute(f"INSERT INTO serverlist (guild_id,channel_id,region) VALUES ('{guild_id }','{channel_id}','{default_region}')")
         cursor.execute(f"CREATE TABLE IF NOT EXISTS '{guild_id}' ('user_id' varchar(255) NOT NULL, 'previous' varchar(255) NOT NULL DEFAULT 'NA', 'created_at' timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP)")
         bot.db.commit()
         cursor.close()
         logging.warning(f"{ctx.author} inserted {ctx.guild.name} ({guild_id})")
         print(f"Successfully inserted {guild_id} into serverlist. Messages will be printed in channel: {channel_id}")
-        await ctx.send("i will send messages here (reminder: zoe only speaks once every five minutes!)\nunlocked commands: ?reset ?adduser ?deluser ?userlist")
+        await ctx.send("i will send messages here (reminder: zoe only speaks once every five minutes!)\nunlocked commands: ?reset ?region ?setregion ?adduser ?deluser ?userlist")
     except sqlite3.Error as error:
         print("Failed to insert data into sqlite table.", error)
 
@@ -167,13 +170,44 @@ async def reset(ctx):
         print("Failed to reset:",error)
 
 @bot.command()
+async def region(ctx):
+    guild_id = str(ctx.guild.id)
+    try:
+        cursor = bot.db.cursor()
+        cursor.execute(f"SELECT region FROM serverlist WHERE guild_id='{guild_id}'")
+        region = cursor.fetchall()[0][0]
+        await ctx.send(f"region is currently set to {region}\nregion values: {str(regionlist)}")
+    except sqlite3.Error as error:
+        print("Failed to find region column:",error)
+
+@bot.command()
+async def setregion(ctx, arg):
+    guild_id = str(ctx.guild.id)
+    region = str(arg)
+    if region not in regionlist:
+        await ctx.send("region not found")
+    else:
+        try:
+            cursor = bot.db.cursor()
+            cursor.execute(f"UPDATE serverlist SET region = '{region}' WHERE guild_id='{guild_id}'")
+            bot.db.commit()
+            cursor.close()
+            logging.warning(f"{ctx.author} changed region in {ctx.guild.name} ({guild_id}) to {region}")
+            print(f"Successfully changed region in {guild_id}")
+            await ctx.message.add_reaction(u"\U0001F44D")
+        except sqlite3.Error as error:
+            print("Failed to update region column:",error)
+
+@bot.command()
 async def adduser(ctx, arg):
     guild_id = str(ctx.guild.id)
     user_id = str(arg)
     try:
-        player = await find_player(arg)
-        user_id = player["name"]
         cursor = bot.db.cursor()
+        cursor.execute(f"SELECT region FROM serverlist WHERE guild_id='{guild_id}'")
+        region = cursor.fetchall()[0][0]
+        player = await find_player(region, arg)
+        user_id = player["name"]
         cursor.execute(f"SELECT * FROM '{guild_id}'")
         userlist = cursor.fetchall()
         for i in range(len(userlist)):
@@ -236,7 +270,7 @@ async def speak(ctx):
 @bot.command()
 async def help(ctx):
     guild_id = str(ctx.guild.id)
-    post_setup = "?reset - wipe server from database\n?adduser <league username> - add to server database\n?deluser <league username> - delete from server database\n?userlist - show server userlist\n"
+    post_setup = "?region - list current region and region codes\n?setregion <region> - set server region\n?reset - wipe server from database\n?adduser <league username> - add to server database\n?deluser <league username> - delete from server database\n?userlist - show server userlist\n"
     try:
         cursor = bot.db.cursor()
         cursor.execute(f"SELECT * FROM '{guild_id}'")
