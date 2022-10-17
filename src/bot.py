@@ -113,7 +113,7 @@ async def status_task() -> None:
                     except ApiError as error:
                         print("Riot API Error:",error)
             except AttributeError as error:
-                print("Database needs to be cleaned.", error)
+                pass
         bot.db.commit()
         cursor.close()
     except sqlite3.Error as error:
@@ -269,7 +269,7 @@ async def speak(ctx):
 @bot.command()
 async def help(ctx):
     guild_id = str(ctx.guild.id)
-    post_setup = "?region - list current region and region codes\n?setregion <region> - set server region\n?reset - wipe server from database\n?adduser <league username> - add to server database\n?deluser <league username> - delete from server database\n?userlist - show server userlist\n"
+    post_setup = "?reset - wipe server from database\n?region - list current region and region codes\n?setregion <region> - set server region\n?adduser <league username> - add to server database\n?deluser <league username> - delete from server database\n?userlist - show server userlist\n"
     try:
         cursor = bot.db.cursor()
         cursor.execute(f"SELECT * FROM '{guild_id}'")
