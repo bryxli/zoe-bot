@@ -1,1 +1,2 @@
-add more responses to win/lose game
+ideas:
+master output on website
