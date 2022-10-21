@@ -12,12 +12,8 @@ const Home = () => {
       </ul>
 
       <ul>
-        <p>
-          <strong>Commands</strong>
-        </p>
-        <li>
-          ?setup - zoe will speak in this channel <b>(run this first)</b>
-        </li>
+        <p>Commands</p>
+        <li>?setup - zoe will speak in this channel (run this first)</li>
         <li>?reset - wipe server from database</li>
         <li>?region - list current region and region codes</li>
         <li>?setregion &lt;region&gt;- set server region</li>
