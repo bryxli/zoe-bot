@@ -1,17 +1,17 @@
 {
   "files": {
     "main.css": "/zoe-bot/static/css/main.23aa1800.css",
-    "main.js": "/zoe-bot/static/js/main.a9ebca41.js",
+    "main.js": "/zoe-bot/static/js/main.b5dd7398.js",
     "static/js/787.d37de791.chunk.js": "/zoe-bot/static/js/787.d37de791.chunk.js",
     "static/media/bg.jpg": "/zoe-bot/static/media/bg.dd958e12075f47bf0320.jpg",
     "static/media/font.ttf": "/zoe-bot/static/media/font.3b6c87f9c81828e4ddd6.ttf",
     "index.html": "/zoe-bot/index.html",
     "main.23aa1800.css.map": "/zoe-bot/static/css/main.23aa1800.css.map",
-    "main.a9ebca41.js.map": "/zoe-bot/static/js/main.a9ebca41.js.map",
+    "main.b5dd7398.js.map": "/zoe-bot/static/js/main.b5dd7398.js.map",
     "787.d37de791.chunk.js.map": "/zoe-bot/static/js/787.d37de791.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.23aa1800.css",
-    "static/js/main.a9ebca41.js"
+    "static/js/main.b5dd7398.js"
   ]
 }
