@@ -1,6 +1,6 @@
 import React from "react";
 
-const Home = () => {
+const Header = () => {
   return (
     <header className="App-header font-face-0">
       zoe, the aspect of twighlight
@@ -8,4 +8,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Header;
