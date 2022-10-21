@@ -1,0 +1,17 @@
+{
+  "files": {
+    "main.css": "/zoe-bot/static/css/main.f81bcf8f.css",
+    "main.js": "/zoe-bot/static/js/main.1961a986.js",
+    "static/js/787.d37de791.chunk.js": "/zoe-bot/static/js/787.d37de791.chunk.js",
+    "static/media/bg.jpg": "/zoe-bot/static/media/bg.dd958e12075f47bf0320.jpg",
+    "static/media/font.ttf": "/zoe-bot/static/media/font.3b6c87f9c81828e4ddd6.ttf",
+    "index.html": "/zoe-bot/index.html",
+    "main.f81bcf8f.css.map": "/zoe-bot/static/css/main.f81bcf8f.css.map",
+    "main.1961a986.js.map": "/zoe-bot/static/js/main.1961a986.js.map",
+    "787.d37de791.chunk.js.map": "/zoe-bot/static/js/787.d37de791.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.f81bcf8f.css",
+    "static/js/main.1961a986.js"
+  ]
+}
