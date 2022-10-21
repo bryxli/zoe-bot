@@ -12,16 +12,16 @@ const Home = () => {
       </ul>
 
       <ul>
-        <p>Commands</p>
-        <li>?setup - zoe will speak in this channel (run this first)</li>
-        <li>?reset - wipe server from database</li>
-        <li>?region - list current region and region codes</li>
-        <li>?setregion &lt;region&gt;- set server region</li>
-        <li>?adduser &lt;league username&gt; - add to server database</li>
-        <li>?deluser &lt;league username&gt; - delete from server database</li>
-        <li>?userlist - show server userlist</li>
-        <li>?speak - zoe will talk to you</li>
-        <li>?help - help menu</li>
+        <div>Commands</div>
+        <div>?setup - zoe will speak in this channel (run this first)</div>
+        <div>?reset - wipe server from database</div>
+        <div>?region - list current region and region codes</div>
+        <div>?setregion &lt;region&gt;- set server region</div>
+        <div>?adduser &lt;league username&gt; - add to server database</div>
+        <div>?deluser &lt;league username&gt; - delete from server database</div>
+        <div>?userlist - show server userlist</div>
+        <div>?speak - zoe will talk to you</div>
+        <div>?help - help menu</div>
       </ul>
 
       <ul>
