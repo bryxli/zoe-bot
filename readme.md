@@ -1,4 +1,4 @@
-# Zoe Bot  <img src=docs/assets/images/zoe.png width="50" height="50">
+# Zoe Bot  <img src=public/favicon.ico width="50" height="50">
 
 **[Discord Invite Link](https://discord.com/api/oauth2/authorize?client_id=1014214102459093105&permissions=2048&scope=bot)**  
 
@@ -20,11 +20,11 @@ zoe shouts out game results in her channel.
 **Images**
 <figure>
     <figcaption>console output</figcaption>
-    <img src=docs/assets/images/console.png>
+    <img src=public/console.png>
 </figure>
 <figure>
     <figcaption>discord output</figcaption>
-    <img src=docs/assets/images/discord.png>
+    <img src=public/discord.png>
 </figure>
 
 hosted on gcp
