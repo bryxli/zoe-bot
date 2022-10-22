@@ -1,6 +1,6 @@
 {
   "name": "zoe-bot",
-  "version": "1.2.0",
+  "version": "1.1.0",
   "description": "Chatbot that looks through registered users for newly completed games and displays them in a registered text channel. Supersedes the End of Game League Bot. Built with the goal of data optimization and storage.",
   "main": "docs/src/index.js",
   "repository": "https://github.com/bryxli/zoe-bot.git",
