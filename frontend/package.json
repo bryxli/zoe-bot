@@ -22,7 +22,7 @@
     "predeploy": "yarn build",
     "deploy": "gh-pages -d build",
     "start-backend": "cd ../backend && env/Scripts/flask run --no-debugger",
-    "start-backend-linux": "cd../backend && env/bin/flask run --no-debugger"
+    "start-backend-linux": "cd ../backend && env/bin/flask run --no-debugger"
   },
   "eslintConfig": {
     "extends": [
