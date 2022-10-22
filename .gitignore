@@ -1,5 +1,1 @@
-config.json
-src/database/database.db
-src/templates/custom.json
-src/logs/log.log
 node_modules

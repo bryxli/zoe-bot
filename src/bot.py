@@ -35,8 +35,6 @@ if not os.path.isfile("logs/log.log"):
     f = open("logs/log.log", "x")
     f.close()
         
-logging.basicConfig(filename='logs/log.log', filemode='w', format='%(asctime)s - %(message)s')
-
 intents = discord.Intents.all()
 
 bot = Bot(command_prefix=commands.when_mentioned_or(config["prefix"]), intents=intents, help_command=None)
@@ -46,18 +44,19 @@ regionlist = ['br1', 'eun1', 'euw1', 'jp1', 'kr', 'la1', 'la2', 'na1', 'oc1', 't
 
 def init_db():
     with closing(connect_db()) as db:
-        with open("database/createServer.sql", "r") as f:
+        with open("../database/createServer.sql", "r") as f:
             db.cursor().executescript(f.read())
         db.commit()
 
 def connect_db():
-    return sqlite3.connect("database/database.db")
+    return sqlite3.connect("../database/database.db")
 
 bot.config = config
 bot.db = connect_db()
 
 @bot.event
 async def on_ready() -> None:
+    logging.basicConfig(filename='logs/log.log', filemode='w', format='%(message)s', level="WARN")
     print(f"Logged in as {bot.user.name}")
     print(f"discord.py API version: {discord.__version__}")
     print(f"Python version: {platform.python_version()}")
@@ -97,18 +96,20 @@ async def status_task() -> None:
                                 if player_user["win"]:
                                     if len(custom["win"]) > 0:
                                         t = Template(random.choice(custom["win"]))
-                                        await channel.send(t.substitute(summonername=player_user["summonerName"], kda=kda, championname = player_user["championName"]))
+                                        answer = t.substitute(summonername=player_user["summonerName"], kda=kda, championname = player_user["championName"])
                                     else:
-                                        await channel.send(f"{player_user['summonerName']}: Win\t{player_user['championName']} KDA: {kda}")
+                                        answer = f"{player_user['summonerName']}: Win || {player_user['championName']} KDA: {kda}"
                                 else:
                                     if len(custom["lose"]) > 0:
                                         t = Template(random.choice(custom["lose"]))
-                                        await channel.send(t.substitute(summonername=player_user["summonerName"], kda=kda, championname = player_user["championName"]))
+                                        answer = t.substitute(summonername=player_user["summonerName"], kda=kda, championname = player_user["championName"])
                                     else:
-                                        await channel.send(f"{player_user['summonerName']}: Loss\t{player_user['championName']} KDA: {kda}")
+                                        answer = f"{player_user['summonerName']}: Loss || {player_user['championName']} KDA: {kda}"
                             else:
                                 win_loss = "Win" if player_user["win"] else "Loss"
-                                await channel.send(f"{player_user['summonerName']}: {win_loss}\t{player_user['championName']} KDA: {kda}")
+                                answer = f"{player_user['summonerName']}: {win_loss} || {player_user['championName']} KDA: {kda}"
+                            await channel.send(answer)
+                            cursor.execute(f"INSERT INTO recent (message) VALUES ('{answer}')")
                             cursor.execute(f"UPDATE '{server[0]}' SET previous = '{match_id}' WHERE user_id = '{player_user['summonerName']}'")
                     except ApiError as error:
                         print("Riot API Error:",error)
@@ -147,7 +148,6 @@ async def setup(ctx):
         cursor.execute(f"CREATE TABLE IF NOT EXISTS '{guild_id}' ('user_id' varchar(255) NOT NULL, 'previous' varchar(255) NOT NULL DEFAULT 'NA', 'created_at' timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP)")
         bot.db.commit()
         cursor.close()
-        logging.warning(f"{ctx.author} inserted {ctx.guild.name} ({guild_id})")
         print(f"Successfully inserted {guild_id} into serverlist. Messages will be printed in channel: {channel_id}")
         await ctx.send("i will send messages here (reminder: zoe only speaks once every five minutes!)\nunlocked commands: ?reset ?region ?setregion ?adduser ?deluser ?userlist")
     except sqlite3.Error as error:
@@ -162,7 +162,6 @@ async def reset(ctx):
         cursor.execute(f"DROP TABLE '{guild_id}'")
         bot.db.commit()
         cursor.close()
-        logging.warning(f"{ctx.author} deleted {ctx.guild.name} ({guild_id})")
         print(f"Successfully deleted {guild_id} from serverlist.")
         await ctx.message.add_reaction(u"\U0001F44D")
     except sqlite3.Error as error:
@@ -191,7 +190,6 @@ async def setregion(ctx, arg):
             cursor.execute(f"UPDATE serverlist SET region = '{region}' WHERE guild_id='{guild_id}'")
             bot.db.commit()
             cursor.close()
-            logging.warning(f"{ctx.author} changed region in {ctx.guild.name} ({guild_id}) to {region}")
             print(f"Successfully changed region in {guild_id}")
             await ctx.message.add_reaction(u"\U0001F44D")
         except sqlite3.Error as error:
@@ -215,7 +213,6 @@ async def adduser(ctx, arg):
         cursor.execute(f"INSERT INTO '{guild_id}' (user_id) VALUES ('{user_id}')")
         bot.db.commit()
         cursor.close()
-        logging.warning(f"{ctx.author} inserted user {user_id} into {ctx.guild.name} ({guild_id})")
         print(f"Successfully inserted {user_id} into {guild_id}")
         await ctx.message.add_reaction(u"\U0001F44D")
     except sqlite3.Error as error:
@@ -234,7 +231,6 @@ async def deluser(ctx, arg):
         cursor.execute("DELETE FROM '{guild_id}' WHERE user_id = '{user_id}' COLLATE NOCASE")
         bot.db.commit()
         cursor.close()
-        logging.warning(f"{ctx.author} deleted user {user_id} from {ctx.guild.name} ({guild_id})")
         print(f"Successfully deleted {user_id} from {guild_id}")
         await ctx.message.add_reaction(u"\U0001F44D")
     except sqlite3.Error as error:
