@@ -1,6 +1,5 @@
 ideas:
 master output on website <ongoing>
 
-
 after deplying react app to github pages, route to flask server
 	move to prod in flask (WSGI server)
