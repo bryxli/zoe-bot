@@ -1,2 +1,0 @@
-discord.py==2.0.1
-riotwatcher==3.2.3
