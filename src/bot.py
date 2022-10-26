@@ -44,7 +44,7 @@ regionlist = ['br1', 'eun1', 'euw1', 'jp1', 'kr', 'la1', 'la2', 'na1', 'oc1', 't
 
 def init_db():
     with closing(connect_db()) as db:
-        with open("../database/createServer.sql", "r") as f:
+        with open("../backend/database/createServer.sql", "r") as f:
             db.cursor().executescript(f.read())
         db.commit()
 

@@ -1,6 +1,4 @@
 services:
-  database:
-    build: ./database
   backend:
     build: ./backend
     ports:
