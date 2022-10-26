@@ -7,7 +7,6 @@ import random
 import functools
 import typing
 import asyncio
-import logging
 
 from contextlib import closing
 from string import Template
@@ -30,10 +29,6 @@ if not os.path.isfile("templates/custom.json"):
 else:
     with open("templates/custom.json") as file:
         custom = json.load(file)
-
-if not os.path.isfile("logs/log.log"):
-    f = open("logs/log.log", "x")
-    f.close()
         
 intents = discord.Intents.all()
 
@@ -56,7 +51,6 @@ bot.db = connect_db()
 
 @bot.event
 async def on_ready() -> None:
-    logging.basicConfig(filename='logs/log.log', filemode='w', format='%(message)s', level="WARN")
     print(f"Logged in as {bot.user.name}")
     print(f"discord.py API version: {discord.__version__}")
     print(f"Python version: {platform.python_version()}")
