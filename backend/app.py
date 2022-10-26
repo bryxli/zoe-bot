@@ -1,4 +1,4 @@
-import sqlite3
+import mysql.connector
 from flask import Flask, jsonify
 from flask_cors import CORS
 
@@ -6,7 +6,7 @@ app = Flask(__name__)
 CORS(app)
 
 def connect_db():
-    return sqlite3.connect("database.db")
+    return mysql.connector.connect(host = 'data', user = 'root', password = '123', port = 3306)
 
 @app.route('/data')
 def master_output():
