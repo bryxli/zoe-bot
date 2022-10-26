@@ -4,7 +4,7 @@ from flask import Flask, jsonify
 app = Flask(__name__)
 
 def connect_db():
-    return sqlite3.connect("../database/database.db")
+    return sqlite3.connect("database.db")
 
 @app.route('/data')
 def master_output():
@@ -18,3 +18,7 @@ def master_output():
     }
     cursor.close()
     return jsonify(data)
+
+@app.route('/')
+def index():
+    return 'Hello World'
