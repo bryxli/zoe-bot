@@ -1,5 +1,11 @@
 services:
+  database:
+    build: ./database
   backend:
     build: ./backend
     ports:
       - "8000:5000"
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:3000"
