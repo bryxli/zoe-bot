@@ -49,7 +49,6 @@ Zoe should now be running on [localhost:3000](http://localhost:3000)
 ### Discord Commands
 
 <img src=public/setup.png align='left'>
-<br><br>
 &emsp;?help - help menu<br>
 &emsp;?setup - zoe will speak in this channel<br>
 &emsp;?speak - zoe will talk to you
@@ -59,7 +58,6 @@ Zoe should now be running on [localhost:3000](http://localhost:3000)
 ### Unlockable Commands (after running ?setup)
 
 <img src=public/adduser.png align='left'>
-<br>
 &emsp;?reset - wipe server from database<br>
 &emsp;?region - list current region and region codes<br> 
 &emsp;?setregion &lt;region&gt; - set server region<br>
