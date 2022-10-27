@@ -12,6 +12,7 @@ import mysql.connector
 import discord
 from discord.ext import tasks, commands
 from discord.ext.commands import Bot
+from discord.ext.commands import Context
 
 from riotwatcher import LolWatcher, ApiError
 
@@ -231,9 +232,31 @@ async def help(ctx):
         cursor = connect_db().cursor()
         cursor.execute(f"SELECT * FROM '{guild_id}'")
         cursor.close()
-    except mysql.connector.Error as error:
+    except mysql.connector.Error:
         post_setup = ""
     await ctx.send(f"Commands\n?setup - zoe will speak in this channel\n{post_setup}?speak - zoe will talk to you")
+
+@bot.event
+async def on_command_completion(context: Context) -> None:
+    full_command_name = context.command.qualified_name
+    split = full_command_name.split(" ")
+    executed_command = str(split[0])
+    if context.guild is not None:
+        print(
+            f"Executed {executed_command} command in {context.guild.name} (ID: {context.guild.id}) by {context.author} (ID: {context.author.id})")
+    else:
+        print(f"Executed {executed_command} command by {context.author} (ID: {context.author.id}) in DMs")
+
+@bot.event
+async def on_command_error(context: Context, error) -> None:
+    if isinstance(error, commands.MissingRequiredArgument):
+        embed = discord.Embed(
+            title="Error!",
+            description=str(error).capitalize(),
+            color=0xE02B2B
+        )
+        await context.send(embed=embed)
+    pass
 
 # RiotWatcher Initialization
 lol_watcher = LolWatcher(config["league_token"])
