@@ -1,7 +1,10 @@
+CREATE DATABASE IF NOT EXISTS db;
+
+USE db;
+
 CREATE TABLE IF NOT EXISTS `serverlist` (
   `guild_id` varchar(255) NOT NULL,
   `channel_id` varchar(255) NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `region` varchar(255) NOT NULL
 );
 

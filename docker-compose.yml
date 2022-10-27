@@ -1,0 +1,24 @@
+services:
+  db:
+    container_name: data
+    build: .
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+  backend:
+    container_name: backend
+    depends_on:
+      - "db"
+    links:
+      - "db"
+    build: ./backend
+    ports:
+      - "8000:5000"
+  frontend:
+    container_name: frontend
+    build: ./frontend
+    ports:
+      - "3000:3000"
+volumes:
+  mysql-data:
