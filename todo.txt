@@ -1,0 +1,2 @@
+serve react with NGINX
+serve quart with WSGIserver
