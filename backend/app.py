@@ -20,7 +20,7 @@ from quart import Quart, jsonify
 from quart_cors import cors
 
 def connect_db():
-    return mysql.connector.connect(host = 'data', user = 'root', password = '123', port = 3306)
+    return mysql.connector.connect(host = 'data', user = 'root', password = '123', port = 3306, database='db')
 
 def to_thread(func: typing.Callable) -> typing.Coroutine:
     @functools.wraps(func)
@@ -28,7 +28,6 @@ def to_thread(func: typing.Callable) -> typing.Coroutine:
         return await asyncio.to_thread(func, *args, **kwargs)
     return wrapper
 
-# Discord Bot Initialization
 if not os.path.isfile("config.json"):
     sys.exit("'config.json' not found! Please add it and try again.")
 else:
@@ -42,6 +41,7 @@ else:
     with open("templates/custom.json") as file:
         custom = json.load(file)
 
+# Discord Bot Initialization
 intents = discord.Intents.all()
 bot = Bot(command_prefix=commands.when_mentioned_or(config["prefix"]), intents=intents, help_command=None)
 bot.config = config
@@ -54,14 +54,15 @@ async def on_ready() -> None:
 @tasks.loop(minutes = 5.0)
 async def status_task() -> None:
     try:
-        cursor = connect_db().cursor()
+        bot.db = connect_db()
+        cursor = bot.db.cursor()
         cursor.execute("SELECT * FROM serverlist")
         serverlist = cursor.fetchall()
         for server in serverlist:
             guild = bot.get_guild(int(server[0]))
             try:
                 channel = guild.get_channel(int(server[1]))
-                cursor.execute(f"SELECT * FROM '{server[0]}' ORDER BY RANDOM()")
+                cursor.execute(f"SELECT * FROM {server[0]} ORDER BY RAND()")
                 userlist = cursor.fetchall()
                 for user in userlist:
                     try:
@@ -96,24 +97,25 @@ async def status_task() -> None:
                                 answer = f"{player_user['summonerName']}: {win_loss} || {player_user['championName']} KDA: {kda}"
                             await channel.send(answer)
                             cursor.execute(f"INSERT INTO recent (message) VALUES ('{answer}')")
-                            cursor.execute(f"UPDATE '{server[0]}' SET previous = '{match_id}' WHERE user_id = '{player_user['summonerName']}'")
-                    except ApiError as error:
-                        print("Riot API Error:",error)
-            except AttributeError as error:
+                            cursor.execute(f"UPDATE `{server[0]}` SET previous = '{match_id}' WHERE user_id = '{player_user['summonerName']}'")
+                    except ApiError:
+                        pass
+            except AttributeError:
                 pass
         bot.db.commit()
         cursor.close()
-    except mysql.connector.Error as error:
-        print("Failed to retrieve data from mysql table.", error)
+    except mysql.connector.Error:
+        pass
 
 @bot.command()
 async def setup(ctx):
     guild_id = str(ctx.guild.id)
     channel_id = str(ctx.channel.id)
     try:
-        cursor = connect_db().cursor()
+        bot.db = connect_db()
+        cursor = bot.db.cursor()
         cursor.execute(f"INSERT INTO serverlist (guild_id,channel_id,region) VALUES ('{guild_id }','{channel_id}','{default_region}')")
-        cursor.execute(f"CREATE TABLE IF NOT EXISTS '{guild_id}' ('user_id' varchar(255) NOT NULL, 'previous' varchar(255) NOT NULL DEFAULT 'NA')")
+        cursor.execute(f"CREATE TABLE IF NOT EXISTS `{guild_id}` (`user_id` varchar(255) NOT NULL, `previous` varchar(255) NOT NULL DEFAULT 'NA')")
         bot.db.commit()
         cursor.close()
         await ctx.send("i will send messages here (reminder: zoe only speaks once every five minutes!)\nunlocked commands: ?reset ?region ?setregion ?adduser ?deluser ?userlist")
@@ -124,9 +126,10 @@ async def setup(ctx):
 async def reset(ctx):
     guild_id = str(ctx.guild.id)
     try:
-        cursor = connect_db().cursor()
+        bot.db = connect_db()
+        cursor = bot.db.cursor()
         cursor.execute(f"DELETE FROM serverlist WHERE guild_id='{guild_id}'")
-        cursor.execute(f"DROP TABLE '{guild_id}'")
+        cursor.execute(f"DROP TABLE `{guild_id}`")
         bot.db.commit()
         cursor.close()
         await ctx.message.add_reaction(u"\U0001F44D")
@@ -137,7 +140,8 @@ async def reset(ctx):
 async def region(ctx):
     guild_id = str(ctx.guild.id)
     try:
-        cursor = connect_db().cursor()
+        bot.db = connect_db()
+        cursor = bot.db.cursor()
         cursor.execute(f"SELECT region FROM serverlist WHERE guild_id='{guild_id}'")
         region = cursor.fetchall()[0][0]
         await ctx.send(f"region is currently set to {region}\nregion values: {str(regionlist)}")
@@ -152,7 +156,8 @@ async def setregion(ctx, arg):
         await ctx.send("region not found")
     else:
         try:
-            cursor = connect_db().cursor()
+            bot.db = connect_db()
+            cursor = bot.db.cursor()
             cursor.execute(f"UPDATE serverlist SET region = '{region}' WHERE guild_id='{guild_id}'")
             bot.db.commit()
             cursor.close()
@@ -165,22 +170,23 @@ async def adduser(ctx, arg):
     guild_id = str(ctx.guild.id)
     user_id = str(arg)
     try:
-        cursor = connect_db().cursor()
+        bot.db = connect_db()
+        cursor = bot.db.cursor()
         cursor.execute(f"SELECT region FROM serverlist WHERE guild_id='{guild_id}'")
         region = cursor.fetchall()[0][0]
         player = await find_player(region, arg)
         user_id = player["name"]
-        cursor.execute(f"SELECT * FROM '{guild_id}'")
+        cursor.execute(f"SELECT * FROM {guild_id}")
         userlist = cursor.fetchall()
         for i in range(len(userlist)):
             if user_id == userlist[i][0]:
                 raise EnvironmentError(user_id)
-        cursor.execute(f"INSERT INTO '{guild_id}' (user_id) VALUES ('{user_id}')")
+        cursor.execute(f"INSERT INTO {guild_id} (user_id) VALUES ('{user_id}')")
         bot.db.commit()
         cursor.close()
         await ctx.message.add_reaction(u"\U0001F44D")
-    except mysql.connector.Error:
-        pass
+    except mysql.connector.Error as error:
+        await ctx.send(str(error))
     except ApiError:
         await ctx.send("name not found")
     except EnvironmentError: 
@@ -191,20 +197,22 @@ async def deluser(ctx, arg):
     guild_id = str(ctx.guild.id)
     user_id = str(arg)
     try:
-        cursor = connect_db().cursor()
-        cursor.execute(f"DELETE FROM '{guild_id}' WHERE user_id = '{user_id}' COLLATE NOCASE")
+        bot.db = connect_db()
+        cursor = bot.db.cursor()
+        cursor.execute(f"DELETE FROM {guild_id} WHERE user_id = '{user_id}' COLLATE NOCASE")
         bot.db.commit()
         cursor.close()
         await ctx.message.add_reaction(u"\U0001F44D")
-    except mysql.connector.Error:
-        pass  
+    except mysql.connector.Error as error:
+        await ctx.send(str(error))
 
 @bot.command()
 async def userlist(ctx):
     guild_id = str(ctx.guild.id)
     try:
-        cursor = connect_db().cursor()
-        cursor.execute(f"SELECT * FROM '{guild_id}'")
+        bot.db = connect_db()
+        cursor = bot.db.cursor()
+        cursor.execute(f"SELECT * FROM {guild_id}")
         userlist = cursor.fetchall()
         users = ""
         for user in userlist:
@@ -213,8 +221,8 @@ async def userlist(ctx):
             users = "userlist empty!"
         cursor.close()
         await ctx.send(users)
-    except mysql.connector.Error:
-        pass
+    except mysql.connector.Error as error:
+        await ctx.send(str(error))
 
 @bot.command()
 async def speak(ctx):
@@ -229,34 +237,13 @@ async def help(ctx):
     guild_id = str(ctx.guild.id)
     post_setup = "?reset - wipe server from database\n?region - list current region and region codes\n?setregion <region> - set server region\n?adduser <league username> - add to server database\n?deluser <league username> - delete from server database\n?userlist - show server userlist\n"
     try:
-        cursor = connect_db().cursor()
-        cursor.execute(f"SELECT * FROM '{guild_id}'")
+        bot.db = connect_db()
+        cursor = bot.db.cursor()
+        cursor.execute(f"SELECT * FROM {guild_id}")
         cursor.close()
     except mysql.connector.Error:
         post_setup = ""
     await ctx.send(f"Commands\n?setup - zoe will speak in this channel\n{post_setup}?speak - zoe will talk to you")
-
-@bot.event
-async def on_command_completion(context: Context) -> None:
-    full_command_name = context.command.qualified_name
-    split = full_command_name.split(" ")
-    executed_command = str(split[0])
-    if context.guild is not None:
-        print(
-            f"Executed {executed_command} command in {context.guild.name} (ID: {context.guild.id}) by {context.author} (ID: {context.author.id})")
-    else:
-        print(f"Executed {executed_command} command by {context.author} (ID: {context.author.id}) in DMs")
-
-@bot.event
-async def on_command_error(context: Context, error) -> None:
-    if isinstance(error, commands.MissingRequiredArgument):
-        embed = discord.Embed(
-            title="Error!",
-            description=str(error).capitalize(),
-            color=0xE02B2B
-        )
-        await context.send(embed=embed)
-    pass
 
 # RiotWatcher Initialization
 lol_watcher = LolWatcher(config["league_token"])
@@ -287,7 +274,7 @@ def index():
 def master_output():
     db = connect_db()
     cursor = db.cursor()
-    cursor.execute("SELECT * FROM recent ORDER BY RANDOM()")
+    cursor.execute("SELECT * FROM recent ORDER BY RAND()")
     listofgames = cursor.fetchall()[:11]
     data = {
         "games": 
