@@ -3,3 +3,4 @@ master output on website <ongoing>
 
 change bot to make http requests to flask for GET, POST, DELETE
 run createServer.sql upon docker compose up
+migrate from flask to quart
