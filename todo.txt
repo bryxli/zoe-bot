@@ -1,5 +1,0 @@
-ideas:
-master output on website <ongoing>
-
-must run createServer upon new database
-error: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '1016953904644247632' at line 1
