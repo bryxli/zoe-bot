@@ -7,11 +7,6 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: 123
       MYSQL_ROOT_HOST: '%'
-  bot:
-    container_name: zoe
-    links:
-      - "db"
-    build: ./src
   backend:
     container_name: backend
     links:
