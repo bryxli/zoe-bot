@@ -62,7 +62,7 @@ async def status_task() -> None:
             guild = bot.get_guild(int(server[0]))
             try:
                 channel = guild.get_channel(int(server[1]))
-                cursor.execute(f"SELECT * FROM {server[0]} ORDER BY RAND()")
+                cursor.execute(f"SELECT * FROM `{server[0]}` ORDER BY RAND()")
                 userlist = cursor.fetchall()
                 for user in userlist:
                     try:
@@ -70,14 +70,14 @@ async def status_task() -> None:
                         player = await find_player(region, user[0])
                         try:
                             match_id = await find_match(region, player["puuid"])
-                        except IndexError as error:
+                        except IndexError:
                             continue
                         if match_id != user[1]:
                             participants = await find_participants(region, match_id)
                             player_user = list(filter(lambda participant: participant["puuid"] == str(player["puuid"]), participants))[0]
                             try:
                                 kda = str(round((float(player_user["kills"]) + float(player_user["assists"])) / float(player_user["deaths"]),2))
-                            except ZeroDivisionError as error:
+                            except ZeroDivisionError:
                                 kda = "perfect"
                             if custom is not None:
                                 if player_user["win"]:
@@ -176,17 +176,17 @@ async def adduser(ctx, arg):
         region = cursor.fetchall()[0][0]
         player = await find_player(region, arg)
         user_id = player["name"]
-        cursor.execute(f"SELECT * FROM {guild_id}")
+        cursor.execute(f"SELECT * FROM `{guild_id}`")
         userlist = cursor.fetchall()
         for i in range(len(userlist)):
             if user_id == userlist[i][0]:
                 raise EnvironmentError(user_id)
-        cursor.execute(f"INSERT INTO {guild_id} (user_id) VALUES ('{user_id}')")
+        cursor.execute(f"INSERT INTO `{guild_id}` (user_id) VALUES ('{user_id}')")
         bot.db.commit()
         cursor.close()
         await ctx.message.add_reaction(u"\U0001F44D")
-    except mysql.connector.Error as error:
-        await ctx.send(str(error))
+    except mysql.connector.Error:
+        pass
     except ApiError:
         await ctx.send("name not found")
     except EnvironmentError: 
@@ -199,12 +199,12 @@ async def deluser(ctx, arg):
     try:
         bot.db = connect_db()
         cursor = bot.db.cursor()
-        cursor.execute(f"DELETE FROM {guild_id} WHERE user_id = '{user_id}' COLLATE NOCASE")
+        cursor.execute(f"DELETE FROM `{guild_id}` WHERE user_id = '{user_id}'")
         bot.db.commit()
         cursor.close()
         await ctx.message.add_reaction(u"\U0001F44D")
-    except mysql.connector.Error as error:
-        await ctx.send(str(error))
+    except mysql.connector.Error:
+        pass
 
 @bot.command()
 async def userlist(ctx):
@@ -212,7 +212,7 @@ async def userlist(ctx):
     try:
         bot.db = connect_db()
         cursor = bot.db.cursor()
-        cursor.execute(f"SELECT * FROM {guild_id}")
+        cursor.execute(f"SELECT * FROM `{guild_id}`")
         userlist = cursor.fetchall()
         users = ""
         for user in userlist:
@@ -221,8 +221,8 @@ async def userlist(ctx):
             users = "userlist empty!"
         cursor.close()
         await ctx.send(users)
-    except mysql.connector.Error as error:
-        await ctx.send(str(error))
+    except mysql.connector.Error:
+        pass
 
 @bot.command()
 async def speak(ctx):
@@ -239,10 +239,11 @@ async def help(ctx):
     try:
         bot.db = connect_db()
         cursor = bot.db.cursor()
-        cursor.execute(f"SELECT * FROM {guild_id}")
+        cursor.execute(f"SELECT * FROM `{guild_id}`")
+        cursor.fetchall()
         cursor.close()
     except mysql.connector.Error:
-        post_setup = ""
+        post_setup = ''
     await ctx.send(f"Commands\n?setup - zoe will speak in this channel\n{post_setup}?speak - zoe will talk to you")
 
 # RiotWatcher Initialization
