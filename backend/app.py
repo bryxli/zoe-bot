@@ -12,7 +12,6 @@ import mysql.connector
 import discord
 from discord.ext import tasks, commands
 from discord.ext.commands import Bot
-from discord.ext.commands import Context
 
 from riotwatcher import LolWatcher, ApiError
 
