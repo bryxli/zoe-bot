@@ -66,7 +66,7 @@ async def status_task() -> None:
                 userlist = cursor.fetchall()
                 for user in userlist:
                     try:
-                        region = server[3]
+                        region = server[2]
                         player = await find_player(region, user[0])
                         try:
                             match_id = await find_match(region, player["puuid"])

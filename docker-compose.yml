@@ -1,14 +1,11 @@
 services:
   db:
     container_name: data
-    image: mysql:8.0
+    build: .
     ports:
       - "3306:3306"
-    environment:
-      MYSQL_DATABASE: 'db'
-      MYSQL_ROOT_PASSWORD: 123
-    expose:
-      - "3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
   backend:
     container_name: backend
     depends_on:
@@ -23,3 +20,5 @@ services:
     build: ./frontend
     ports:
       - "3000:3000"
+volumes:
+  mysql-data:
