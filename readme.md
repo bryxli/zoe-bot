@@ -67,6 +67,12 @@ Zoe should now be running on [localhost:3000](http://localhost:3000)
 
 <br clear='left'/>
 
+### Bot Output
+
+<img src=public/output.png>
+
+After Zoe outputs in a channel somewhere, it will become available to be shown on the website!
+
 ### Website
 
 <img src=public/webpage.png>
