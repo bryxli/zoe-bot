@@ -5,7 +5,7 @@ const MasterOutput = () => {
   const [gameList, setGameList] = useState(0);
 
   useEffect(() => {
-    fetch("/data").then((response) =>
+    fetch("/listofgames").then((response) =>
       response.json().then((data) => {
         setGameList(data.games);
       })

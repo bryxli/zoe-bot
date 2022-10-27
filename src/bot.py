@@ -1,14 +1,13 @@
 import json
 import os
 import platform
-import sqlite3
+import requests
 import sys
 import random
 import functools
 import typing
 import asyncio
 
-from contextlib import closing
 from string import Template
 from riotwatcher import LolWatcher, ApiError
 
@@ -37,17 +36,7 @@ lol_watcher = LolWatcher(config["league_token"])
 default_region = "na1"
 regionlist = ['br1', 'eun1', 'euw1', 'jp1', 'kr', 'la1', 'la2', 'na1', 'oc1', 'tr1', 'ru']
 
-def init_db():
-    with closing(connect_db()) as db:
-        with open("../backend/database/createServer.sql", "r") as f:
-            db.cursor().executescript(f.read())
-        db.commit()
-
-def connect_db():
-    return sqlite3.connect("../database/database.db")
-
 bot.config = config
-bot.db = connect_db()
 
 @bot.event
 async def on_ready() -> None:
@@ -63,7 +52,7 @@ async def on_ready() -> None:
 async def status_task() -> None:
     try:
         cursor = bot.db.cursor()
-        cursor.execute("SELECT * FROM serverlist")
+        cursor.execute("SELECT * FROM serverlist") # entry point GET
         serverlist = cursor.fetchall()
         for server in serverlist:
             guild = bot.get_guild(int(server[0]))
@@ -109,10 +98,10 @@ async def status_task() -> None:
                         print("Riot API Error:",error)
             except AttributeError as error:
                 pass
-        bot.db.commit()
+        bot.db.commit() # POST recent, previous
         cursor.close()
-    except sqlite3.Error as error:
-        print("Failed to retrieve data from sqlite table.", error)
+    except mysql.connector.Error as error:
+        print("Failed to retrieve data from mysql table.", error)
 
 def to_thread(func: typing.Callable) -> typing.Coroutine:
     @functools.wraps(func)
@@ -137,39 +126,39 @@ async def setup(ctx):
     guild_id = str(ctx.guild.id)
     channel_id = str(ctx.channel.id)
     try:
-        cursor = bot.db.cursor()
+        cursor = bot.db.cursor() # POST
         cursor.execute(f"INSERT INTO serverlist (guild_id,channel_id,region) VALUES ('{guild_id }','{channel_id}','{default_region}')")
         cursor.execute(f"CREATE TABLE IF NOT EXISTS '{guild_id}' ('user_id' varchar(255) NOT NULL, 'previous' varchar(255) NOT NULL DEFAULT 'NA', 'created_at' timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP)")
         bot.db.commit()
         cursor.close()
         print(f"Successfully inserted {guild_id} into serverlist. Messages will be printed in channel: {channel_id}")
         await ctx.send("i will send messages here (reminder: zoe only speaks once every five minutes!)\nunlocked commands: ?reset ?region ?setregion ?adduser ?deluser ?userlist")
-    except sqlite3.Error as error:
-        print("Failed to insert data into sqlite table.", error)
+    except mysql.connector.Error as error:
+        print("Failed to insert data into mysql table.", error)
 
 @bot.command()
 async def reset(ctx):
     guild_id = str(ctx.guild.id)
     try:
-        cursor = bot.db.cursor()
+        cursor = bot.db.cursor() # DELETE ?
         cursor.execute(f"DELETE FROM serverlist WHERE guild_id='{guild_id}'")
         cursor.execute(f"DROP TABLE '{guild_id}'")
         bot.db.commit()
         cursor.close()
         print(f"Successfully deleted {guild_id} from serverlist.")
         await ctx.message.add_reaction(u"\U0001F44D")
-    except sqlite3.Error as error:
+    except mysql.connector.Error as error:
         print("Failed to reset:",error)
 
 @bot.command()
 async def region(ctx):
     guild_id = str(ctx.guild.id)
     try:
-        cursor = bot.db.cursor()
+        cursor = bot.db.cursor() # GET
         cursor.execute(f"SELECT region FROM serverlist WHERE guild_id='{guild_id}'")
         region = cursor.fetchall()[0][0]
         await ctx.send(f"region is currently set to {region}\nregion values: {str(regionlist)}")
-    except sqlite3.Error as error:
+    except mysql.connector.Error as error:
         print("Failed to find region column:",error)
 
 @bot.command()
@@ -180,13 +169,13 @@ async def setregion(ctx, arg):
         await ctx.send("region not found")
     else:
         try:
-            cursor = bot.db.cursor()
+            cursor = bot.db.cursor() # POST
             cursor.execute(f"UPDATE serverlist SET region = '{region}' WHERE guild_id='{guild_id}'")
             bot.db.commit()
             cursor.close()
             print(f"Successfully changed region in {guild_id}")
             await ctx.message.add_reaction(u"\U0001F44D")
-        except sqlite3.Error as error:
+        except mysql.connector.Error as error:
             print("Failed to update region column:",error)
 
 @bot.command()
@@ -194,7 +183,7 @@ async def adduser(ctx, arg):
     guild_id = str(ctx.guild.id)
     user_id = str(arg)
     try:
-        cursor = bot.db.cursor()
+        cursor = bot.db.cursor() # POST
         cursor.execute(f"SELECT region FROM serverlist WHERE guild_id='{guild_id}'")
         region = cursor.fetchall()[0][0]
         player = await find_player(region, arg)
@@ -209,7 +198,7 @@ async def adduser(ctx, arg):
         cursor.close()
         print(f"Successfully inserted {user_id} into {guild_id}")
         await ctx.message.add_reaction(u"\U0001F44D")
-    except sqlite3.Error as error:
+    except mysql.connector.Error as error:
         print("Failed to insert data into sqlite table.", error)
     except ApiError as error:
         await ctx.send("name not found")
@@ -221,20 +210,20 @@ async def deluser(ctx, arg):
     guild_id = str(ctx.guild.id)
     user_id = str(arg)
     try:
-        cursor = bot.db.cursor()
+        cursor = bot.db.cursor() # DELETE
         cursor.execute("DELETE FROM '{guild_id}' WHERE user_id = '{user_id}' COLLATE NOCASE")
         bot.db.commit()
         cursor.close()
         print(f"Successfully deleted {user_id} from {guild_id}")
         await ctx.message.add_reaction(u"\U0001F44D")
-    except sqlite3.Error as error:
+    except mysql.connector.Error as error:
         print("Failed to delete data from sqlite table.", error)  
 
 @bot.command()
 async def userlist(ctx):
     guild_id = str(ctx.guild.id)
     try:
-        cursor = bot.db.cursor()
+        cursor = bot.db.cursor() # GET
         cursor.execute(f"SELECT * FROM '{guild_id}'")
         userlist = cursor.fetchall()
         users = ""
@@ -245,7 +234,7 @@ async def userlist(ctx):
         cursor.close()
         print("Successfully printed userlist:\n" + users)
         await ctx.send(users)
-    except sqlite3.Error as error:
+    except mysql.connector.Error as error:
         print("Failed to retrieve data from sqlite table.")
 
 @bot.command()
@@ -261,10 +250,10 @@ async def help(ctx):
     guild_id = str(ctx.guild.id)
     post_setup = "?reset - wipe server from database\n?region - list current region and region codes\n?setregion <region> - set server region\n?adduser <league username> - add to server database\n?deluser <league username> - delete from server database\n?userlist - show server userlist\n"
     try:
-        cursor = bot.db.cursor()
+        cursor = bot.db.cursor() # GET
         cursor.execute(f"SELECT * FROM '{guild_id}'")
         cursor.close()
-    except sqlite3.Error as error:
+    except mysql.connector.Error as error:
         post_setup = ""
     await ctx.send(f"Commands\n?setup - zoe will speak in this channel\n{post_setup}?speak - zoe will talk to you")
 
@@ -290,5 +279,4 @@ async def on_command_error(context: Context, error) -> None:
         await context.send(embed=embed)
     raise error
 
-init_db()
 bot.run(config["token"])

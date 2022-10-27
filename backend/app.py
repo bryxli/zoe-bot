@@ -8,7 +8,7 @@ CORS(app)
 def connect_db():
     return mysql.connector.connect(host = 'data', user = 'root', password = '123', port = 3306)
 
-@app.route('/data')
+@app.route('/listofgames')
 def master_output():
     db = connect_db()
     cursor = db.cursor()

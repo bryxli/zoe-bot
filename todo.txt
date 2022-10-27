@@ -1,7 +1,5 @@
 ideas:
 master output on website <ongoing>
 
-create mysql database as separate container
-init db and src in docker-compose
-create network between backend, database, src
-currently, database is located in backend folder (bot will not work)
+change bot to make http requests to flask for GET, POST, DELETE
+run createServer.sql upon docker compose up
