@@ -6,7 +6,7 @@
 Zoe is a Discord bot that traverses through the Riot Games API to find information about players of the game *League of Legends*. Users of a Discord server can see real-time updates on played games of registered player names. Currently, Zoe is hosted on GCP using Compute Engine.  
 
 After registering a text channel and adding a username (see [Usage](#Usage)), Zoe will start to output game results into that channel.  
-Note: Zoe will only check once every five minutes
+Note: Zoe will only check once every five minutes.
 
 Currently, the bot is being transitioned into a full-stack containerized application using Docker, React.js, and Quart.
 
@@ -21,7 +21,7 @@ prefix - bot command prefix (?help)<br>
 league_token - Riot API key<br>
 token - Discord API key<br>
 permissions - Discord bot permission id<br>
-application id - Discord application id<br>
+application id - Discord application id
 
 <br clear='left'/>
 
@@ -29,7 +29,7 @@ application id - Discord application id<br>
 <img src=public/custom.png align='left'>
 &dollar;summonername - replaced with player's name<br>
 &dollar;championname - replaced with the champion played<br> 
-&dollar;kda - replaced with the calculated KDA of the game<br>
+&dollar;kda - replaced with the calculated KDA of the game
 
 <br clear='left'/>
 
