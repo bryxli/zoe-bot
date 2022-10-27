@@ -10,6 +10,12 @@ Note: Zoe will only check once every five minutes.
 
 Currently, the bot is being transitioned into a full-stack containerized application using Docker, React.js, and Quart.
 
+## Table of Contents
+
+- [Installation](#installation)
+- [Usage](#usage)
+- [License](#license)
+
 ## Installation
 
 Before you start to work with this project, Docker has to be installed and all dependencies be provided as described in the following sections.
@@ -62,6 +68,11 @@ Zoe should now be running on [localhost:3000](http://localhost:3000)
 &emsp;?userlist - show server userlist<br>
 
 <br clear='left'/>
+
+### Website
+
+<img src=public/webpage.png>
+The webpage will display ten random Zoe outputs from the database.
 
 ## License
 
