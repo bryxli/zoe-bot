@@ -269,10 +269,6 @@ def find_participants(region, match_id):
 app = Quart(__name__)
 cors(app)
 
-@app.route('/')
-def index():
-    return 'Hello World'
-
 @app.route('/listofgames')
 def master_output():
     db = connect_db()
