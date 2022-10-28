@@ -18,6 +18,9 @@ from riotwatcher import LolWatcher, ApiError
 from quart import Quart, jsonify
 from quart_cors import cors
 
+from hypercorn.asyncio import serve
+from hypercorn.config import Config
+
 def connect_db():
     return mysql.connector.connect(host = 'data', user = 'root', password = '123', port = 3306, database='db')
 
@@ -286,7 +289,9 @@ def master_output():
 # Run
 async def main():
     async with bot:
-        bot.loop.create_task(app.run_task(host='0.0.0.0', port=5000))
+        configuration = Config()
+        configuration.bind = ['0.0.0.0:5000']
+        bot.loop.create_task(serve(app, configuration))
         await bot.start(config["token"])
 
 asyncio.run(main())
