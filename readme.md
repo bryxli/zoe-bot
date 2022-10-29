@@ -42,7 +42,7 @@ application id - Discord application id
 3. Run Docker container  
 Launch terminal in project directory and run ```docker compose up```  
 
-Zoe should now be running on [localhost:3000](http://localhost:3000)
+Zoe should now be running on [localhost](http://localhost)
 
 ## Usage
 
