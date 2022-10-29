@@ -6,6 +6,7 @@ services:
       - "3306:3306"
     volumes:
       - mysql-data:/var/lib/mysql
+    image: bryxli/zoe-db
   backend:
     container_name: backend
     depends_on:
@@ -15,10 +16,12 @@ services:
     build: ./backend
     ports:
       - "8000:5000"
+    image: bryxli/zoe-backend
   frontend:
     container_name: frontend
     build: ./frontend
     ports:
       - "80:80"
+    image: bryxli/zoe-frontend
 volumes:
   mysql-data:
