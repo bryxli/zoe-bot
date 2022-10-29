@@ -80,7 +80,7 @@ async def status_task() -> None:
                 userlist = cursor.fetchall()
                 for user in userlist:
                     try:
-                        region = server[3]
+                        region = server[2]
                         player = await find_player(region, user[0])
                         try:
                             match_id = await find_match(region, player["puuid"])
@@ -144,7 +144,7 @@ async def setup(ctx):
     try:
         cursor = bot.db.cursor()
         cursor.execute(f"INSERT INTO serverlist (guild_id,channel_id,region) VALUES ('{guild_id }','{channel_id}','{default_region}')")
-        cursor.execute(f"CREATE TABLE IF NOT EXISTS '{guild_id}' ('user_id' varchar(255) NOT NULL, 'previous' varchar(255) NOT NULL DEFAULT 'NA', 'created_at' timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP)")
+        cursor.execute(f"CREATE TABLE IF NOT EXISTS '{guild_id}' ('user_id' varchar(255) NOT NULL, 'previous' varchar(255) NOT NULL DEFAULT 'NA'")
         bot.db.commit()
         cursor.close()
         logging.warning(f"{ctx.author} inserted {ctx.guild.name} ({guild_id})")
