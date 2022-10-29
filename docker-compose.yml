@@ -25,6 +25,22 @@ services:
     volumes:
       - node_modules:/app/node_modules
     image: bryxli/zoe-frontend
+  reverse-proxy:
+    container_name: reverse-proxy
+    image: valian/docker-nginx-auto-ssl:1.0.0
+    restart: on-failure
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./.ssl-data:/etc/resty-auto-ssl
+    environment:
+      ALLOWED_DOMAINS: 'zoe-bot.app'
+      SITES: 'zoe-bot.app=frontend:80'
+      FORCE_HTTPS: "true"
+    depends_on:
+      - frontend
 volumes:
   mysql-data:
   node_modules:
+  .ssl-data:
