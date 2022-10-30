@@ -144,7 +144,7 @@ async def setup(ctx):
     try:
         cursor = bot.db.cursor()
         cursor.execute(f"INSERT INTO serverlist (guild_id,channel_id,region) VALUES ('{guild_id }','{channel_id}','{default_region}')")
-        cursor.execute(f"CREATE TABLE IF NOT EXISTS '{guild_id}' ('user_id' varchar(255) NOT NULL, 'previous' varchar(255) NOT NULL DEFAULT 'NA'")
+        cursor.execute(f"CREATE TABLE IF NOT EXISTS '{guild_id}' ('user_id' varchar(255) NOT NULL, 'previous' varchar(255) NOT NULL DEFAULT 'NA')")
         bot.db.commit()
         cursor.close()
         logging.warning(f"{ctx.author} inserted {ctx.guild.name} ({guild_id})")
