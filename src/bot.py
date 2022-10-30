@@ -205,7 +205,7 @@ async def adduser(ctx, arg):
         cursor = bot.db.cursor()
         cursor.execute(f"SELECT region FROM serverlist WHERE guild_id='{guild_id}'")
         region = cursor.fetchall()[0][0]
-        player = await find_player(region, arg)
+        player = await find_player(region, user_id)
         user_id = player["name"]
         cursor.execute(f"SELECT * FROM '{guild_id}'")
         userlist = cursor.fetchall()
@@ -231,7 +231,11 @@ async def deluser(ctx, arg):
     user_id = str(arg)
     try:
         cursor = bot.db.cursor()
-        cursor.execute("DELETE FROM '{guild_id}' WHERE user_id = '{user_id}' COLLATE NOCASE")
+        cursor.execute(f"SELECT region FROM serverlist WHERE guild_id='{guild_id}'")
+        region = cursor.fetchall()[0][0]
+        player = await find_player(region, user_id)
+        user_id = player["name"]
+        cursor.execute(f"DELETE FROM '{guild_id}' WHERE user_id = '{user_id}' COLLATE NOCASE")
         bot.db.commit()
         cursor.close()
         logging.warning(f"{ctx.author} deleted user {user_id} from {ctx.guild.name} ({guild_id})")
