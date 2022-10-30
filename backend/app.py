@@ -176,7 +176,7 @@ async def adduser(ctx, arg):
         cursor = bot.db.cursor()
         cursor.execute(f"SELECT region FROM serverlist WHERE guild_id='{guild_id}'")
         region = cursor.fetchall()[0][0]
-        player = await find_player(region, arg)
+        player = await find_player(region, user_id)
         user_id = player["name"]
         cursor.execute(f"SELECT * FROM `{guild_id}`")
         userlist = cursor.fetchall()
@@ -201,12 +201,18 @@ async def deluser(ctx, arg):
     try:
         bot.db = connect_db()
         cursor = bot.db.cursor()
+        cursor.execute(f"SELECT region FROM serverlist WHERE guild_id='{guild_id}'")
+        region = cursor.fetchall()[0][0]
+        player = await find_player(region, user_id)
+        user_id = player["name"]
         cursor.execute(f"DELETE FROM `{guild_id}` WHERE user_id = '{user_id}'")
         bot.db.commit()
         cursor.close()
         await ctx.message.add_reaction(u"\U0001F44D")
     except mysql.connector.Error:
         pass
+    except ApiError:
+        await ctx.send("name not found")
 
 @bot.command()
 async def userlist(ctx):
