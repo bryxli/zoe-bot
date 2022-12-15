@@ -1,6 +1,7 @@
 services:
   db:
     container_name: data
+    image: ${DOCKER_REGISTRY}/zoe-bot:db
     build: .
     ports:
       - "3306:3306"
@@ -8,6 +9,7 @@ services:
       - mysql-data:/var/lib/mysql
   backend:
     container_name: backend
+    image: ${DOCKER_REGISTRY}/zoe-bot:backend
     depends_on:
       - "db"
     links:
@@ -17,6 +19,9 @@ services:
       - "8000:5000"
   frontend:
     container_name: frontend
+    image: ${DOCKER_REGISTRY}/zoe-bot:frontend
+    depends_on:
+      - "backend"
     build: ./frontend
     ports:
       - "80:80"
