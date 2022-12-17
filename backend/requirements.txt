@@ -1,7 +1,9 @@
-discord.py==2.0.1
-mysql-connector==2.2.9
-mysql-connector-python==8.0.31
-quart==0.18.3
-quart_cors==0.5.0
-riotwatcher==3.2.3
+discord.py==2.1.0
+Flask==2.2.2
+Flask_Cors==3.0.10
 hypercorn==0.14.3
+mysql_connector_repackaged==0.3.1
+quart==0.18.3
+Quart_CORS==0.5.0
+riotwatcher==3.2.3
+gunicorn
