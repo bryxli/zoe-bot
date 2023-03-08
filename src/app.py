@@ -57,7 +57,7 @@ async def adduser(ctx, arg=None): # add accountid to item in table
         await ctx.send('please enter a valid username')
         return
     updates = {
-        player.account_id: {'Value': {'S': str(cass.find_most_recent_match(player).creation)}, 'Action': 'PUT'},
+        player.account_id: {'Value': {'S': ''}, 'Action': 'PUT'}, # accountid : last_displayed_match_creation_date
     }
     response = db.update_guild(str(ctx.guild.id), updates)
     await ctx.send(response)

@@ -31,3 +31,4 @@ def find_participant_id(summoner, match):
             return participant.id
 
 me = find_player_by_name('bryxli', 'NA')
+print(str(find_most_recent_match(me).creation))
