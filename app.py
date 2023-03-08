@@ -4,7 +4,7 @@ from aws_cdk import (
     aws_dynamodb as dynamodb,
     aws_ec2 as ec2,
     aws_iam as iam,
-    App, Stack
+    App, Stack, RemovalPolicy
 )
 
 from constructs import Construct
@@ -43,7 +43,9 @@ class ZoeStack(Stack):
             partition_key=dynamodb.Attribute(
                 name="guild_id",
                 type=dynamodb.AttributeType.STRING
-            )
+            ),
+            table_name="zoe_db",
+            removal_policy=RemovalPolicy.DESTROY
         )
         
         table.grant_read_write_data(role)
