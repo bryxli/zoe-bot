@@ -42,7 +42,7 @@ class ZoeStack(Stack):
             self, "zoe_db",
             partition_key=dynamodb.Attribute(
                 name="guild_id",
-                type=dynamodb.AttributeType.STRING
+                type=dynamodb.AttributeType.NUMBER
             ),
             table_name="zoe_db",
             removal_policy=RemovalPolicy.DESTROY

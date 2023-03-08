@@ -8,8 +8,8 @@ def get_all():
 
 def create_guild(guild_id, channel_id):
     item = {
-        'guild_id': {'S': guild_id},
-        'channel_id': {'S': channel_id},
+        'guild_id': {'N': guild_id},
+        'channel_id': {'N': channel_id},
         'region': {'S': 'NA'},
     }
     response = client.put_item(
@@ -21,23 +21,24 @@ def create_guild(guild_id, channel_id):
 def delete_guild(guild_id):
     response = client.delete_item(
         TableName=table_name,
-        Key={'guild_id': {'S': guild_id}}
+        Key={'guild_id': {'N': guild_id}}
     )
     return response
-
-updates = {
-    'new_attribute': {'Value': {'S': 'test'}, 'Action': 'PUT'}, 
-}
 
 def update_guild(guild_id, updates):
     response = client.update_item(
         TableName=table_name,
-        Key={'guild_id': {'S': guild_id}},
+        Key={'guild_id': {'N': guild_id}},
         AttributeUpdates = updates
     )
     return response
 
 # create_guild('test_gid','test_cid')
+
+# updates = {
+#     'new_attribute': {'Value': {'S': 'test'}, 'Action': 'PUT'}, 
+# }
 # update_guild('test_gid', updates)
-# print(get_all())
+
+print(get_all())
 # delete_guild('test_gid')

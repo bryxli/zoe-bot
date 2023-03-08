@@ -6,6 +6,7 @@ from discord.ext import commands
 from discord.ext.commands import Bot
 
 import cass_wrapper as cass
+import db_wrapper as db
 
 with open('config.json') as file:
     config = json.load(file)
@@ -20,15 +21,27 @@ async def on_ready() -> None:
 
 @bot.command()
 async def setup(ctx): # create new item in table
-    await ctx.send('setup')
+    response = db.create_guild(str(ctx.guild.id), str(ctx.channel.id)) # do not run this if guild.id exists
+    await ctx.send(response)
 
 @bot.command()
 async def reset(ctx): # delete item from table
-    await ctx.send('reset')    
+    response = db.delete_guild(str(ctx.guild.id)) # do not run this if guild.id does not exist
+    await ctx.send(response)   
 
 @bot.command()
-async def region(ctx): # view current region / set new region of item in table
-    await ctx.send('region')
+async def region(ctx, arg=None): # view current region / set new region of item in table
+    regionlist = ['BR','EUNE','EUW','JP','KR','LAN','LAS','NA','OCE','TR','RU']
+    if arg is None:
+        await ctx.send(regionlist)
+        return
+    response = 'region not found'
+    if arg.upper() in regionlist:
+        updates = {
+            'region': {'Value': {'S': arg}, 'Action': 'PUT'}, 
+        }
+        response = db.update_guild(str(ctx.guild.id), updates)
+    await ctx.send(response)   
 
 @bot.command()
 async def adduser(ctx, arg): # add user to item in table
