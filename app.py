@@ -1,7 +1,5 @@
 import os.path
 
-from aws_cdk.aws_s3_assets import Asset
-
 from aws_cdk import (
     aws_dynamodb as dynamodb,
     aws_ec2 as ec2,
@@ -20,7 +18,7 @@ class ZoeStack(Stack):
         super().__init__(scope, id, **kwargs)
 
         # VPC
-        vpc = ec2.Vpc(self, "zoe_vpc",
+        vpc = ec2.Vpc(self, "VPC",
             nat_gateways=0,
             subnet_configuration=[ec2.SubnetConfiguration(name="public",subnet_type=ec2.SubnetType.PUBLIC)]
         )
@@ -52,24 +50,11 @@ class ZoeStack(Stack):
 
         # Instance
         instance = ec2.Instance(self, "zoe_instance",
-            instance_type=ec2.InstanceType("t2.micro"),
+            instance_type=ec2.InstanceType("t3.micro"),
             machine_image=amzn_linux,
             vpc = vpc,
             role = role
         )
-
-        # Script in S3 as Asset
-        asset = Asset(self, "Asset", path=os.path.join(dirname, "configure.sh"))
-        local_path = instance.user_data.add_s3_download_command(
-            bucket=asset.bucket,
-            bucket_key=asset.s3_object_key
-        )
-
-        # Userdata executes script from S3
-        instance.user_data.add_execute_file_command(
-            file_path=local_path
-        )
-        asset.grant_read(instance.role)
 
 app = App()
 ZoeStack(app, "zoe-bot")
