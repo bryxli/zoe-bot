@@ -4,8 +4,7 @@ import random
 import discord
 from discord.ext import commands
 from discord.ext.commands import Bot
-
-import cass_wrapper as cass
+import cassiopeia as cass
 
 with open('config.json') as file:
     config = json.load(file)
@@ -13,6 +12,7 @@ with open('config.json') as file:
 intents = discord.Intents.all()
 bot = Bot(command_prefix=commands.when_mentioned_or(config['prefix']), intents=intents, help_command=None)
 bot.config = config
+cass.set_riot_api_key(config['riot_key'])
 
 @bot.event
 async def on_ready() -> None:
@@ -32,7 +32,12 @@ async def region(ctx): # view current region / set new region of item in table
 
 @bot.command()
 async def adduser(ctx, arg): # add user to item in table
-    await ctx.send(cass.find_player(arg, 'NA'))
+    try:
+        summoner = cass.get_summoner(name=arg, region='NA')
+        summoner.puuid
+        await ctx.send(summoner)
+    except Exception as e:
+        await ctx.send('summoner not found')
 
 @bot.command()
 async def deluser(ctx): # delete user from item in table
