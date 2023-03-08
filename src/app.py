@@ -5,6 +5,8 @@ import discord
 from discord.ext import commands
 from discord.ext.commands import Bot
 
+import cass_wrapper as cass
+
 with open('config.json') as file:
     config = json.load(file)
 
@@ -29,8 +31,8 @@ async def region(ctx): # view current region / set new region of item in table
     await ctx.send('region')
 
 @bot.command()
-async def adduser(ctx): # add user to item in table
-    await ctx.send('adduser')
+async def adduser(ctx, arg): # add user to item in table
+    await ctx.send(cass.find_player(arg, 'NA'))
 
 @bot.command()
 async def deluser(ctx): # delete user from item in table
