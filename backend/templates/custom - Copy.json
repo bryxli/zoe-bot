@@ -1,5 +1,0 @@
-{
-  "win": ["$summonername: Win\t$championname KDA: $kda"],
-  "lose": ["$summonername: Win\t$championname KDA: $kda"],
-  "speak": []
-}
