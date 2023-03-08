@@ -3,6 +3,7 @@ import os.path
 from aws_cdk.aws_s3_assets import Asset
 
 from aws_cdk import (
+    aws_dynamodb as dynamodb,
     aws_ec2 as ec2,
     aws_iam as iam,
     App, Stack
@@ -13,16 +14,16 @@ from constructs import Construct
 dirname = os.path.dirname(__file__)
 
 
-class EC2InstanceStack(Stack):
+class ZoeStack(Stack):
 
     def __init__(self, scope: Construct, id: str, **kwargs) -> None:
         super().__init__(scope, id, **kwargs)
 
         # VPC
-        vpc = ec2.Vpc(self, "VPC",
+        vpc = ec2.Vpc(self, "zoe_vpc",
             nat_gateways=0,
             subnet_configuration=[ec2.SubnetConfiguration(name="public",subnet_type=ec2.SubnetType.PUBLIC)]
-            )
+        )
 
         # AMI
         amzn_linux = ec2.MachineImage.latest_amazon_linux(
@@ -30,20 +31,29 @@ class EC2InstanceStack(Stack):
             edition=ec2.AmazonLinuxEdition.STANDARD,
             virtualization=ec2.AmazonLinuxVirt.HVM,
             storage=ec2.AmazonLinuxStorage.GENERAL_PURPOSE
+        )
+
+        # Dynamo (not connected to instance)
+        table = dynamodb.Table(
+            self, "zoe_db",
+            partition_key=dynamodb.Attribute(
+                name="guild_id",
+                type=dynamodb.AttributeType.STRING
             )
+        )
 
         # Instance Role and SSM Managed Policy
-        role = iam.Role(self, "InstanceSSM", assumed_by=iam.ServicePrincipal("ec2.amazonaws.com"))
+        role = iam.Role(self, "zoe_role", assumed_by=iam.ServicePrincipal("ec2.amazonaws.com"))
 
         role.add_managed_policy(iam.ManagedPolicy.from_aws_managed_policy_name("AmazonSSMManagedInstanceCore"))
 
         # Instance
-        instance = ec2.Instance(self, "Instance",
+        instance = ec2.Instance(self, "zoe_instance",
             instance_type=ec2.InstanceType("t2.nano"),
             machine_image=amzn_linux,
             vpc = vpc,
             role = role
-            )
+        )
 
         # Script in S3 as Asset
         asset = Asset(self, "Asset", path=os.path.join(dirname, "configure.sh"))
@@ -59,6 +69,6 @@ class EC2InstanceStack(Stack):
         asset.grant_read(instance.role)
 
 app = App()
-EC2InstanceStack(app, "ec2-instance")
+ZoeStack(app, "zoe-bot")
 
 app.synth()
