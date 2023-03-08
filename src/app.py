@@ -21,12 +21,16 @@ async def on_ready() -> None:
 
 @bot.command()
 async def setup(ctx): # create new item in table
-    response = db.create_guild(str(ctx.guild.id), str(ctx.channel.id)) # do not run this if guild.id exists
+    response = 'guild already exists'
+    if not db.guild_exists(str(ctx.guild.id)):
+        response = db.create_guild(str(ctx.guild.id), str(ctx.channel.id)) # do not run this if guild.id exists
     await ctx.send(response)
 
 @bot.command()
 async def reset(ctx): # delete item from table
-    response = db.delete_guild(str(ctx.guild.id)) # do not run this if guild.id does not exist
+    response = 'guild has not been setup'
+    if db.guild_exists(str(ctx.guild.id)):
+        response = db.delete_guild(str(ctx.guild.id)) # do not run this if guild.id does not exist
     await ctx.send(response)   
 
 @bot.command()

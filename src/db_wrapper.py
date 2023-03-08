@@ -6,6 +6,15 @@ table_name = 'zoe_db'
 def get_all():
     return client.scan(TableName=table_name)
 
+def guild_exists(guild_id):
+    response = client.get_item(
+        TableName=table_name,
+        Key={'guild_id': {'N': guild_id}}
+    )
+    if 'Item' in response:
+        return True
+    return False
+
 def create_guild(guild_id, channel_id):
     item = {
         'guild_id': {'N': guild_id},
