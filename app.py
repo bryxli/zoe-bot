@@ -52,7 +52,7 @@ class ZoeStack(Stack):
 
         # Instance
         instance = ec2.Instance(self, "zoe_instance",
-            instance_type=ec2.InstanceType("t2.nano"),
+            instance_type=ec2.InstanceType("t2.micro"),
             machine_image=amzn_linux,
             vpc = vpc,
             role = role
@@ -68,7 +68,7 @@ class ZoeStack(Stack):
         # Userdata executes script from S3
         instance.user_data.add_execute_file_command(
             file_path=local_path
-            )
+        )
         asset.grant_read(instance.role)
 
 app = App()
