@@ -23,14 +23,14 @@ async def on_ready() -> None:
 async def setup(ctx): # create new item in table
     response = 'guild already exists'
     if not db.guild_exists(str(ctx.guild.id)):
-        response = db.create_guild(str(ctx.guild.id), str(ctx.channel.id)) # do not run this if guild.id exists
+        response = db.create_guild(str(ctx.guild.id), str(ctx.channel.id))
     await ctx.send(response)
 
 @bot.command()
 async def reset(ctx): # delete item from table
     response = 'guild has not been setup'
     if db.guild_exists(str(ctx.guild.id)):
-        response = db.delete_guild(str(ctx.guild.id)) # do not run this if guild.id does not exist
+        response = db.delete_guild(str(ctx.guild.id))
     await ctx.send(response)   
 
 @bot.command()
@@ -48,12 +48,25 @@ async def region(ctx, arg=None): # view current region / set new region of item 
     await ctx.send(response)   
 
 @bot.command()
-async def adduser(ctx, arg): # add user to item in table
+async def adduser(ctx, arg=None): # add accountid to item in table
+    if arg is None:
+        await ctx.send('please enter a username')
+        return
     player = cass.find_player_by_name(arg,'NA')
-    await ctx.send(player)
+    if player is None:
+        await ctx.send('please enter a valid username')
+        return
+    updates = {
+        player.account_id: {'Value': {'S': str(cass.find_most_recent_match(player).creation)}, 'Action': 'PUT'},
+    }
+    response = db.update_guild(str(ctx.guild.id), updates)
+    await ctx.send(response)
 
 @bot.command()
-async def deluser(ctx): # delete user from item in table
+async def deluser(ctx, arg=None): # delete accountid from item in table
+    if arg is None:
+        await ctx.send('please enter a username')
+        return
     await ctx.send('deluser')
 
 @bot.command()

@@ -29,3 +29,5 @@ def find_participant_id(summoner, match):
     for participant in match.participants:
         if participant.summoner == summoner:
             return participant.id
+
+me = find_player_by_name('bryxli', 'NA')
