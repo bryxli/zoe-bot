@@ -33,7 +33,13 @@ class ZoeStack(Stack):
             storage=ec2.AmazonLinuxStorage.GENERAL_PURPOSE
         )
 
-        # Dynamo (not connected to instance)
+        # Instance Role and SSM Managed Policy
+        role = iam.Role(self, "zoe_role", assumed_by=iam.ServicePrincipal("ec2.amazonaws.com"))
+
+        role.add_managed_policy(iam.ManagedPolicy.from_aws_managed_policy_name("AmazonSSMManagedInstanceCore"))
+        role.add_managed_policy(iam.ManagedPolicy.from_aws_managed_policy_name('AmazonDynamoDBFullAccess'))
+
+        # Dynamo
         table = dynamodb.Table(
             self, "zoe_db",
             partition_key=dynamodb.Attribute(
@@ -41,11 +47,8 @@ class ZoeStack(Stack):
                 type=dynamodb.AttributeType.STRING
             )
         )
-
-        # Instance Role and SSM Managed Policy
-        role = iam.Role(self, "zoe_role", assumed_by=iam.ServicePrincipal("ec2.amazonaws.com"))
-
-        role.add_managed_policy(iam.ManagedPolicy.from_aws_managed_policy_name("AmazonSSMManagedInstanceCore"))
+        
+        table.grant_read_write_data(role)
 
         # Instance
         instance = ec2.Instance(self, "zoe_instance",
