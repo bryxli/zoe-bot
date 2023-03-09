@@ -6,6 +6,15 @@ table_name = 'zoe_db'
 def get_all():
     return client.scan(TableName=table_name)
 
+def guild_exists(guild_id):
+    response = client.get_item(
+        TableName=table_name,
+        Key={'guild_id': {'N': guild_id}}
+    )
+    if 'Item' in response:
+        return True
+    return False
+
 def create_guild(guild_id, channel_id):
     item = {
         'guild_id': {'N': guild_id},
@@ -26,15 +35,6 @@ def destroy_guild(guild_id):
     )
     return response
 
-def guild_exists(guild_id):
-    response = client.get_item(
-        TableName=table_name,
-        Key={'guild_id': {'N': guild_id}}
-    )
-    if 'Item' in response:
-        return True
-    return False
-
 def update_guild(guild_id, updates): # adds/updates any attribute in respective item
     response = client.update_item(
         TableName=table_name,
@@ -42,6 +42,12 @@ def update_guild(guild_id, updates): # adds/updates any attribute in respective 
         AttributeUpdates = updates
     )
     return response
+
+def get_all_users(guild_id):
+    print()
+
+def user_exists(guild_id, account_id):
+    print()
 
 def add_user(guild_id, account_id):
     expression_values = {
@@ -54,6 +60,9 @@ def add_user(guild_id, account_id):
         ExpressionAttributeValues = expression_values
     )
     return response
+
+def delete_user(guild_id, account_id):
+    print()
 
 # create_guild('test_gid','test_cid')
 

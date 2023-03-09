@@ -23,14 +23,16 @@ async def on_ready() -> None:
 async def setup(ctx): # create new item in table
     response = 'guild already exists'
     if not db.guild_exists(str(ctx.guild.id)):
-        response = db.create_guild(str(ctx.guild.id), str(ctx.channel.id))
+        db.create_guild(str(ctx.guild.id), str(ctx.channel.id))
+        response = 'guild added'
     await ctx.send(response)
 
 @bot.command()
 async def reset(ctx): # delete item from table
     response = 'guild has not been setup'
     if db.guild_exists(str(ctx.guild.id)):
-        response = db.destroy_guild(str(ctx.guild.id))
+        db.destroy_guild(str(ctx.guild.id))
+        response = 'guild removed'
     await ctx.send(response)   
 
 @bot.command()
@@ -44,7 +46,8 @@ async def region(ctx, arg=None): # view current region / set new region of item 
         updates = {
             'region': {'Value': {'S': arg}, 'Action': 'PUT'}, 
         }
-        response = db.update_guild(str(ctx.guild.id), updates)
+        db.update_guild(str(ctx.guild.id), updates)
+        response = 'region updated'
     await ctx.send(response)   
 
 @bot.command()
@@ -57,7 +60,8 @@ async def adduser(ctx, arg=None): # add accountid to item in table
     if player is None:
         await ctx.send('please enter a valid username')
         return
-    response = db.add_user(str(ctx.guild.id), player.account_id)
+    db.add_user(str(ctx.guild.id), player.account_id)
+    response = 'user added'
     await ctx.send(response)
 
 @bot.command()
