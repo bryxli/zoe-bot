@@ -8,8 +8,8 @@ def get_all():
 
 def guild_exists(guild_id):
     response = client.get_item(
-        TableName=table_name,
-        Key={'guild_id': {'N': guild_id}}
+        TableName = table_name,
+        Key = {'guild_id': {'N': guild_id}}
     )
     return 'Item' in response
 
@@ -21,30 +21,30 @@ def create_guild(guild_id, channel_id):
         'userlist': {'L': []},
     }
     response = client.put_item(
-        TableName=table_name,
-        Item=item
+        TableName = table_name,
+        Item = item
     )
     return response
 
 def destroy_guild(guild_id):
     response = client.delete_item(
-        TableName=table_name,
-        Key={'guild_id': {'N': guild_id}}
+        TableName = table_name,
+        Key = {'guild_id': {'N': guild_id}}
     )
     return response
 
 def update_guild(guild_id, updates): # adds/updates any attribute in respective item
     response = client.update_item(
-        TableName=table_name,
-        Key={'guild_id': {'N': guild_id}},
+        TableName = table_name,
+        Key = {'guild_id': {'N': guild_id}},
         AttributeUpdates = updates
     )
     return response
 
 def get_all_users(guild_id):
     response = client.get_item(
-        TableName=table_name,
-        Key={'guild_id': {'N': guild_id}}
+        TableName = table_name,
+        Key = {'guild_id': {'N': guild_id}}
     )['Item']['userlist']['L'] # [{'S',account_id},{'S',account_id}...,]
     userlist = []
     for user in response:
@@ -61,8 +61,8 @@ def add_user(guild_id, account_id):
         ':user':{'L':[{'S':account_id}]}
     }
     response = client.update_item(
-        TableName=table_name,
-        Key={'guild_id': {'N': guild_id}},
+        TableName = table_name,
+        Key = {'guild_id': {'N': guild_id}},
         UpdateExpression = 'SET userlist = list_append(userlist, :user)',
         ExpressionAttributeValues = expression_values
     )

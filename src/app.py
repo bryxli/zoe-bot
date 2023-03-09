@@ -2,7 +2,7 @@ import json
 import random
 
 import discord
-from discord.ext import commands
+from discord.ext import commands, tasks
 from discord.ext.commands import Bot
 
 import cass_wrapper as cass
@@ -18,6 +18,10 @@ bot.config = config
 @bot.event
 async def on_ready() -> None:
     await bot.change_presence(activity=discord.Game("#help"))
+
+@tasks.loop(minutes = 5.0)
+async def loop(ctx):
+    print('print newly played games')
 
 @bot.command()
 async def setup(ctx): # create new item in table
