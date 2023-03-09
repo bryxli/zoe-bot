@@ -21,19 +21,17 @@ async def on_ready() -> None:
 
 @bot.command()
 async def setup(ctx): # create new item in table
-    response = 'guild already exists'
     if not db.guild_exists(str(ctx.guild.id)):
         db.create_guild(str(ctx.guild.id), str(ctx.channel.id))
-        response = 'guild added'
-    await ctx.send(response)
+        await ctx.message.add_reaction(u"\U0001F44D")
+    await ctx.send('guild already exists')
 
 @bot.command()
 async def reset(ctx): # delete item from table
-    response = 'guild has not been setup'
     if db.guild_exists(str(ctx.guild.id)):
         db.destroy_guild(str(ctx.guild.id))
-        response = 'guild removed'
-    await ctx.send(response)   
+        await ctx.message.add_reaction(u"\U0001F44D")
+    await ctx.send('guild has not been setup')   
 
 @bot.command()
 async def region(ctx, arg=None): # view current region / set new region of item in table
@@ -41,14 +39,13 @@ async def region(ctx, arg=None): # view current region / set new region of item 
     if arg is None:
         await ctx.send(regionlist)
         return
-    response = 'region not found'
     if arg.upper() in regionlist:
         updates = {
             'region': {'Value': {'S': arg}, 'Action': 'PUT'}, 
         }
         db.update_guild(str(ctx.guild.id), updates)
-        response = 'region updated'
-    await ctx.send(response)   
+        await ctx.message.add_reaction(u"\U0001F44D")
+    await ctx.send('region not found')   
 
 @bot.command()
 async def adduser(ctx, arg=None): # add accountid to item in table
@@ -63,7 +60,7 @@ async def adduser(ctx, arg=None): # add accountid to item in table
         await ctx.send('user already exists')
         return
     db.add_user(str(ctx.guild.id), player.account_id)
-    await ctx.send('user added')
+    await ctx.message.add_reaction(u"\U0001F44D")
 
 @bot.command()
 async def deluser(ctx, arg=None): # delete accountid from item in table
@@ -78,7 +75,7 @@ async def deluser(ctx, arg=None): # delete accountid from item in table
         await ctx.send('user does not exist')
         return
     db.delete_user(str(ctx.guild.id), player.account_id)
-    await ctx.send('user deleted')
+    await ctx.message.add_reaction(u"\U0001F44D")
 
 
 @bot.command()
