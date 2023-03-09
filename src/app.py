@@ -25,8 +25,27 @@ async def loop():
 
 @bot.command()
 async def test(ctx): # create new item in table
-    data = db.get_all()
-    await ctx.send(data)
+    data = db.get_all()['Items']
+    for guild in data:
+        for user in guild['userlist']['L']:
+            account_id = user['S']
+
+            summoner = cass.find_player_by_accountid(account_id, 'NA') # TODO: replace with item region value
+
+            match_history = summoner.match_history
+            if (match_history.count > 0):
+                match = match_history[0]
+                for participant in match.participants:
+                    if participant.summoner.account_id == summoner.account_id:
+                        id = match.participants.index(participant)
+                        break
+
+                player = match.participants[id]
+                champion_name = player.champion.name
+                kda = str(round(player.stats.kda,2))
+                win = str(player.stats.win)
+
+                await ctx.send(f'{champion_name}  {kda}  {win}')
 
 @bot.command()
 async def setup(ctx): # create new item in table
@@ -64,7 +83,7 @@ async def adduser(ctx, arg=None): # add accountid to item in table
     if arg is None:
         await ctx.send('please enter a username')
         return
-    player = cass.find_player_by_name(arg,'NA')
+    player = cass.find_player_by_name(arg,'NA') # TODO: replace with item region value
     if player is None:
         await ctx.send('please enter a valid username')
         return
@@ -79,7 +98,7 @@ async def deluser(ctx, arg=None): # delete accountid from item in table
     if arg is None:
         await ctx.send('please enter a username')
         return
-    player = cass.find_player_by_name(arg,'NA')
+    player = cass.find_player_by_name(arg,'NA') # TODO: replace with item region value
     if player is None:
         await ctx.send('please enter a valid username')
         return

@@ -19,16 +19,5 @@ def find_player_by_accountid(accountid, region):
         return summoner
     return None
 
-def find_most_recent_match(summoner):
-    match_history = summoner.match_history
-    if (match_history.count > 0):
-        return match_history[0]
-    return None
-
-def find_participant_id(summoner, match):
-    for participant in match.participants:
-        if participant.summoner == summoner:
-            return participant.id
-
 # me = find_player_by_name('bryxli', 'NA')
 # print(str(find_most_recent_match(me).creation))
