@@ -18,19 +18,22 @@ bot.config = config
 @bot.event
 async def on_ready() -> None:
     await bot.change_presence(activity=discord.Game("#help"))
+    loop.start()
 
 @tasks.loop(minutes = 5.0)
 async def loop():
-    print('print newly played games')
-
-@bot.command()
-async def test(ctx):
     data = db.get_all()['Items']
     for guild in data:
+        guild_id = guild['guild_id']['N']
+        channel_id = guild['channel_id']['N']
+        
+        discord_guild = bot.get_guild(int(guild_id))
+        discord_channel = discord_guild.get_channel(int(channel_id))
+
         for user_data in guild['userlist']['L']: # [{'M':{account_id:{'S':last_created}}}...]
             account_id = list(user_data['M'].keys())[0]
 
-            summoner = cass.find_player_by_accountid(account_id, 'NA') # TODO: replace with item region value
+            summoner = cass.find_player_by_accountid(account_id, guild['region']['S'])
 
             match_history = summoner.match_history
             if (match_history.count > 0):
@@ -40,20 +43,18 @@ async def test(ctx):
                         id = match.participants.index(participant)
                         break
 
-                guild_id = guild['guild_id']['N']
-                last_created_old = user_data['M'][account_id]
+                last_created_old = user_data['M'][account_id]['S']
                 last_created = str(match.creation)
+                if last_created != last_created_old:
 
-                # TODO: compare last_created_old and last_created to determine output
-                
-                player = match.participants[id]
-                champion_name = player.champion.name
-                kda = str(round(player.stats.kda,2))
-                win = str(player.stats.win)
+                    player = match.participants[id]
+                    champion_name = player.champion.name
+                    kda = str(round(player.stats.kda,2))
+                    win = str(player.stats.win)
 
-                db.update_user(guild_id, account_id, last_created)
-
-                await ctx.send(f'{champion_name}  {kda}  {win}')
+                    db.update_user(guild_id, account_id, last_created)
+          
+                    await discord_channel.send(f'{champion_name}  {kda}  {win}')
 
 @bot.command()
 async def setup(ctx): # create new item in table
@@ -91,7 +92,7 @@ async def adduser(ctx, arg=None): # add accountid to item in table
     if arg is None:
         await ctx.send('please enter a username')
         return
-    player = cass.find_player_by_name(arg,'NA') # TODO: replace with item region value
+    player = cass.find_player_by_name(arg,db.get_guild(str(ctx.guild.id))['region']['S'])
     if player is None:
         await ctx.send('please enter a valid username')
         return
@@ -106,7 +107,7 @@ async def deluser(ctx, arg=None): # delete accountid from item in table
     if arg is None:
         await ctx.send('please enter a username')
         return
-    player = cass.find_player_by_name(arg,'NA') # TODO: replace with item region value
+    player = cass.find_player_by_name(arg,db.get_guild(str(ctx.guild.id))['region']['S'])
     if player is None:
         await ctx.send('please enter a valid username')
         return
@@ -119,7 +120,9 @@ async def deluser(ctx, arg=None): # delete accountid from item in table
 
 @bot.command()
 async def userlist(ctx): # display list of users from item in table
-    await ctx.send(db.get_all_users(str(ctx.guild.id)))
+    accountlist = db.get_all_users(str(ctx.guild.id))
+    # TODO: convert accounts into names
+    await ctx.send(accountlist)
 
 @bot.command()
 async def speak(ctx):

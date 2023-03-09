@@ -13,6 +13,13 @@ def guild_exists(guild_id):
     )
     return 'Item' in response
 
+def get_guild(guild_id):
+    response = client.get_item(
+        TableName = table_name,
+        Key = {'guild_id': {'N': guild_id}}
+    )
+    return response['Item']
+
 def create_guild(guild_id, channel_id):
     item = {
         'guild_id': {'N': guild_id},
@@ -85,5 +92,5 @@ def update_user(guild_id, account_id, last_created):
 # }
 # update_guild('test_gid', updates)
 
-print(get_all())
+# print(get_all())
 # detroy_guild('test_gid')
