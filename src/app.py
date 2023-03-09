@@ -1,5 +1,6 @@
 import json
 import random
+from string import Template
 
 import discord
 from discord.ext import commands, tasks
@@ -10,6 +11,9 @@ import db_wrapper as db
 
 with open('config.json') as file:
     config = json.load(file)
+
+with open("template.json") as file:
+    template = json.load(file)
 
 intents = discord.Intents.all()
 bot = Bot(command_prefix=commands.when_mentioned_or(config['prefix']), intents=intents, help_command=None)
@@ -48,13 +52,19 @@ async def loop():
                 if last_created != last_created_old:
 
                     player = match.participants[id]
+                    summoner_name = summoner.name
                     champion_name = player.champion.name
                     kda = str(round(player.stats.kda,2))
-                    win = str(player.stats.win)
+                    win = player.stats.win
+
+                    if win:
+                        t = Template(random.choice(template['win']))
+                    else:
+                        t = Template(random.choice(template['lose']))
 
                     db.update_user(guild_id, account_id, last_created)
           
-                    await discord_channel.send(f'{champion_name}  {kda}  {win}')
+                    await discord_channel.send(t.substitute(summoner_name = summoner_name, kda = kda, champion_name = champion_name))
 
 @bot.command()
 async def setup(ctx): # create new item in table
@@ -140,8 +150,8 @@ async def userlist(ctx): # display list of users from item in table
 
 @bot.command()
 async def speak(ctx):
-    first_move = ["Hey guys, so, cosmic change time, possible armageddon, twilight of the gods, blah blah blah. You've been heralded.","There are so many weirdos here... It's awesome!","I bring a message for you all: a warning, a sigil. But first, I wanna see the sparkle flies.","Hello? Hey, I'm over here if you want to aim a high-velocity attack against me! Maybe you'll hit me this time!","Anyone wanna go into that ankle-deep liquid? Hello? Hellooooo!!","Here we go on an adventure, through this place! Even though we don't know the name of it! It doesn't matter!","The sky is billions of explosions burning far away! How could you not wanna see them?? I did. They were pretty cool.","This will be fine! Don't worry about it Zoe, things break all the time. Like reality, planets... y'know, stuff.","The sun and moon rise in time, to ash and mirth. The mountain takes... all. Change comes.","When the beings here look up, do they think we're looking back?! We really aren't.","Heyyyy! I'm gonna have new friends, new friends here, and it's gonna be awesome 'cause they are awesome and we'll have an awesome party with cake and stuff! Should I make chocolate mooncake or strawberry mooncake? CHOCOLATE STRAWBERRY CAKE!!","There's this illusion of the reality, but it's not really really real, like it's beside and inside and inside and beside, but never on top... Nevermind, just kidding, but not really..","Ohh! I like how the atmospheric refraction is favoring intense short waves today!","The sky called to me. So I went! It was pretty cool. I like this too, though.","Psst! Hey! Can you tell me your secrets? I promise not to tell them to... everyone!","There are holes in reality. And... in donuts.","We don't try to understand the sense it doesn't make, so we're trying to share that with you. You're welcome.","There is a day we must all fulfill our destiny. ...That day is taco day!!","So, there's these, like, yinger and yangerons, and they spin in this projected pattern which intersects fourth-dimensionally. But it isn't a measurable function. It's got a whoosh, whoom, whoooooooooh!"]
-    await ctx.send(random.choice(first_move))
+    response = template['response']
+    await ctx.send(random.choice(response))
 
 @bot.command()
 async def help(ctx):
