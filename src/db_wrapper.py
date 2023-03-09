@@ -45,7 +45,8 @@ def get_all_users(guild_id):
     )['Item']['userlist']['L'] # [{'S',account_id},{'S',account_id}...,]
     userlist = []
     for user in response:
-        userlist.append(user['S'])
+        account_id = list(user['M'].keys())
+        userlist.extend(account_id)
     return userlist
 
 
@@ -55,7 +56,7 @@ def user_exists(guild_id, account_id):
 
 def add_user(guild_id, account_id):
     expression_values = {
-        ':user':{'L':[{'S':account_id}]}
+        ':user':{'L':[{'M':{account_id:{'S':''}}}]}
     }
     client.update_item(
         TableName = table_name,
@@ -70,7 +71,6 @@ def delete_user(guild_id, account_id):
     client.update_item(
         TableName=table_name,
         Key={'guild_id': {'N': guild_id}},
-
         UpdateExpression = f'REMOVE userlist[{index}]',
     )
 
