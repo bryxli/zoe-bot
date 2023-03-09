@@ -7,7 +7,7 @@
  * `cdk deploy`      deploy this stack to your default AWS account/region
  * `aws ssm start-session --target i-xxxxxxxxx` remote session for shell access
 
-Current: i-071d01299a803f279
+Current: i-04740024177952006
 
 aws ssm start-session --target i-071d01299a803f279
 sudo yum update

@@ -10,6 +10,12 @@ export class ZoeBotStack extends cdk.Stack {
 
     const vpc = new ec2.Vpc(this, 'ZoeBotVpc', {
       natGateways: 0,
+      subnetConfiguration: [
+        {
+          name: 'public',
+          subnetType: ec2.SubnetType.PUBLIC,
+        },
+      ],
     });
 
     const dynamo = new dynamodb.Table(this, 'ZoeBotTable', {
@@ -21,6 +27,7 @@ export class ZoeBotStack extends cdk.Stack {
       vpc: vpc,
       securityGroupName: 'ZoeBotSg',
     });
+    securityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(22), 'allow SSH access from anywhere');
 
     const iamRole = new iam.Role(this, 'ZoeBotIam', {
       assumedBy: new iam.ServicePrincipal('ec2.amazonaws.com')
@@ -28,12 +35,22 @@ export class ZoeBotStack extends cdk.Stack {
     iamRole.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('AmazonSSMManagedInstanceCore'));
     dynamo.grantReadWriteData(iamRole);
 
+    /*
+    const script = `#!/bin/bash
+      yum install -y https://s3.amazonaws.com/ec2-downloads-windows/SSMAgent/latest/linux_amd64/amazon-ssm-agent.rpm
+      systemctl start amazon-ssm-agent
+    `;
+    const userData = ec2.UserData.forLinux()
+    userData.addCommands(script);
+    */
+
     const ec2Instance = new ec2.Instance(this,'ZoeBotInstance', {
       instanceType: ec2.InstanceType.of(ec2.InstanceClass.T3, ec2.InstanceSize.MICRO),
       machineImage: new ec2.AmazonLinuxImage(),
       vpc: vpc,
       securityGroup: securityGroup,
-      role: iamRole
+      role: iamRole,
+      // userData: userData,
     });
   }
 }
