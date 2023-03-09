@@ -11,9 +11,7 @@ def guild_exists(guild_id):
         TableName=table_name,
         Key={'guild_id': {'N': guild_id}}
     )
-    if 'Item' in response:
-        return True
-    return False
+    return 'Item' in response
 
 def create_guild(guild_id, channel_id):
     item = {
@@ -44,10 +42,19 @@ def update_guild(guild_id, updates): # adds/updates any attribute in respective 
     return response
 
 def get_all_users(guild_id):
-    print()
+    response = client.get_item(
+        TableName=table_name,
+        Key={'guild_id': {'N': guild_id}}
+    )['Item']['userlist']['L'] # [{'S',account_id},{'S',account_id}...,]
+    userlist = []
+    for user in response:
+        userlist.append(user['S'])
+    return userlist
+
 
 def user_exists(guild_id, account_id):
-    print()
+    users = get_all_users(guild_id)
+    return account_id in users
 
 def add_user(guild_id, account_id):
     expression_values = {

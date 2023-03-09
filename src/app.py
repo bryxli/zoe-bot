@@ -55,10 +55,12 @@ async def adduser(ctx, arg=None): # add accountid to item in table
     if arg is None:
         await ctx.send('please enter a username')
         return
-    # check if username exists
     player = cass.find_player_by_name(arg,'NA')
     if player is None:
         await ctx.send('please enter a valid username')
+        return
+    if db.user_exists(str(ctx.guild.id),player.account_id):
+        await ctx.send('user already exists')
         return
     db.add_user(str(ctx.guild.id), player.account_id)
     response = 'user added'
@@ -73,7 +75,7 @@ async def deluser(ctx, arg=None): # delete accountid from item in table
 
 @bot.command()
 async def userlist(ctx): # display list of users from item in table
-    await ctx.send('userlist')
+    await ctx.send(db.get_all_users(str(ctx.guild.id)))
 
 @bot.command()
 async def speak(ctx):
