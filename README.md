@@ -8,9 +8,6 @@
  * `aws ssm start-session --target i-xxxxxxxxx` remote session for shell access
 
 
-`aws ssm start-session --target i-04740024177952006`
-`sudo yum update -y`
-`sudo yum install -y git`
-`sudo yum install -y screen`
-`sudo cd ~`
-`sudo git clone https://github.com/bryxli/zoe-bot`
+`aws ssm start-session --target i-0e48187c4ad164bc2`
+
+`Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))`
