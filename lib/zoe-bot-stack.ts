@@ -35,16 +35,12 @@ export class ZoeBotStack extends cdk.Stack {
     iamRole.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('AmazonSSMManagedInstanceCore'));
     dynamo.grantReadWriteData(iamRole);
 
-    const ami = new ec2.WindowsImage(ec2.WindowsVersion.WINDOWS_SERVER_2022_ENGLISH_CORE_BASE)
-
     const ec2Instance = new ec2.Instance(this,'ZoeBotInstance', {
       instanceType: ec2.InstanceType.of(ec2.InstanceClass.T3, ec2.InstanceSize.MICRO),
-      machineImage: ami,
+      machineImage: new ec2.AmazonLinuxImage(),
       vpc: vpc,
       securityGroup: securityGroup,
       role: iamRole,
     });
-
-    new cdk.CfnOutput(this, 'id == ', { value: ec2Instance.instanceId });    
   }
 }
