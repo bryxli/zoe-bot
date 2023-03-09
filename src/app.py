@@ -24,10 +24,10 @@ async def loop():
     print('print newly played games')
 
 @bot.command()
-async def test(ctx): # create new item in table
+async def test(ctx):
     data = db.get_all()['Items']
     for guild in data:
-        for user_data in guild['userlist']['L']:
+        for user_data in guild['userlist']['L']: # [{'M':{account_id:{'S':last_created}}}...]
             account_id = list(user_data['M'].keys())[0]
 
             summoner = cass.find_player_by_accountid(account_id, 'NA') # TODO: replace with item region value
@@ -40,12 +40,18 @@ async def test(ctx): # create new item in table
                         id = match.participants.index(participant)
                         break
 
-                # TODO: edit userlist
+                guild_id = guild['guild_id']['N']
+                last_created_old = user_data['M'][account_id]
+                last_created = str(match.creation)
 
+                # TODO: compare last_created_old and last_created to determine output
+                
                 player = match.participants[id]
                 champion_name = player.champion.name
                 kda = str(round(player.stats.kda,2))
                 win = str(player.stats.win)
+
+                db.update_user(guild_id, account_id, last_created)
 
                 await ctx.send(f'{champion_name}  {kda}  {win}')
 

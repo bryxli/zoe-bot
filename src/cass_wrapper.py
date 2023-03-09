@@ -20,4 +20,3 @@ def find_player_by_accountid(accountid, region):
     return None
 
 # me = find_player_by_name('bryxli', 'NA')
-# print(str(find_most_recent_match(me).creation))
