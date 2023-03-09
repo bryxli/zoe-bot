@@ -30,7 +30,7 @@ async def setup(ctx): # create new item in table
 async def reset(ctx): # delete item from table
     response = 'guild has not been setup'
     if db.guild_exists(str(ctx.guild.id)):
-        response = db.delete_guild(str(ctx.guild.id))
+        response = db.destroy_guild(str(ctx.guild.id))
     await ctx.send(response)   
 
 @bot.command()
@@ -52,14 +52,12 @@ async def adduser(ctx, arg=None): # add accountid to item in table
     if arg is None:
         await ctx.send('please enter a username')
         return
+    # check if username exists
     player = cass.find_player_by_name(arg,'NA')
     if player is None:
         await ctx.send('please enter a valid username')
         return
-    updates = {
-        player.account_id: {'Value': {'S': ''}, 'Action': 'PUT'}, # accountid : last_displayed_match_creation_date
-    }
-    response = db.update_guild(str(ctx.guild.id), updates)
+    response = db.add_user(str(ctx.guild.id), player.account_id)
     await ctx.send(response)
 
 @bot.command()
