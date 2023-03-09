@@ -13,15 +13,17 @@ settings = {
 }
 cass.apply_settings(settings)
 
+
 def find_player_by_name(name, region):
     summoner = cass.get_summoner(name=name, region=region)
     if (summoner.exists):
         return summoner
     return None
 
+
 def find_player_by_accountid(accountid, region):
     summoner = cass.get_summoner(account_id=accountid, region=region)
-    if(summoner.exists):
+    if (summoner.exists):
         return summoner
     return None
 
