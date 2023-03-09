@@ -19,9 +19,10 @@ class ZoeStack(Stack):
 
         # VPC
         vpc = ec2.Vpc(self, "VPC",
-            nat_gateways=0,
-            subnet_configuration=[ec2.SubnetConfiguration(name="public",subnet_type=ec2.SubnetType.PUBLIC)]
-        )
+                      nat_gateways=0,
+                      subnet_configuration=[ec2.SubnetConfiguration(
+                          name="public", subnet_type=ec2.SubnetType.PUBLIC)]
+                      )
 
         # AMI
         amzn_linux = ec2.MachineImage.latest_amazon_linux(
@@ -32,10 +33,13 @@ class ZoeStack(Stack):
         )
 
         # Instance Role and SSM Managed Policy
-        role = iam.Role(self, "zoe_role", assumed_by=iam.ServicePrincipal("ec2.amazonaws.com"))
+        role = iam.Role(self, "zoe_role",
+                        assumed_by=iam.ServicePrincipal("ec2.amazonaws.com"))
 
-        role.add_managed_policy(iam.ManagedPolicy.from_aws_managed_policy_name("AmazonSSMManagedInstanceCore"))
-        role.add_managed_policy(iam.ManagedPolicy.from_aws_managed_policy_name('AmazonDynamoDBFullAccess'))
+        role.add_managed_policy(iam.ManagedPolicy.from_aws_managed_policy_name(
+            "AmazonSSMManagedInstanceCore"))
+        role.add_managed_policy(
+            iam.ManagedPolicy.from_aws_managed_policy_name('AmazonDynamoDBFullAccess'))
 
         # Dynamo
         table = dynamodb.Table(
@@ -47,16 +51,17 @@ class ZoeStack(Stack):
             table_name="zoe_db",
             removal_policy=RemovalPolicy.DESTROY
         )
-        
+
         table.grant_read_write_data(role)
 
         # Instance
         instance = ec2.Instance(self, "zoe_instance",
-            instance_type=ec2.InstanceType("t3.micro"),
-            machine_image=amzn_linux,
-            vpc = vpc,
-            role = role
-        )
+                                instance_type=ec2.InstanceType("t3.micro"),
+                                machine_image=amzn_linux,
+                                vpc=vpc,
+                                role=role
+                                )
+
 
 app = App()
 ZoeStack(app, "zoe-bot")

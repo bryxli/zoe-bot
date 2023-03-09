@@ -3,22 +3,26 @@ import boto3
 client = boto3.client('dynamodb')
 table_name = 'zoe_db'
 
+
 def get_all():
     return client.scan(TableName=table_name)
 
+
 def guild_exists(guild_id):
     response = client.get_item(
-        TableName = table_name,
-        Key = {'guild_id': {'N': guild_id}}
+        TableName=table_name,
+        Key={'guild_id': {'N': guild_id}}
     )
     return 'Item' in response
 
+
 def get_guild(guild_id):
     response = client.get_item(
-        TableName = table_name,
-        Key = {'guild_id': {'N': guild_id}}
+        TableName=table_name,
+        Key={'guild_id': {'N': guild_id}}
     )
     return response['Item']
+
 
 def create_guild(guild_id, channel_id):
     item = {
@@ -28,27 +32,30 @@ def create_guild(guild_id, channel_id):
         'userlist': {'L': []},
     }
     client.put_item(
-        TableName = table_name,
-        Item = item
+        TableName=table_name,
+        Item=item
     )
+
 
 def destroy_guild(guild_id):
     client.delete_item(
-        TableName = table_name,
-        Key = {'guild_id': {'N': guild_id}}
+        TableName=table_name,
+        Key={'guild_id': {'N': guild_id}}
     )
 
-def update_guild(guild_id, updates): # adds/updates any attribute in respective item
+
+def update_guild(guild_id, updates):  # adds/updates any attribute in respective item
     client.update_item(
-        TableName = table_name,
-        Key = {'guild_id': {'N': guild_id}},
-        AttributeUpdates = updates
+        TableName=table_name,
+        Key={'guild_id': {'N': guild_id}},
+        AttributeUpdates=updates
     )
+
 
 def get_all_users(guild_id):
     response = client.get_item(
-        TableName = table_name,
-        Key = {'guild_id': {'N': guild_id}}
+        TableName=table_name,
+        Key={'guild_id': {'N': guild_id}}
     )['Item']['userlist']['L']
     userlist = []
     for user in response:
@@ -61,36 +68,29 @@ def user_exists(guild_id, account_id):
     users = get_all_users(guild_id)
     return account_id in users
 
+
 def add_user(guild_id, account_id, last_created=''):
     expression_values = {
-        ':user':{'L':[{'M':{account_id:{'S':last_created}}}]}
+        ':user': {'L': [{'M': {account_id: {'S': last_created}}}]}
     }
     client.update_item(
-        TableName = table_name,
-        Key = {'guild_id': {'N': guild_id}},
-        UpdateExpression = 'SET userlist = list_append(userlist, :user)',
-        ExpressionAttributeValues = expression_values
+        TableName=table_name,
+        Key={'guild_id': {'N': guild_id}},
+        UpdateExpression='SET userlist = list_append(userlist, :user)',
+        ExpressionAttributeValues=expression_values
     )
+
 
 def delete_user(guild_id, account_id):
     userlist = get_all_users(guild_id)
     index = userlist.index(account_id)
     client.update_item(
-        TableName = table_name,
-        Key = {'guild_id': {'N': guild_id}},
-        UpdateExpression = f'REMOVE userlist[{index}]',
+        TableName=table_name,
+        Key={'guild_id': {'N': guild_id}},
+        UpdateExpression=f'REMOVE userlist[{index}]',
     )
+
 
 def update_user(guild_id, account_id, last_created):
     delete_user(guild_id, account_id)
     add_user(guild_id, account_id, last_created)
-
-# create_guild('test_gid','test_cid')
-
-# updates = {
-#     'new_attribute': {'Value': {'S': 'test'}, 'Action': 'PUT'}, 
-# }
-# update_guild('test_gid', updates)
-
-# print(get_all())
-# detroy_guild('test_gid')
