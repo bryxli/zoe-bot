@@ -60,7 +60,7 @@ async def loop():
 async def setup(ctx): # create new item in table
     if not db.guild_exists(str(ctx.guild.id)):
         db.create_guild(str(ctx.guild.id), str(ctx.channel.id))
-        await ctx.message.add_reaction(u"\U0001F44D")
+        await ctx.send(f'zoe will post game updates here (reminder: zoe only speaks once every five minutes!)\nunlocked commands: ?reset ?region ?adduser ?deluser ?userlist')
     else:
         await ctx.send('guild already exists')
 
@@ -74,55 +74,67 @@ async def reset(ctx): # delete item from table
 
 @bot.command()
 async def region(ctx, arg=None): # view current region / set new region of item in table
-    regionlist = ['BR','EUNE','EUW','JP','KR','LAN','LAS','NA','OCE','TR','RU']
-    if arg is None:
-        await ctx.send(regionlist)
-        return
-    if arg.upper() in regionlist:
-        updates = {
-            'region': {'Value': {'S': arg}, 'Action': 'PUT'}, 
-        }
-        db.update_guild(str(ctx.guild.id), updates)
-        await ctx.message.add_reaction(u"\U0001F44D")
+    if db.guild_exists(str(ctx.guild.id)):
+        regionlist = ['BR','EUNE','EUW','JP','KR','LAN','LAS','NA','OCE','TR','RU']
+        if arg is None:
+            await ctx.send(regionlist)
+            return
+        if arg.upper() in regionlist:
+            updates = {
+                'region': {'Value': {'S': arg}, 'Action': 'PUT'}, 
+            }
+            db.update_guild(str(ctx.guild.id), updates)
+            await ctx.message.add_reaction(u"\U0001F44D")
+        else:
+            await ctx.send('region not found')   
     else:
-        await ctx.send('region not found')   
+        await ctx.send('guild has not been setup')
 
 @bot.command()
 async def adduser(ctx, arg=None): # add accountid to item in table
-    if arg is None:
-        await ctx.send('please enter a username')
-        return
-    player = cass.find_player_by_name(arg,db.get_guild(str(ctx.guild.id))['region']['S'])
-    if player is None:
-        await ctx.send('please enter a valid username')
-        return
-    if db.user_exists(str(ctx.guild.id),player.account_id):
-        await ctx.send('user already exists')
-        return
-    db.add_user(str(ctx.guild.id), player.account_id)
-    await ctx.message.add_reaction(u"\U0001F44D")
+    if db.guild_exists(str(ctx.guild.id)):
+        if arg is None:
+            await ctx.send('please enter a username')
+            return
+        player = cass.find_player_by_name(arg,db.get_guild(str(ctx.guild.id))['region']['S'])
+        if player is None:
+            await ctx.send('please enter a valid username')
+            return
+        if db.user_exists(str(ctx.guild.id),player.account_id):
+            await ctx.send('user already exists')
+            return
+        db.add_user(str(ctx.guild.id), player.account_id)
+        await ctx.message.add_reaction(u"\U0001F44D")
+    else:
+        await ctx.send('guild has not been setup')
 
 @bot.command()
 async def deluser(ctx, arg=None): # delete accountid from item in table
-    if arg is None:
-        await ctx.send('please enter a username')
-        return
-    player = cass.find_player_by_name(arg,db.get_guild(str(ctx.guild.id))['region']['S'])
-    if player is None:
-        await ctx.send('please enter a valid username')
-        return
-    if not db.user_exists(str(ctx.guild.id),player.account_id): # TODO: db.user_exists and db.delete_user both call get_all_users, consolidate to avoid unecessary calls
-        await ctx.send('user does not exist')
-        return
-    db.delete_user(str(ctx.guild.id), player.account_id)
-    await ctx.message.add_reaction(u"\U0001F44D")
+    if db.guild_exists(str(ctx.guild.id)):
+        if arg is None:
+            await ctx.send('please enter a username')
+            return
+        player = cass.find_player_by_name(arg,db.get_guild(str(ctx.guild.id))['region']['S'])
+        if player is None:
+            await ctx.send('please enter a valid username')
+            return
+        if not db.user_exists(str(ctx.guild.id),player.account_id): # TODO: db.user_exists and db.delete_user both call get_all_users, consolidate to avoid unecessary calls
+            await ctx.send('user does not exist')
+            return
+        db.delete_user(str(ctx.guild.id), player.account_id)
+        await ctx.message.add_reaction(u"\U0001F44D")
+    else:
+        await ctx.send('guild has not been setup')
 
 
 @bot.command()
 async def userlist(ctx): # display list of users from item in table
-    accountlist = db.get_all_users(str(ctx.guild.id))
-    # TODO: convert accounts into names
-    await ctx.send(accountlist)
+    if db.guild_exists(str(ctx.guild.id)):
+        accountlist = db.get_all_users(str(ctx.guild.id))
+        # TODO: convert accounts into names
+        await ctx.send(accountlist)
+    else:
+        await ctx.send('guild has not been setup')
 
 @bot.command()
 async def speak(ctx):
@@ -131,6 +143,9 @@ async def speak(ctx):
 
 @bot.command()
 async def help(ctx):
-    await ctx.send('help')
+    post_setup = ''
+    if db.guild_exists(str(ctx.guild.id)):
+        post_setup = '?reset - reset instance\n?region <region> - change server region\n?adduser <league username> - add user to server\n?deluser <league username> - delete user from server\n?userlist - show server userlist\n'
+    await ctx.send(f'Commands\n?setup - create server instance\n{post_setup}?speak - zoe will talk to you')
 
 bot.run(config['token'])
