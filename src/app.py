@@ -75,7 +75,7 @@ async def deluser(ctx, arg=None): # delete accountid from item in table
     if player is None:
         await ctx.send('please enter a valid username')
         return
-    if not db.user_exists(str(ctx.guild.id),player.account_id):
+    if not db.user_exists(str(ctx.guild.id),player.account_id): # TODO: db.user_exists and db.delete_user both call get_all_users, consolidate to avoid unecessary calls
         await ctx.send('user does not exist')
         return
     db.delete_user(str(ctx.guild.id), player.account_id)
