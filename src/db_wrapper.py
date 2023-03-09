@@ -42,9 +42,9 @@ def get_all_users(guild_id):
     response = client.get_item(
         TableName = table_name,
         Key = {'guild_id': {'N': guild_id}}
-    )['Item']['userlist']['L'] # [{'S',account_id},{'S',account_id}...,]
+    )['Item']['userlist']['L']
     userlist = []
-    for user in response:
+    for user in response: # [{M:{account_id:{'S':last_created}}}...]
         account_id = list(user['M'].keys())
         userlist.extend(account_id)
     return userlist
@@ -69,8 +69,8 @@ def delete_user(guild_id, account_id):
     userlist = get_all_users(guild_id)
     index = userlist.index(account_id)
     client.update_item(
-        TableName=table_name,
-        Key={'guild_id': {'N': guild_id}},
+        TableName = table_name,
+        Key = {'guild_id': {'N': guild_id}},
         UpdateExpression = f'REMOVE userlist[{index}]',
     )
 

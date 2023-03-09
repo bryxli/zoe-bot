@@ -27,8 +27,8 @@ async def loop():
 async def test(ctx): # create new item in table
     data = db.get_all()['Items']
     for guild in data:
-        for user in guild['userlist']['L']:
-            account_id = user['S']
+        for user_data in guild['userlist']['L']:
+            account_id = list(user_data['M'].keys())[0]
 
             summoner = cass.find_player_by_accountid(account_id, 'NA') # TODO: replace with item region value
 
@@ -39,6 +39,8 @@ async def test(ctx): # create new item in table
                     if participant.summoner.account_id == summoner.account_id:
                         id = match.participants.index(participant)
                         break
+
+                # TODO: edit userlist
 
                 player = match.participants[id]
                 champion_name = player.champion.name
