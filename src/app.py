@@ -131,8 +131,10 @@ async def deluser(ctx, arg=None): # delete accountid from item in table
 async def userlist(ctx): # display list of users from item in table
     if db.guild_exists(str(ctx.guild.id)):
         accountlist = db.get_all_users(str(ctx.guild.id))
-        # TODO: convert accounts into names
-        await ctx.send(accountlist)
+        users = []
+        for account in accountlist:
+            users.append(cass.find_player_by_accountid(account,db.get_guild(str(ctx.guild.id))['region']['S']).name)
+        await ctx.send(users)
     else:
         await ctx.send('guild has not been setup')
 
