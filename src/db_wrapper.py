@@ -69,7 +69,15 @@ def add_user(guild_id, account_id):
     return response
 
 def delete_user(guild_id, account_id):
-    print()
+    userlist = get_all_users(guild_id)
+    index = userlist.index(account_id)
+    response = client.update_item(
+        TableName=table_name,
+        Key={'guild_id': {'N': guild_id}},
+
+        UpdateExpression = f'REMOVE userlist[{index}]',
+    )
+    return response
 
 # create_guild('test_gid','test_cid')
 
