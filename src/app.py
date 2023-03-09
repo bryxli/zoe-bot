@@ -20,22 +20,29 @@ async def on_ready() -> None:
     await bot.change_presence(activity=discord.Game("#help"))
 
 @tasks.loop(minutes = 5.0)
-async def loop(ctx):
+async def loop():
     print('print newly played games')
+
+@bot.command()
+async def test(ctx): # create new item in table
+    data = db.get_all()
+    await ctx.send(data)
 
 @bot.command()
 async def setup(ctx): # create new item in table
     if not db.guild_exists(str(ctx.guild.id)):
         db.create_guild(str(ctx.guild.id), str(ctx.channel.id))
         await ctx.message.add_reaction(u"\U0001F44D")
-    await ctx.send('guild already exists')
+    else:
+        await ctx.send('guild already exists')
 
 @bot.command()
 async def reset(ctx): # delete item from table
     if db.guild_exists(str(ctx.guild.id)):
         db.destroy_guild(str(ctx.guild.id))
         await ctx.message.add_reaction(u"\U0001F44D")
-    await ctx.send('guild has not been setup')   
+    else:
+        await ctx.send('guild has not been setup')   
 
 @bot.command()
 async def region(ctx, arg=None): # view current region / set new region of item in table
@@ -49,7 +56,8 @@ async def region(ctx, arg=None): # view current region / set new region of item 
         }
         db.update_guild(str(ctx.guild.id), updates)
         await ctx.message.add_reaction(u"\U0001F44D")
-    await ctx.send('region not found')   
+    else:
+        await ctx.send('region not found')   
 
 @bot.command()
 async def adduser(ctx, arg=None): # add accountid to item in table
