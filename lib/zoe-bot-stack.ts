@@ -42,5 +42,7 @@ export class ZoeBotStack extends cdk.Stack {
       securityGroup: securityGroup,
       role: iamRole,
     });
+
+    new cdk.CfnOutput(this, 'id == ', { value: ec2Instance.instanceId });
   }
 }
