@@ -35,14 +35,21 @@ export class ZoeBotStack extends cdk.Stack {
     iamRole.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('AmazonSSMManagedInstanceCore'));
     dynamo.grantReadWriteData(iamRole);
 
+    /*
+    const key = new ec2.CfnKeyPair(this, 'ZoeKeyPair', {
+      keyName: 'ZoeKey',
+    });
+    */
+
     const ec2Instance = new ec2.Instance(this,'ZoeBotInstance', {
       instanceType: ec2.InstanceType.of(ec2.InstanceClass.T3, ec2.InstanceSize.MICRO),
       machineImage: new ec2.AmazonLinuxImage(),
       vpc: vpc,
       securityGroup: securityGroup,
       role: iamRole,
+      // keyName: 'ZoeKey',
     });
 
-    new cdk.CfnOutput(this, 'id == ', { value: ec2Instance.instanceId });
+    new cdk.CfnOutput(this, 'id', { value: ec2Instance.instanceId });
   }
 }
