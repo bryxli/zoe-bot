@@ -32,8 +32,25 @@ export class ZoeBotStack extends cdk.Stack {
     const iamRole = new iam.Role(this, 'ZoeBotIam', {
       assumedBy: new iam.ServicePrincipal('ec2.amazonaws.com')
     });
+
+    const dynamoDbPolicy = new iam.ManagedPolicy(this, 'ZoeBotPolicy', {
+      statements: [
+        new iam.PolicyStatement({
+          actions: [
+            "dynamodb:GetItem",
+            "dynamodb:PutItem",
+            "dynamodb:Scan",
+            "dynamodb:Query"
+          ],
+          resources: [
+            dynamo.tableArn
+          ]
+        })
+      ]
+    });
+
     iamRole.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('AmazonSSMManagedInstanceCore'));
-    dynamo.grantReadWriteData(iamRole);
+    iamRole.addManagedPolicy(dynamoDbPolicy);
 
     /*
     const key = new ec2.CfnKeyPair(this, 'ZoeKeyPair', {
