@@ -10,7 +10,7 @@
 ## Start session
 
 ```
-aws ssm start-session --target i-0a2e9ba8f6fa18ecc
+aws ssm start-session --target i-089afc155a2e07d22
 ```
 
 ## Install system dependencies
