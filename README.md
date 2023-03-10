@@ -18,7 +18,7 @@ aws ssm start-session --target i-089afc155a2e07d22
 ```
 sudo yum update -y
 sudo yum groupinstall "Development Tools" -y
-sudo yum install openssl-devel libffi-devel bzip2-devel python38-pip -y
+sudo yum install python38-pip -y
 sudo python3 -m pip install --upgrade pip
 ```
 
@@ -75,6 +75,7 @@ Template to give Zoe custom responses! Responses are picked randomly based on ga
 
 I have included the commands to install python 3.10. I have no idea if it will work as intended.
 ```
+sudo yum install openssl-devel libffi-devel bzip2-devel
 sudo wget https://www.python.org/ftp/python/3.10.4/Python-3.10.4.tgz
 sudo tar -xf Python-3.10.4.tgz
 sudo rm Python-3.10.4.tgz
