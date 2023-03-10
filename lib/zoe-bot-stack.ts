@@ -27,12 +27,12 @@ export class ZoeBotStack extends cdk.Stack {
       vpc: vpc,
       securityGroupName: 'ZoeBotSg',
     });
-    securityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(22), 'allow SSH access from anywhere');
 
     const iamRole = new iam.Role(this, 'ZoeBotIam', {
       assumedBy: new iam.ServicePrincipal('ec2.amazonaws.com')
     });
 
+    /*
     const dynamoDbPolicy = new iam.ManagedPolicy(this, 'ZoeBotPolicy', {
       statements: [
         new iam.PolicyStatement({
@@ -48,9 +48,11 @@ export class ZoeBotStack extends cdk.Stack {
         })
       ]
     });
+    */
 
     iamRole.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('AmazonSSMManagedInstanceCore'));
-    iamRole.addManagedPolicy(dynamoDbPolicy);
+    // iamRole.addManagedPolicy(dynamoDbPolicy);
+    dynamo.grantReadWriteData(iamRole);
 
     /*
     const key = new ec2.CfnKeyPair(this, 'ZoeKeyPair', {
