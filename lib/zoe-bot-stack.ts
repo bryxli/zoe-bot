@@ -33,7 +33,6 @@ export class ZoeBotStack extends cdk.Stack {
       assumedBy: new iam.ServicePrincipal('ec2.amazonaws.com')
     });
 
-    /*
     const dynamoDbPolicy = new iam.ManagedPolicy(this, 'ZoeBotPolicy', {
       statements: [
         new iam.PolicyStatement({
@@ -49,11 +48,9 @@ export class ZoeBotStack extends cdk.Stack {
         })
       ]
     });
-    */
 
     iamRole.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('AmazonSSMManagedInstanceCore'));
-    // iamRole.addManagedPolicy(dynamoDbPolicy);
-    dynamo.grantReadWriteData(iamRole);
+    iamRole.addManagedPolicy(dynamoDbPolicy);
 
     /*
     const key = new ec2.CfnKeyPair(this, 'ZoeKeyPair', {
