@@ -70,6 +70,19 @@ export class ZoeBotStack extends cdk.Stack {
     });
     */
 
+    // EC2 startup
+    const startupScript = ec2.UserData.forLinux();
+    startupScript.addCommands(`
+        sudo yum update -y
+        sudo yum groupinstall "Development Tools" -y
+        sudo yum install python38-pip -y
+        sudo python3 -m pip install --upgrade pip
+        cd /home/ssm-user
+        sudo git clone https://github.com/bryxli/zoe-bot
+        cd /home/ssm-user/zoe-bot/src
+        sudo python3 -m pip install -r requirements.txt
+    `);
+
     // Create EC2 instance
     const ec2Instance = new ec2.Instance(this,'ZoeBotInstance', {
       instanceType: ec2.InstanceType.of(ec2.InstanceClass.T3, ec2.InstanceSize.MICRO),
@@ -77,6 +90,7 @@ export class ZoeBotStack extends cdk.Stack {
       vpc: vpc,
       securityGroup: securityGroup,
       role: iamRole,
+      userData: startupScript,
       // keyName: 'ZoeKey',
     });
 
