@@ -6,9 +6,10 @@ Discord bot that traverses through the Riot Games API to find information about 
 
 ## Prerequisites
 
-Zoe is an IaC application that utilizes AWS CDK. Make sure to have the following installed and configured.
+Zoe is an IaC application that utilizes AWS CDK and Discord. Make sure to have the following installed and configured.
  * [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html)
  * [AWS CDK (TypeScript)](https://docs.aws.amazon.com/cdk/v2/guide/getting_started.html)
+ * [Discord Application](https://discord.com/developers/docs/getting-started)
 
 ## Running the bot
 
@@ -19,12 +20,6 @@ Zoe is an IaC application that utilizes AWS CDK. Make sure to have the following
  * `cdk deploy`      deploy this stack to your default AWS account/region
  * `aws ssm start-session --target i-xxxxxxxxx` remote session for shell access
 
-### Start session
-
-```
-aws ssm start-session --target i-089afc155a2e07d22
-```
-
 ### Create config.json
 
 ```
@@ -33,7 +28,7 @@ sudo touch config.json
 sudo vim config.json
 ```
 
-Enter config.json, then `:wq`
+Enter config.json (see below), then `:wq`
 
 ### Run
 
@@ -64,4 +59,22 @@ Template to give Zoe custom responses! Responses are picked randomly based on ga
     "lose": ["amount","of"],
     "response": ["string","values","in","each","list","of","bot","responses"]
 }
+```
+
+### Linux Screen
+
+It is recommended to use Linux Screen so the bot stays alive upon exit.
+```
+screen -S zoe
+```
+
+After initializing the bot, detach from the screen and exit the session.
+```
+Ctrl-a d
+exit
+```
+
+Reattachment
+```
+screen -r zoe
 ```
