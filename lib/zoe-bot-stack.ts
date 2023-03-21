@@ -29,10 +29,11 @@ export class ZoeBotStack extends cdk.Stack {
       statements: [
         new iam.PolicyStatement({
           actions: [
+            "dynamodb:Scan",
             "dynamodb:GetItem",
             "dynamodb:PutItem",
-            "dynamodb:Scan",
-            "dynamodb:Query"
+            "dynamodb:DeleteItem",
+            "dynamodb:UpdateItem",
           ],
           resources: [
             table.tableArn
