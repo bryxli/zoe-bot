@@ -25,27 +25,10 @@ Zoe is an IaC application that utilizes AWS CDK. Make sure to have the following
 aws ssm start-session --target i-089afc155a2e07d22
 ```
 
-### Install system dependencies
-
-```
-sudo yum update -y
-sudo yum groupinstall "Development Tools" -y
-sudo yum install python38-pip -y
-sudo python3 -m pip install --upgrade pip
-```
-
-### Install project dependencies
-
-```
-cd /home/ssm-user
-sudo git clone https://github.com/bryxli/zoe-bot
-cd /home/ssm-user/zoe-bot/src
-sudo python3 -m pip install -r requirements.txt
-```
-
 ### Create config.json
 
 ```
+cd /home/ssm-user/zoe-bot/src
 sudo touch config.json
 sudo vim config.json
 ```
