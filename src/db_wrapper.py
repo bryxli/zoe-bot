@@ -1,6 +1,6 @@
 import boto3
 
-session = boto3.session.Session()
+session = boto3.Session()
 region = session.region_name
 print(region)
 client = boto3.client('dynamodb', region_name=region)
