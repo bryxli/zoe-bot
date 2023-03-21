@@ -7,8 +7,6 @@ import * as iam from 'aws-cdk-lib/aws-iam';
 import * as ec2 from 'aws-cdk-lib/aws-ec2';
 import * as fs from 'fs'
 
-import * as secretsmanager from 'aws-cdk-lib/aws-secretsmanager';
-
 export class ZoeBotStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
@@ -63,12 +61,6 @@ export class ZoeBotStack extends cdk.Stack {
       vpc: vpc,
       securityGroupName: 'ZoeBotSg',
     });
-
-    /* 
-    const key = new ec2.CfnKeyPair(this, 'ZoeKeyPair', {
-      keyName: 'ZoeKey',
-    });
-    */
 
     // Create EC2 instance
     const ec2Instance = new ec2.Instance(this,'ZoeBotInstance', {
