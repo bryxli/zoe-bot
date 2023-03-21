@@ -1,8 +1,12 @@
 import * as cdk from 'aws-cdk-lib';
 import { Construct } from 'constructs';
-import * as ec2 from 'aws-cdk-lib/aws-ec2';
+
 import * as dynamodb from 'aws-cdk-lib/aws-dynamodb';
+
 import * as iam from 'aws-cdk-lib/aws-iam';
+import * as ec2 from 'aws-cdk-lib/aws-ec2';
+
+import * as secretsmanager from 'aws-cdk-lib/aws-secretsmanager';
 
 export class ZoeBotStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
@@ -12,6 +16,7 @@ export class ZoeBotStack extends cdk.Stack {
     const table = new dynamodb.Table(this, 'ZoeBotTable', {
       partitionKey: { name: 'guild_id', type: dynamodb.AttributeType.NUMBER },
       removalPolicy: cdk.RemovalPolicy.DESTROY,
+      tableName: 'ZoeBotTable'
     });
 
     // Create EC2 role
