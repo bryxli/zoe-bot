@@ -34,7 +34,6 @@ export class ZoeBotStack extends cdk.Stack {
             'dynamodb:PutItem',
             'dynamodb:DeleteItem',
             'dynamodb:UpdateItem',
-            'dynamodb:Query',
           ],
           resources: [
             table.tableArn

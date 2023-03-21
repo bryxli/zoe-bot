@@ -91,7 +91,7 @@ async def reset(ctx):  # delete item from table
 
 
 @bot.command()
-async def region(ctx, arg=None):  # view current region / set new region of item in table
+async def region(ctx, arg=None):  # set new region of item in table
     if db.guild_exists(str(ctx.guild.id)):
         regionlist = ['BR', 'EUNE', 'EUW', 'JP', 'KR',
                       'LAN', 'LAS', 'NA', 'OCE', 'TR', 'RU']
