@@ -116,7 +116,7 @@ async def region(ctx, arg=None):  # set new region of item in table
                         'userlist': {'Value': {'L': []}, 'Action': 'PUT'},
                     }
                     db.update_guild(str(ctx.guild.id), updates)
-                    await ctx.message.add_reaction(u"\U0001F44D")
+                    await response.add_reaction(u"\U0001F44D")
                 elif response.content.upper() == 'N':
                     await ctx.send('server region not changed')
         else:
