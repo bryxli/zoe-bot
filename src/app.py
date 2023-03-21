@@ -98,9 +98,10 @@ async def region(ctx, arg=None):  # view current region / set new region of item
         if arg is None:
             await ctx.send(regionlist)
             return
-        if arg.upper() in regionlist:
+        current_region = arg.upper()
+        if current_region in regionlist:
             updates = {
-                'region': {'Value': {'S': arg}, 'Action': 'PUT'},
+                'region': {'Value': {'S': current_region}, 'Action': 'PUT'},
             }
             db.update_guild(str(ctx.guild.id), updates)
             await ctx.message.add_reaction(u"\U0001F44D")
