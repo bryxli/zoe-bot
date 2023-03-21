@@ -1,19 +1,31 @@
-# Running the bot
+# Zoe Bot
 
-## Startup commands
+## Description
+
+Discord bot that traverses through the Riot Games API to find information about players of the game League of Legends. Hosted on AWS EC2 with a DynamoDB instance.
+
+## Prerequisites
+
+Zoe is an IaC application that utilizes AWS CDK. Make sure to have the following installed and configured.
+ * [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html)
+ * [AWS CDK (TypeScript)](https://docs.aws.amazon.com/cdk/v2/guide/getting_started.html)
+
+## Running the bot
+
+### Startup commands
 
  * `cdk bootstrap`   initialize assets before deploy
  * `cdk synth`       emits the synthesized CloudFormation template
  * `cdk deploy`      deploy this stack to your default AWS account/region
  * `aws ssm start-session --target i-xxxxxxxxx` remote session for shell access
 
-## Start session
+### Start session
 
 ```
 aws ssm start-session --target i-089afc155a2e07d22
 ```
 
-## Install system dependencies
+### Install system dependencies
 
 ```
 sudo yum update -y
@@ -22,7 +34,7 @@ sudo yum install python38-pip -y
 sudo python3 -m pip install --upgrade pip
 ```
 
-## Install project dependencies
+### Install project dependencies
 
 ```
 cd /home/ssm-user
@@ -31,7 +43,7 @@ cd /home/ssm-user/zoe-bot/src
 sudo python3 -m pip install -r requirements.txt
 ```
 
-## Create config.json
+### Create config.json
 
 ```
 sudo touch config.json
@@ -40,15 +52,15 @@ sudo vim config.json
 
 Enter config.json, then `:wq`
 
-## Run
+### Run
 
 ```
 python3 app.py
 ```
 
-# Extras
+## Extras
 
-## Example config.json (put this file in [src/](src/))
+### Example config.json (put this file in [src/](src/))
 
 ```
 {
@@ -60,7 +72,7 @@ python3 app.py
 }
 ```
 
-## Example [template.json](src/template.json)
+### Example [template.json](src/template.json)
 
 Template to give Zoe custom responses! Responses are picked randomly based on game outcome.
 ```
@@ -69,18 +81,4 @@ Template to give Zoe custom responses! Responses are picked randomly based on ga
     "lose": ["amount","of"],
     "response": ["string","values","in","each","list","of","bot","responses"]
 }
-```
-
-## Python-3.10.4
-
-I have included the commands to install python 3.10. I have no idea if it will work as intended.
-```
-sudo yum install openssl-devel libffi-devel bzip2-devel
-sudo wget https://www.python.org/ftp/python/3.10.4/Python-3.10.4.tgz
-sudo tar -xf Python-3.10.4.tgz
-sudo rm Python-3.10.4.tgz
-cd Python-3.10.4/
-sudo ./configure --enable-optimizations
-sudo make -j $(nproc)
-sudo make altinstall
 ```
