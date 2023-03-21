@@ -5,6 +5,7 @@ import * as dynamodb from 'aws-cdk-lib/aws-dynamodb';
 
 import * as iam from 'aws-cdk-lib/aws-iam';
 import * as ec2 from 'aws-cdk-lib/aws-ec2';
+import * as fs from 'fs'
 
 import * as secretsmanager from 'aws-cdk-lib/aws-secretsmanager';
 
@@ -77,8 +78,12 @@ export class ZoeBotStack extends cdk.Stack {
       vpc: vpc,
       securityGroup: securityGroup,
       role: iamRole,
+      userData: ec2.UserData.forLinux(),
       // keyName: 'ZoeKey',
     });
+
+    const userDataScript = fs.readFileSync('./startup.sh', 'utf8');
+    ec2Instance.userData.addCommands(userDataScript);
 
     // Export EC2 instance id
     new cdk.CfnOutput(this, 'id', { value: ec2Instance.instanceId });
