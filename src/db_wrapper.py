@@ -1,7 +1,7 @@
 import boto3
 
 client = boto3.client('dynamodb', region_name='us-east-1')
-table_name = 'zoe_db'
+table_name = 'ZoeBotTable'
 
 
 def get_all():

@@ -1,38 +1,30 @@
 import * as cdk from 'aws-cdk-lib';
 import { Construct } from 'constructs';
-import * as ec2 from 'aws-cdk-lib/aws-ec2';
+
 import * as dynamodb from 'aws-cdk-lib/aws-dynamodb';
+
 import * as iam from 'aws-cdk-lib/aws-iam';
+import * as ec2 from 'aws-cdk-lib/aws-ec2';
+
+import * as secretsmanager from 'aws-cdk-lib/aws-secretsmanager';
 
 export class ZoeBotStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
-    const vpc = new ec2.Vpc(this, 'ZoeBotVpc', {
-      natGateways: 0,
-      subnetConfiguration: [
-        {
-          name: 'public',
-          subnetType: ec2.SubnetType.PUBLIC,
-        },
-      ],
-    });
-
-    const dynamo = new dynamodb.Table(this, 'ZoeBotTable', {
+    // Create DynamoDB table
+    const table = new dynamodb.Table(this, 'ZoeBotTable', {
       partitionKey: { name: 'guild_id', type: dynamodb.AttributeType.NUMBER },
       removalPolicy: cdk.RemovalPolicy.DESTROY,
+      tableName: 'ZoeBotTable'
     });
 
-    const securityGroup = new ec2.SecurityGroup(this, 'ZoeBotSg', {
-      vpc: vpc,
-      securityGroupName: 'ZoeBotSg',
-    });
-    securityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(22), 'allow SSH access from anywhere');
-
+    // Create EC2 role
     const iamRole = new iam.Role(this, 'ZoeBotIam', {
       assumedBy: new iam.ServicePrincipal('ec2.amazonaws.com')
     });
 
+    // Create policy to access DynamoDB table
     const dynamoDbPolicy = new iam.ManagedPolicy(this, 'ZoeBotPolicy', {
       statements: [
         new iam.PolicyStatement({
@@ -43,21 +35,41 @@ export class ZoeBotStack extends cdk.Stack {
             "dynamodb:Query"
           ],
           resources: [
-            dynamo.tableArn
+            table.tableArn
           ]
         })
       ]
     });
 
+    // Attach SSM and DynamoDB access to EC2 role
     iamRole.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('AmazonSSMManagedInstanceCore'));
     iamRole.addManagedPolicy(dynamoDbPolicy);
 
-    /*
+    // Create VPC
+    const vpc = new ec2.Vpc(this, 'ZoeBotVpc', {
+      natGateways: 0,
+      subnetConfiguration: [
+        {
+          name: 'public',
+          subnetType: ec2.SubnetType.PUBLIC,
+        },
+      ],
+    });
+
+    // Create EC2 security group
+    const securityGroup = new ec2.SecurityGroup(this, 'ZoeBotSg', {
+      vpc: vpc,
+      securityGroupName: 'ZoeBotSg',
+    });
+    securityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(22));
+
+    /* 
     const key = new ec2.CfnKeyPair(this, 'ZoeKeyPair', {
       keyName: 'ZoeKey',
     });
     */
 
+    // Create EC2 instance
     const ec2Instance = new ec2.Instance(this,'ZoeBotInstance', {
       instanceType: ec2.InstanceType.of(ec2.InstanceClass.T3, ec2.InstanceSize.MICRO),
       machineImage: new ec2.AmazonLinuxImage(),
@@ -67,6 +79,7 @@ export class ZoeBotStack extends cdk.Stack {
       // keyName: 'ZoeKey',
     });
 
+    // Export EC2 instance id
     new cdk.CfnOutput(this, 'id', { value: ec2Instance.instanceId });
   }
 }
