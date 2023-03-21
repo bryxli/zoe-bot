@@ -61,6 +61,10 @@ Template to give Zoe custom responses! Responses are picked randomly based on ga
 }
 ```
 
+### Region
+
+Currently, boto3 is set to the region `us-east-1`. You may have to change this [here](src/db_wrapper.py) depending on the configuration of the AWS CLI.
+
 ### Linux Screen
 
 It is recommended to use Linux Screen so the bot stays alive upon exit.
