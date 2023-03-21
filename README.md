@@ -65,7 +65,7 @@ Template to give Zoe custom responses! Responses are picked randomly based on ga
 
 It is recommended to use Linux Screen so the bot stays alive upon exit.
 ```
-screen -S zoe
+sudo screen -S zoe
 ```
 
 After initializing the bot, detach from the screen and exit the session.
@@ -76,5 +76,5 @@ exit
 
 Reattachment
 ```
-screen -r zoe
+sudo screen -r zoe
 ```
