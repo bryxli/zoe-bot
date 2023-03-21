@@ -8,26 +8,10 @@ export class ZoeBotStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
-    const vpc = new ec2.Vpc(this, 'ZoeBotVpc', {
-      natGateways: 0,
-      subnetConfiguration: [
-        {
-          name: 'public',
-          subnetType: ec2.SubnetType.PUBLIC,
-        },
-      ],
-    });
-
-    const dynamo = new dynamodb.Table(this, 'ZoeBotTable', {
+    const table = new dynamodb.Table(this, 'ZoeBotTable', {
       partitionKey: { name: 'guild_id', type: dynamodb.AttributeType.NUMBER },
       removalPolicy: cdk.RemovalPolicy.DESTROY,
     });
-
-    const securityGroup = new ec2.SecurityGroup(this, 'ZoeBotSg', {
-      vpc: vpc,
-      securityGroupName: 'ZoeBotSg',
-    });
-    securityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(22), 'allow SSH access from anywhere');
 
     const iamRole = new iam.Role(this, 'ZoeBotIam', {
       assumedBy: new iam.ServicePrincipal('ec2.amazonaws.com')
@@ -43,7 +27,7 @@ export class ZoeBotStack extends cdk.Stack {
             "dynamodb:Query"
           ],
           resources: [
-            dynamo.tableArn
+            table.tableArn
           ]
         })
       ]
@@ -51,6 +35,22 @@ export class ZoeBotStack extends cdk.Stack {
 
     iamRole.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('AmazonSSMManagedInstanceCore'));
     iamRole.addManagedPolicy(dynamoDbPolicy);
+
+    const vpc = new ec2.Vpc(this, 'ZoeBotVpc', {
+      natGateways: 0,
+      subnetConfiguration: [
+        {
+          name: 'public',
+          subnetType: ec2.SubnetType.PUBLIC,
+        },
+      ],
+    });
+
+    const securityGroup = new ec2.SecurityGroup(this, 'ZoeBotSg', {
+      vpc: vpc,
+      securityGroupName: 'ZoeBotSg',
+    });
+    securityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(22));
 
     /*
     const key = new ec2.CfnKeyPair(this, 'ZoeKeyPair', {
