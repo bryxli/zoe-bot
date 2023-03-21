@@ -1,8 +1,9 @@
 import boto3
 
-session = boto3.Session()
-region = session.region_name
+ec2_client = boto3.client('ec2')
+region = ec2_client.meta.region_name
 print(region)
+
 client = boto3.client('dynamodb', region_name=region)
 table_name = 'ZoeBotTable'
 
