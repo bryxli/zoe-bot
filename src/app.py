@@ -23,7 +23,7 @@ bot.config = config
 
 @bot.event
 async def on_ready() -> None:
-    await bot.change_presence(activity=discord.Game("#help"))
+    await bot.change_presence(activity=discord.Game("?help"))
     loop.start()
 
 
