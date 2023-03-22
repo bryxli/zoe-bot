@@ -12,7 +12,9 @@
     "build": "tsc",
     "watch": "tsc -w",
     "test": "jest",
-    "cdk": "cdk"
+    "cdk": "cdk",
+    "python": "python src/app.py",
+    "python3": "python3 src/app.py"
   },
   "devDependencies": {
     "@types/jest": "^29.4.0",

@@ -24,7 +24,7 @@ Zoe is an IaC application that utilizes AWS CDK and Discord. Make sure to have t
 ### Create config.json
 
 ```
-cd /home/ssm-user/zoe-bot/src
+cd /home/ssm-user/zoe-bot
 sudo touch config.json
 sudo vim config.json
 ```
@@ -39,7 +39,7 @@ python3 app.py
 
 ## Extras
 
-### Example config.json (put this file in [src/](src/))
+### Example [config.json](config.json)
 
 ```
 {
@@ -51,7 +51,7 @@ python3 app.py
 }
 ```
 
-### Example [template.json](src/template.json)
+### Example [template.json](template.json)
 
 Template to give Zoe custom responses! Responses are picked randomly based on game outcome.
 ```
