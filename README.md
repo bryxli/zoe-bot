@@ -4,6 +4,8 @@
 
 Discord bot that traverses through the Riot Games API to find information about players of the game League of Legends. Hosted on AWS EC2 with a DynamoDB instance.
 
+If a username has spaces, make sure to enclose it in spaces. Ex: ?adduser "user name"
+
 ## Prerequisites
 
 Zoe is an IaC application that utilizes AWS CDK and Discord. Make sure to have the following installed and configured.
