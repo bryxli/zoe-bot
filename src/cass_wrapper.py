@@ -27,4 +27,5 @@ def find_player_by_accountid(accountid, region):
         return summoner
     return None
 
-# me = find_player_by_name('bryxli', 'NA')
+me = find_player_by_name('bryxli', 'NA')
+print(str(me.match_history[1].creation))

@@ -14,7 +14,7 @@ export class ZoeBotStack extends cdk.Stack {
     // Create DynamoDB table
     const table = new dynamodb.Table(this, 'ZoeBotTable', {
       partitionKey: { name: 'guild_id', type: dynamodb.AttributeType.NUMBER },
-      removalPolicy: cdk.RemovalPolicy.DESTROY,
+      // removalPolicy: cdk.RemovalPolicy.DESTROY,
       tableName: 'ZoeBotTable'
     });
 
