@@ -61,6 +61,7 @@ export class ZoeBotStack extends cdk.Stack {
       vpc: vpc,
       securityGroupName: 'ZoeBotSg',
     });
+    securityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(22));
 
     // Create EC2 instance
     const ec2Instance = new ec2.Instance(this,'ZoeBotInstance', {
