@@ -4,7 +4,7 @@
 
 Discord bot that traverses through the Riot Games API to find information about players of the game League of Legends. Hosted on AWS EC2 with a DynamoDB instance.
 
-If a username has spaces, make sure to enclose it in spaces. Ex: ?adduser "user name"
+If a username has spaces, make sure to enclose it in quotes. Ex: ?adduser "user name"
 
 ## Prerequisites
 
