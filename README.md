@@ -7,6 +7,7 @@ Discord bot that traverses through the Riot Games API to find information about 
 ## Prerequisites
 
 Zoe is an IaC application that utilizes AWS CDK and Discord. Make sure to have the following installed and configured.
+ * [Node.js / npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
  * [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html)
  * [AWS CDK (TypeScript)](https://docs.aws.amazon.com/cdk/v2/guide/getting_started.html)
  * [Discord Application](https://discord.com/developers/docs/getting-started)
