@@ -70,7 +70,6 @@ export class ZoeBotStack extends cdk.Stack {
       securityGroup: securityGroup,
       role: iamRole,
       userData: ec2.UserData.forLinux(),
-      // keyName: 'ZoeKey',
     });
 
     const userDataScript = fs.readFileSync('./startup.sh', 'utf8');
