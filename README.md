@@ -14,7 +14,8 @@ Zoe is an IaC application that utilizes AWS CDK and Discord. Make sure to have t
 ## Running the bot
 
 ### Startup commands
-
+ 
+ * `npm install`   install Node.js dependencies
  * `cdk bootstrap`   initialize assets before deploy
  * `cdk synth`       emits the synthesized CloudFormation template
  * `cdk deploy`      deploy this stack to your default AWS account/region
