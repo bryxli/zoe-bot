@@ -1,4 +1,4 @@
-# Zoe Bot
+# Zoe Bot  <img src=favicon.ico width="50" height="50">
 
 ## Description
 
