@@ -38,7 +38,8 @@ async def loop():
         discord_channel = discord_guild.get_channel(int(channel_id))
 
         # [{'M':{account_id:{'S':last_created}}}...]
-        for user_data in guild['userlist']['L']:
+        user_list = random.shuffle(guild['userlist']['L'])
+        for user_data in user_list:
             account_id = list(user_data['M'].keys())[0]
 
             summoner = cass.find_player_by_accountid(
