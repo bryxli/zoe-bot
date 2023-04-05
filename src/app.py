@@ -33,6 +33,7 @@ async def loop():
     for guild in data:
         guild_id = guild['guild_id']['N']
         channel_id = guild['channel_id']['N']
+        print(f'checking in {guild_id}:{channel_id}')
 
         discord_guild = bot.get_guild(int(guild_id))
         discord_channel = discord_guild.get_channel(int(channel_id))
@@ -40,6 +41,7 @@ async def loop():
         # [{'M':{account_id:{'S':last_created}}}...]
         for user_data in guild['userlist']['L']:
             account_id = list(user_data['M'].keys())[0]
+            print(f'found user {account_id}')
 
             summoner = cass.find_player_by_accountid(
                 account_id, guild['region']['S'])
@@ -55,6 +57,7 @@ async def loop():
                 last_created_old = user_data['M'][account_id]['S']
                 last_created = str(match.creation)
                 if last_created != last_created_old:
+                    print('found new match')
 
                     player = match.participants[id]
                     summoner_name = summoner.name

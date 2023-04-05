@@ -1,3 +1,4 @@
+#!/bin/bash
 sudo su
 sudo yum update -y
 sudo yum groupinstall "Development Tools" -y
