@@ -70,7 +70,7 @@ export class ZoeBotStack extends cdk.Stack {
 
     // Create EC2 instance
     const ec2Instance = new ec2.Instance(this,'ZoeBotInstance', {
-      instanceType: ec2.InstanceType.of(ec2.InstanceClass.T3, ec2.InstanceSize.MICRO),
+      instanceType: ec2.InstanceType.of(ec2.InstanceClass.T2, ec2.InstanceSize.MICRO),
       machineImage: new ec2.AmazonLinuxImage(),
       vpc: vpc,
       securityGroup: securityGroup,
