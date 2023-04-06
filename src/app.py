@@ -76,17 +76,9 @@ async def loop():
                     await discord_channel.send(t.substitute(summoner_name=summoner_name, kda=kda, champion_name=champion_name))
 
 
-@bot.command()
+@bot.command(description='zoe will talk to you')
 async def speak(ctx):
     response = template['response']
     await ctx.send(random.choice(response))
-
-
-#@bot.command()
-#async def help(ctx):
-#    post_setup = ''
-#    if db.guild_exists(str(ctx.guild.id)):
-#        post_setup = '?reset - reset instance\n?region <region> - change server region\n?adduser <league username> - add user to server\n?deluser <league username> - delete user from server\n?userlist - show server userlist\n'
-#    await ctx.send(f'Commands\n?setup - create server instance\n{post_setup}?speak - zoe will talk to you')
 
 bot.run(config['token'])
