@@ -24,6 +24,15 @@ Zoe is an IaC application that utilizes AWS CDK and Discord. Make sure to have t
  * `cdk deploy`      deploy this stack to your default AWS account/region
  * `aws ssm start-session --target i-xxxxxxxxx` remote session for shell access
 
+
+### UserData Script
+
+You can check to see if [startup.sh](./startup.sh) ran by seeing if python3 is installed.
+```
+python3
+```
+If python3 is not installed, you will have to run [startup.sh](./startup.sh) manually before creating the config. I am unsure why this is happening, please message me if you know why!
+
 ### Create config.json
 
 ```
@@ -37,7 +46,7 @@ Enter config.json (see below), then `:wq`
 ### Run
 
 ```
-python3 app.py
+python3 src/app.py
 ```
 
 ## Extras
@@ -85,4 +94,14 @@ exit
 Reattachment
 ```
 sudo screen -r zoe
+```
+
+### NPM
+
+If you want to run the bot using `npm run python3` from the project directory, this is how to install NPM.
+```
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
+. ~/.nvm/nvm.sh
+nvm install 16
+npm install -g npm
 ```
