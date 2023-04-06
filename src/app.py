@@ -17,8 +17,13 @@ with open("template.json") as file:
 bot = interactions.Client(token=config['token'], default_scope=1016953904644247632)
 
 
+def lambda__handler(event, context):
+    bot.start()
+
+
 @bot.event
 async def on_ready() -> None:
+    # await bot.change_presence(activity=discord.Game("?help"))
     loop.start()
 
 
@@ -189,5 +194,3 @@ async def help(ctx):
     if db.guild_exists(str(ctx.guild.id)):
         post_setup = '?reset - reset instance\n?region <region> - change server region\n?adduser <league username> - add user to server\n?deluser <league username> - delete user from server\n?userlist - show server userlist\n'
     await ctx.send(f'Commands\n?setup - create server instance\n{post_setup}?speak - zoe will talk to you')
-
-bot.start()
