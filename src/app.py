@@ -6,8 +6,8 @@ import disnake
 from disnake.ext import commands, tasks
 
 from commands.help_command import HelpCommand
-from commands.server_commands import ServerSetup
-from commands.league_commands import LeagueSetup
+from commands.server_commands import Server
+from commands.league_commands import League
 
 import wrappers.cassiopeia as cass
 import wrappers.dynamo as db
@@ -19,8 +19,8 @@ with open("template.json") as file:
     template = json.load(file)
 
 bot = commands.Bot(command_prefix=commands.when_mentioned_or(config['prefix']), intents=disnake.Intents.all(), help_command=HelpCommand())
-bot.add_cog(ServerSetup(bot))
-bot.add_cog(LeagueSetup(bot))
+bot.add_cog(Server(bot))
+bot.add_cog(League(bot))
 
 @bot.event
 async def on_ready() -> None:

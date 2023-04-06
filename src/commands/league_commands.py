@@ -2,7 +2,7 @@ from disnake.ext import commands
 import wrappers.cassiopeia as cass
 import wrappers.dynamo as db
 
-class LeagueSetup(commands.Cog):
+class League(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 

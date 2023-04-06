@@ -1,7 +1,7 @@
 from disnake.ext import commands
 import wrappers.dynamo as db
 
-class ServerSetup(commands.Cog):
+class Server(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
