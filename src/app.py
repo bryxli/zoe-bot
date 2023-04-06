@@ -96,12 +96,18 @@ async def reset(ctx: interactions.CommandContext):
 @bot.command(name='region', description='set new region of item in table', options= [
     interactions.Option(
         name='region',
-        description='set new region of item in table',
+        description='region',
+        type=interactions.OptionType.STRING,
+        required=False,
+    ),
+    interactions.Option(
+        name='confirmation',
+        description='confirmation',
         type=interactions.OptionType.STRING,
         required=False,
     )
 ])
-async def region(ctx: interactions.CommandContext, region: str = ''):  
+async def region(ctx: interactions.CommandContext, region: str = '', confirmation: str = ''):  
     if db.guild_exists(str(ctx.guild.id)):
         regionlist = ['BR', 'EUNE', 'EUW', 'JP', 'KR',
                       'LAN', 'LAS', 'NA', 'OCE', 'TR', 'RU']
@@ -110,39 +116,35 @@ async def region(ctx: interactions.CommandContext, region: str = ''):
             return
         current_region = region.upper()
         if current_region in regionlist:
-            await ctx.send('changing server region will clear all users, are you sure? y/n')
-
-            def check(m):
-                return m.author == ctx.author and m.channel == ctx.channel
-
-            try:
-                response = await bot.wait_for('message', check=check, timeout=10.0)
-            except Exception:
-                await ctx.send('timeout: server region not changed')
-            else:
-                if response.content.upper() == 'Y':
-                    updates = {
+            if confirmation.upper() == 'Y':
+                updates = {
                         'region': {'Value': {'S': current_region}, 'Action': 'PUT'},
                         'userlist': {'Value': {'L': []}, 'Action': 'PUT'},
-                    }
-                    db.update_guild(str(ctx.guild.id), updates)
-                    await response.add_reaction(u"\U0001F44D")
-                elif response.content.upper() == 'N':
-                    await ctx.send('server region not changed')
+                }
+                db.update_guild(str(ctx.guild.id), updates)
+                await ctx.message.add_reaction(u"\U0001F44D")
+            else:
+                await ctx.send('changing server region will clear all users, please enter "Y" for confirmation field Ex: /region [region:na, confirmation:Y]')
         else:
             await ctx.send('region not found')
     else:
         await ctx.send('guild has not been setup')
 
 
-@bot.command(name='adduser', description='add accountid to item in table')
-async def adduser(ctx: interactions.CommandContext, arg=None): 
+@bot.command(name='adduser', description='add accountid to item in table', options= [
+    interactions.Option(
+        name='username',
+        description='username',
+        type=interactions.OptionType.STRING,
+        required=True,
+    )
+])
+async def adduser(ctx: interactions.CommandContext, username: str = ''): 
     if db.guild_exists(str(ctx.guild.id)):
-        if arg is None:
+        if username == '':
             await ctx.send('please enter a username')
             return
-        player = cass.find_player_by_name(
-            arg, db.get_guild(str(ctx.guild.id))['region']['S'])
+        player = cass.find_player_by_name(username, db.get_guild(str(ctx.guild.id))['region']['S'])
         if player is None:
             await ctx.send('please enter a valid username')
             return
@@ -155,14 +157,20 @@ async def adduser(ctx: interactions.CommandContext, arg=None):
         await ctx.send('guild has not been setup')
 
 
-@bot.command(name='deluser', description='delete accountid from item in table')
-async def deluser(ctx: interactions.CommandContext, arg=None):  
+@bot.command(name='deluser', description='delete accountid from item in table', options= [
+    interactions.Option(
+        name='username',
+        description='username',
+        type=interactions.OptionType.STRING,
+        required=True,
+    )
+])
+async def deluser(ctx: interactions.CommandContext, username: str = ''):  
     if db.guild_exists(str(ctx.guild.id)):
-        if arg is None:
+        if username == '':
             await ctx.send('please enter a username')
             return
-        player = cass.find_player_by_name(
-            arg, db.get_guild(str(ctx.guild.id))['region']['S'])
+        player = cass.find_player_by_name(username, db.get_guild(str(ctx.guild.id))['region']['S'])
         if player is None:
             await ctx.send('please enter a valid username')
             return
@@ -185,7 +193,7 @@ async def userlist(ctx: interactions.CommandContext):
             users.append(cass.find_player_by_accountid(
                 account, db.get_guild(str(ctx.guild.id))['region']['S']).name)
         if len(users) > 0:
-            await ctx.send(users)
+            await ctx.send(str(users))
         else:
             await ctx.send('no users')
     else:
@@ -204,6 +212,7 @@ async def help(ctx: interactions.CommandContext):
     if db.guild_exists(str(ctx.guild.id)):
         post_setup = '?reset - reset instance\n?region <region> - change server region\n?adduser <league username> - add user to server\n?deluser <league username> - delete user from server\n?userlist - show server userlist\n'
     await ctx.send(f'Commands\n?setup - create server instance\n{post_setup}?speak - zoe will talk to you')
+
 
 if __name__ == '__main__':
     bot.start()
