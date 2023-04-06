@@ -2,9 +2,8 @@ import json
 import random
 from string import Template
 
-import discord
-from discord.ext import commands, tasks
-from discord.ext.commands import Bot
+import disnake
+from disnake.ext import commands, tasks
 
 import cass_wrapper as cass
 import db_wrapper as db
@@ -15,15 +14,15 @@ with open('config.json') as file:
 with open("template.json") as file:
     template = json.load(file)
 
-intents = discord.Intents.all()
-bot = Bot(command_prefix=commands.when_mentioned_or(
+intents = disnake.Intents.all()
+bot = commands.Bot(command_prefix=commands.when_mentioned_or(
     config['prefix']), intents=intents, help_command=None)
 bot.config = config
 
 
 @bot.event
 async def on_ready() -> None:
-    await bot.change_presence(activity=discord.Game("?help"))
+    await bot.change_presence(activity=disnake.Game("?help"))
     loop.start()
 
 
