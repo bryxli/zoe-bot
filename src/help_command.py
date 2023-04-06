@@ -13,9 +13,12 @@ class HelpCommand(commands.HelpCommand):
            command_signatures = [self.get_command_signature(c) for c in filtered]
 
            if command_signatures:
-                cog_name = getattr(cog, "qualified_name", "No Category")
+                cog_name = getattr(cog, "qualified_name", "Other")
                 if cog_name == 'ServerSetup':
                     command_signatures = command_signatures[::-1]
+                    cog_name = 'Server'
+                elif cog_name == 'LeagueSetup':
+                    cog_name = 'League'
                 embed.add_field(name=cog_name, value="\n".join(command_signatures), inline=False)
 
         channel = self.get_destination()
