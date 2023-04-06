@@ -2,9 +2,8 @@ import json
 import random
 from string import Template
 
-import discord
-from discord.ext import commands, tasks
-from discord.ext.commands import Bot
+from discord.ext import tasks
+import interactions
 
 import cass_wrapper as cass
 import db_wrapper as db
@@ -15,15 +14,11 @@ with open('config.json') as file:
 with open("template.json") as file:
     template = json.load(file)
 
-intents = discord.Intents.all()
-bot = Bot(command_prefix=commands.when_mentioned_or(
-    config['prefix']), intents=intents, help_command=None)
-bot.config = config
+bot = interactions.Client(token=config['token'], default_scope=1016953904644247632)
 
 
 @bot.event
 async def on_ready() -> None:
-    await bot.change_presence(activity=discord.Game("?help"))
     loop.start()
 
 
@@ -75,8 +70,8 @@ async def loop():
                     await discord_channel.send(t.substitute(summoner_name=summoner_name, kda=kda, champion_name=champion_name))
 
 
-@bot.command()
-async def setup(ctx):  # create new item in table
+@bot.command(name='setup', description='create new item in table')
+async def setup(ctx):
     if not db.guild_exists(str(ctx.guild.id)):
         db.create_guild(str(ctx.guild.id), str(ctx.channel.id))
         await ctx.send(f'zoe will post game updates here (reminder: zoe only speaks once every five minutes!)\nunlocked commands: ?reset ?region ?adduser ?deluser ?userlist')
@@ -84,8 +79,8 @@ async def setup(ctx):  # create new item in table
         await ctx.send('guild already exists')
 
 
-@bot.command()
-async def reset(ctx):  # delete item from table
+@bot.command(name='reset', description='delete item from table')
+async def reset(ctx): 
     if db.guild_exists(str(ctx.guild.id)):
         db.destroy_guild(str(ctx.guild.id))
         await ctx.message.add_reaction(u"\U0001F44D")
@@ -93,8 +88,8 @@ async def reset(ctx):  # delete item from table
         await ctx.send('guild has not been setup')
 
 
-@bot.command()
-async def region(ctx, arg=None):  # set new region of item in table
+@bot.command(name='region', description='set new region of item in table')
+async def region(ctx, arg=None):  
     if db.guild_exists(str(ctx.guild.id)):
         regionlist = ['BR', 'EUNE', 'EUW', 'JP', 'KR',
                       'LAN', 'LAS', 'NA', 'OCE', 'TR', 'RU']
@@ -128,8 +123,8 @@ async def region(ctx, arg=None):  # set new region of item in table
         await ctx.send('guild has not been setup')
 
 
-@bot.command()
-async def adduser(ctx, arg=None):  # add accountid to item in table
+@bot.command(name='adduser', description='add accountid to item in table')
+async def adduser(ctx, arg=None): 
     if db.guild_exists(str(ctx.guild.id)):
         if arg is None:
             await ctx.send('please enter a username')
@@ -148,8 +143,8 @@ async def adduser(ctx, arg=None):  # add accountid to item in table
         await ctx.send('guild has not been setup')
 
 
-@bot.command()
-async def deluser(ctx, arg=None):  # delete accountid from item in table
+@bot.command(name='deluser', description='delete accountid from item in table')
+async def deluser(ctx, arg=None):  
     if db.guild_exists(str(ctx.guild.id)):
         if arg is None:
             await ctx.send('please enter a username')
@@ -169,8 +164,8 @@ async def deluser(ctx, arg=None):  # delete accountid from item in table
         await ctx.send('guild has not been setup')
 
 
-@bot.command()
-async def userlist(ctx):  # display list of users from item in table
+@bot.command(name='userlist', description='display list of users from item in table')
+async def userlist(ctx):  
     if db.guild_exists(str(ctx.guild.id)):
         accountlist = db.get_all_users(str(ctx.guild.id))
         users = []
@@ -182,17 +177,17 @@ async def userlist(ctx):  # display list of users from item in table
         await ctx.send('guild has not been setup')
 
 
-@bot.command()
+@bot.command(name='speak', description='blah blah blah')
 async def speak(ctx):
     response = template['response']
     await ctx.send(random.choice(response))
 
 
-@bot.command()
+@bot.command(name='help', description='display help menu')
 async def help(ctx):
     post_setup = ''
     if db.guild_exists(str(ctx.guild.id)):
         post_setup = '?reset - reset instance\n?region <region> - change server region\n?adduser <league username> - add user to server\n?deluser <league username> - delete user from server\n?userlist - show server userlist\n'
     await ctx.send(f'Commands\n?setup - create server instance\n{post_setup}?speak - zoe will talk to you')
 
-bot.run(config['token'])
+bot.start()

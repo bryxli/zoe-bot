@@ -3,9 +3,12 @@ import { Construct } from 'constructs';
 
 import * as dynamodb from 'aws-cdk-lib/aws-dynamodb';
 
+import * as lambda from 'aws-cdk-lib/aws-lambda'
+import * as apigateway from 'aws-cdk-lib/aws-apigateway'; // this vs api gateway v2
+
 import * as iam from 'aws-cdk-lib/aws-iam';
 import * as ec2 from 'aws-cdk-lib/aws-ec2';
-import * as fs from 'fs'
+import * as fs from 'fs';
 
 export class ZoeBotStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
@@ -18,6 +21,32 @@ export class ZoeBotStack extends cdk.Stack {
       tableName: 'ZoeBotTable'
     });
 
+    // Create EC2 role
+    const iamRole = new iam.Role(this, 'ZoeBotIam', {
+      assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com')
+    });
+    iamRole.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('service-role/AWSLambdaBasicExecutionRole'));
+
+    // Create Lambda function
+    const lambdaFunction = new lambda.Function(this, 'ZoeFunction', {
+      runtime: lambda.Runtime.PYTHON_3_8,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset('src'),
+      memorySize: 256,
+      role: iamRole
+    });
+
+    // Create API Gateway
+    const api = new apigateway.RestApi(this, 'ZoeApi', {
+      restApiName: 'ZoeApi',
+      description: 'API for Discord bot',
+    });
+
+    const commands = api.root.addResource('commands');
+    const commandIntegration = new apigateway.LambdaIntegration(lambdaFunction);
+    commands.addMethod('POST', commandIntegration);
+
+    /*
     // Create EC2 role
     const iamRole = new iam.Role(this, 'ZoeBotIam', {
       assumedBy: new iam.ServicePrincipal('ec2.amazonaws.com')
@@ -80,5 +109,6 @@ export class ZoeBotStack extends cdk.Stack {
 
     // Export EC2 instance id
     new cdk.CfnOutput(this, 'id', { value: ec2Instance.instanceId });
+    */
   }
 }
