@@ -5,12 +5,12 @@ from string import Template
 import disnake
 from disnake.ext import commands, tasks
 
-from help_command import HelpCommand
-from server_commands import ServerSetup
-from league_commands import LeagueSetup
+from commands.help_command import HelpCommand
+from commands.server_commands import ServerSetup
+from commands.league_commands import LeagueSetup
 
-import cass_wrapper as cass
-import db_wrapper as db
+import wrappers.cassiopeia as cass
+import wrappers.dynamo as db
 
 with open('config.json') as file:
     config = json.load(file)

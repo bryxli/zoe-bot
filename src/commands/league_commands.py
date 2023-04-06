@@ -1,6 +1,6 @@
 from disnake.ext import commands
-import cass_wrapper as cass
-import db_wrapper as db
+import wrappers.cassiopeia as cass
+import wrappers.dynamo as db
 
 class LeagueSetup(commands.Cog):
     def __init__(self, bot):

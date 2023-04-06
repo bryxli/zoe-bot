@@ -1,5 +1,5 @@
 from disnake.ext import commands
-import db_wrapper as db
+import wrappers.dynamo as db
 
 class ServerSetup(commands.Cog):
     def __init__(self, bot):

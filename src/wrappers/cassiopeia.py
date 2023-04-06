@@ -1,5 +1,4 @@
 import json
-
 import cassiopeia as cass
 
 with open('config.json') as file:
