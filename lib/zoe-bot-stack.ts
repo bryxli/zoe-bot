@@ -30,7 +30,7 @@ export class ZoeBotStack extends cdk.Stack {
     // Create Lambda function
     const lambdaFunction = new lambda.Function(this, 'ZoeFunction', {
       runtime: lambda.Runtime.PYTHON_3_8,
-      handler: 'index.handler',
+      handler: 'app.lambda_handler',
       code: lambda.Code.fromAsset('src'),
       memorySize: 256,
       role: iamRole

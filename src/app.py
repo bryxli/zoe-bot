@@ -76,7 +76,7 @@ async def loop():
 
 
 @bot.command(name='setup', description='create new item in table')
-async def setup(ctx):
+async def setup(ctx: interactions.CommandContext):
     if not db.guild_exists(str(ctx.guild.id)):
         db.create_guild(str(ctx.guild.id), str(ctx.channel.id))
         await ctx.send(f'zoe will post game updates here (reminder: zoe only speaks once every five minutes!)\nunlocked commands: ?reset ?region ?adduser ?deluser ?userlist')
@@ -85,7 +85,7 @@ async def setup(ctx):
 
 
 @bot.command(name='reset', description='delete item from table')
-async def reset(ctx): 
+async def reset(ctx: interactions.CommandContext): 
     if db.guild_exists(str(ctx.guild.id)):
         db.destroy_guild(str(ctx.guild.id))
         await ctx.message.add_reaction(u"\U0001F44D")
@@ -93,15 +93,22 @@ async def reset(ctx):
         await ctx.send('guild has not been setup')
 
 
-@bot.command(name='region', description='set new region of item in table')
-async def region(ctx, arg=None):  
+@bot.command(name='region', description='set new region of item in table', options= [
+    interactions.Option(
+        name='region',
+        description='set new region of item in table',
+        type=interactions.OptionType.STRING,
+        required=False,
+    )
+])
+async def region(ctx: interactions.CommandContext, region: str = ''):  
     if db.guild_exists(str(ctx.guild.id)):
         regionlist = ['BR', 'EUNE', 'EUW', 'JP', 'KR',
                       'LAN', 'LAS', 'NA', 'OCE', 'TR', 'RU']
-        if arg is None:
-            await ctx.send(regionlist)
+        if region == '':
+            await ctx.send(str(regionlist))
             return
-        current_region = arg.upper()
+        current_region = region.upper()
         if current_region in regionlist:
             await ctx.send('changing server region will clear all users, are you sure? y/n')
 
@@ -129,7 +136,7 @@ async def region(ctx, arg=None):
 
 
 @bot.command(name='adduser', description='add accountid to item in table')
-async def adduser(ctx, arg=None): 
+async def adduser(ctx: interactions.CommandContext, arg=None): 
     if db.guild_exists(str(ctx.guild.id)):
         if arg is None:
             await ctx.send('please enter a username')
@@ -149,7 +156,7 @@ async def adduser(ctx, arg=None):
 
 
 @bot.command(name='deluser', description='delete accountid from item in table')
-async def deluser(ctx, arg=None):  
+async def deluser(ctx: interactions.CommandContext, arg=None):  
     if db.guild_exists(str(ctx.guild.id)):
         if arg is None:
             await ctx.send('please enter a username')
@@ -170,27 +177,33 @@ async def deluser(ctx, arg=None):
 
 
 @bot.command(name='userlist', description='display list of users from item in table')
-async def userlist(ctx):  
+async def userlist(ctx: interactions.CommandContext):  
     if db.guild_exists(str(ctx.guild.id)):
         accountlist = db.get_all_users(str(ctx.guild.id))
         users = []
         for account in accountlist:
             users.append(cass.find_player_by_accountid(
                 account, db.get_guild(str(ctx.guild.id))['region']['S']).name)
-        await ctx.send(users)
+        if len(users) > 0:
+            await ctx.send(users)
+        else:
+            await ctx.send('no users')
     else:
         await ctx.send('guild has not been setup')
 
 
 @bot.command(name='speak', description='blah blah blah')
-async def speak(ctx):
+async def speak(ctx: interactions.CommandContext):
     response = template['response']
     await ctx.send(random.choice(response))
 
 
 @bot.command(name='help', description='display help menu')
-async def help(ctx):
+async def help(ctx: interactions.CommandContext):
     post_setup = ''
     if db.guild_exists(str(ctx.guild.id)):
         post_setup = '?reset - reset instance\n?region <region> - change server region\n?adduser <league username> - add user to server\n?deluser <league username> - delete user from server\n?userlist - show server userlist\n'
     await ctx.send(f'Commands\n?setup - create server instance\n{post_setup}?speak - zoe will talk to you')
+
+if __name__ == '__main__':
+    bot.start()
