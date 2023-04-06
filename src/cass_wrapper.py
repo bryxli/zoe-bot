@@ -27,5 +27,6 @@ def find_player_by_accountid(accountid, region):
         return summoner
     return None
 
-me = find_player_by_name('bryxli', 'NA')
-print(str(me.match_history[1].creation))
+if __name__ == '__main__':
+    me = find_player_by_name('bryxli', 'NA')
+    print(str(me.match_history[1].creation))
