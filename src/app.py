@@ -35,7 +35,7 @@ async def loop():
         channel_id = guild['channel_id']['N']
         print(f'checking in {guild_id}:{channel_id}')
 
-        discord_guild = bot.get_guild(int(guild_id)) # not available in interactions
+        discord_guild = bot.get_guild(int(guild_id))
         discord_channel = discord_guild.get_channel(int(channel_id))
 
         # [{'M':{account_id:{'S':last_created}}}...]
