@@ -5,7 +5,7 @@ class ServerSetup(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command(description='create server instance')
+    @commands.command(aliases=['s'], description='create server instance')
     async def setup(self, ctx):  # create new item in table
         if not db.guild_exists(str(ctx.guild.id)):
             db.create_guild(str(ctx.guild.id), str(ctx.channel.id))
@@ -13,7 +13,7 @@ class ServerSetup(commands.Cog):
         else:
             await ctx.send('guild already exists')
 
-    @commands.command(description='reset instance')
+    @commands.command(aliases=['r'], description='reset instance')
     async def reset(self, ctx):  # delete item from table
         if db.guild_exists(str(ctx.guild.id)):
             db.destroy_guild(str(ctx.guild.id))
@@ -21,7 +21,7 @@ class ServerSetup(commands.Cog):
         else:
             await ctx.send('guild has not been setup')
 
-    @commands.command(description='change server region')
+    @commands.command(aliases=['rg'], description='change server region')
     async def region(self, ctx, arg=None):  # set new region of item in table
         if db.guild_exists(str(ctx.guild.id)):
             regionlist = ['BR', 'EUNE', 'EUW', 'JP', 'KR',
