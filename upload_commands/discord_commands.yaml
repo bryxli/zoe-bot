@@ -1,0 +1,10 @@
+- name: help
+  description: command list
+
+- name: adduser
+  description: add user to guild, user must be a valid League of Legends username
+  options:
+    - name: username
+      description: League of Legends username
+      type: 3
+      required: true
