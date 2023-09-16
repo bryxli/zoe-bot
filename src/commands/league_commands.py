@@ -3,10 +3,7 @@ import wrappers.cassiopeia as cass
 import wrappers.dynamo as db
 
 class League(commands.Cog):
-    def __init__(self, bot):
-        self.bot = bot
-
-    @commands.command(aliases=['au'], description='add user to guild, user must be a valid League of Legends username')
+    @commands.slash_command(aliases=['au'], description='add user to guild, user must be a valid League of Legends username')
     async def adduser(self, ctx, arg=None):  # add accountid to item in table
         if db.guild_exists(str(ctx.guild.id)):
             if arg is None:
@@ -25,7 +22,7 @@ class League(commands.Cog):
         else:
             await ctx.send('guild has not been setup')
 
-    @commands.command(aliases=['du'], description='add user to guild, user must be a valid League of Legends username and exist')
+    @commands.slash_command(aliases=['du'], description='add user to guild, user must be a valid League of Legends username and exist')
     async def deluser(self, ctx, arg=None):  # delete accountid from item in table
         if db.guild_exists(str(ctx.guild.id)):
             if arg is None:
@@ -45,7 +42,7 @@ class League(commands.Cog):
         else:
             await ctx.send('guild has not been setup')
 
-    @commands.command(aliases=['ul'], description='show guild userlist')
+    @commands.slash_command(aliases=['ul'], description='show guild userlist')
     async def userlist(self, ctx):  # display list of users from item in table
         if db.guild_exists(str(ctx.guild.id)):
             accountlist = db.get_all_users(str(ctx.guild.id))

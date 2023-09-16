@@ -2,10 +2,12 @@ from disnake.ext import commands
 import wrappers.dynamo as db
 
 class Server(commands.Cog):
-    def __init__(self, bot):
-        self.bot = bot
+    def __init__(self, client):
+        self.client = client
 
-    @commands.command(aliases=['s'], description='create guild instance')
+    # TODO: Help Command
+
+    @commands.slash_command(aliases=['s'], description='create guild instance')
     async def setup(self, ctx):  # create new item in table
         if not db.guild_exists(str(ctx.guild.id)):
             db.create_guild(str(ctx.guild.id), str(ctx.channel.id))
@@ -13,7 +15,7 @@ class Server(commands.Cog):
         else:
             await ctx.send('guild already exists')
 
-    @commands.command(aliases=['r'], description='reset instance')
+    @commands.slash_command(aliases=['r'], description='reset instance')
     async def reset(self, ctx):  # delete item from table
         if db.guild_exists(str(ctx.guild.id)):
             await ctx.send('reset will clear all users, are you sure? y/n')
@@ -22,7 +24,7 @@ class Server(commands.Cog):
                 return m.author == ctx.author and m.channel == ctx.channel
 
             try:
-                response = await self.bot.wait_for('message', check=check, timeout=10.0)
+                response = await self.client.wait_for('message', check=check, timeout=10.0)
             except Exception:
                 await ctx.send('timeout: guild not reset')
             else:
@@ -34,7 +36,7 @@ class Server(commands.Cog):
         else:
             await ctx.send('guild not setup')
 
-    @commands.command(aliases=['rg'], description='change guild region')
+    @commands.slash_command(aliases=['rg'], description='change guild region')
     async def region(self, ctx, arg=None):  # set new region of item in table
         if db.guild_exists(str(ctx.guild.id)):
             regionlist = ['BR', 'EUNE', 'EUW', 'JP', 'KR',
@@ -50,7 +52,7 @@ class Server(commands.Cog):
                     return m.author == ctx.author and m.channel == ctx.channel
 
                 try:
-                    response = await self.bot.wait_for('message', check=check, timeout=10.0)
+                    response = await self.client.wait_for('message', check=check, timeout=10.0)
                 except Exception:
                     await ctx.send('timeout: guild region not changed')
                 else:
