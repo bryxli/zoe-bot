@@ -8,8 +8,8 @@ import json
 import random
 
 DISCORD_PUBLIC_KEY = os.environ.get("DISCORD_PUBLIC_KEY")
-SERVER_COMMANDS = ['TODO','TODO']
-LEAGUE_COMMANDS = ['TODO','TODO']
+SERVER_COMMANDS = ['setup','reset','region']
+LEAGUE_COMMANDS = ['adduser','deluser','userlist']
 
 with open("template.json") as file:
     template = json.load(file)
