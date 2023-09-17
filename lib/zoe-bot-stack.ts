@@ -21,7 +21,8 @@ export class ZoeBotStack extends cdk.Stack {
           DISCORD_PUBLIC_KEY: config.discord_public_key,
           TOKEN: config.token,
           APPLICATION_ID: config.application_id,
-          GUILD_ID: config.guild_id
+          GUILD_ID: config.guild_id,
+          RIOT_KEY: config.riot_key
         },
       }
     );

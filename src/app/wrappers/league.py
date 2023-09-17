@@ -1,15 +1,15 @@
-import json
+import os
 import cassiopeia as cass
 
-with open('config.json') as file:
-    config = json.load(file)
+RIOT_KEY = os.environ.get("RIOT_KEY")
 
 settings = {
     'global': {'version_from_match': 'patch'},
     'plugins': {},
-    'pipeline': {'Cache': {}, 'DDragon': {}, 'RiotAPI': {'api_key': config['riot_key']}},
+    'pipeline': {'Cache': {}, 'DDragon': {}, 'RiotAPI': {'api_key': RIOT_KEY}},
     'logging': {'print_calls': False, 'print_riot_api_key': False, 'default': 'WARNING', 'core': 'WARNING'}
 }
+
 cass.apply_settings(settings)
 
 
@@ -25,6 +25,3 @@ def find_player_by_accountid(accountid, region):
     if (summoner.exists):
         return summoner
     return None
-
-# me = find_player_by_name('bryxli', 'NA')
-# print(str(me.match_history[1].creation))

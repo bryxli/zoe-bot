@@ -7,6 +7,9 @@ from discord_interactions import verify_key_decorator
 import json
 import random
 
+import server_commands
+import league_commands
+
 DISCORD_PUBLIC_KEY = os.environ.get("DISCORD_PUBLIC_KEY")
 SERVER_COMMANDS = ['setup','reset','region']
 LEAGUE_COMMANDS = ['adduser','deluser','userlist']
@@ -17,7 +20,6 @@ with open("template.json") as file:
 app = Flask(__name__)
 asgi_app = WsgiToAsgi(app)
 handler = Mangum(asgi_app)
-
 
 
 @app.route("/", methods=["POST"])
@@ -41,9 +43,9 @@ def interact(raw_request):
             response = template['response']
             message_content = random.choice(response)
         elif command_name in SERVER_COMMANDS:
-            message_content = data["options"][0]["value"]
+            message_content = server_commands.init(command_name, raw_request)
         elif command_name in LEAGUE_COMMANDS:
-            message_content = data["options"][0]["value"]    
+            message_content = league_commands.init(command_name, raw_request)
 
         response_data = {
             "type": 4,
@@ -51,7 +53,3 @@ def interact(raw_request):
         }
 
     return jsonify(response_data)
-
-
-if __name__ == "__main__":
-    app.run(debug=True)
