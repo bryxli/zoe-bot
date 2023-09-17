@@ -1,6 +1,7 @@
 import * as cdk from "aws-cdk-lib";
 import { Construct } from "constructs";
 
+import * as dynamodb from 'aws-cdk-lib/aws-dynamodb';
 import * as lambda from "aws-cdk-lib/aws-lambda";
 
 import * as config from '../config.json'
@@ -8,6 +9,12 @@ import * as config from '../config.json'
 export class ZoeBotStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
+
+    const table = new dynamodb.Table(this, 'ZoeBotTable', {
+      partitionKey: { name: 'guild_id', type: dynamodb.AttributeType.NUMBER },
+      // removalPolicy: cdk.RemovalPolicy.DESTROY,
+      tableName: 'ZoeBotTable'
+    });
 
     const dockerFunction = new lambda.DockerImageFunction(
       this,
@@ -26,6 +33,8 @@ export class ZoeBotStack extends cdk.Stack {
         },
       }
     );
+    
+    table.grantFullAccess(dockerFunction);
 
     const ZoeUrl = dockerFunction.addFunctionUrl({
       authType: lambda.FunctionUrlAuthType.NONE,
