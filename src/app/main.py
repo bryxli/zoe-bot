@@ -7,8 +7,8 @@ from discord_interactions import verify_key_decorator
 import json
 import random
 
-import server_commands
-import league_commands
+import commands.server_commands
+import commands.league_commands
 
 DISCORD_PUBLIC_KEY = os.environ.get("DISCORD_PUBLIC_KEY")
 SERVER_COMMANDS = ['setup','reset','region']
@@ -43,9 +43,9 @@ def interact(raw_request):
             response = template['response']
             message_content = random.choice(response)
         elif command_name in SERVER_COMMANDS:
-            message_content = server_commands.init(command_name, raw_request)
+            message_content = commands.server_commands.init(command_name, raw_request)
         elif command_name in LEAGUE_COMMANDS:
-            message_content = league_commands.init(command_name, raw_request)
+            message_content = commands.league_commands.init(command_name, raw_request)
 
         response_data = {
             "type": 4,

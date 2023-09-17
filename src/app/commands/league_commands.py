@@ -1,5 +1,5 @@
-import league as lol
-import dynamo as db
+import wrappers.league as lol
+import wrappers.dynamo as db
 
 
 def init(command, data):

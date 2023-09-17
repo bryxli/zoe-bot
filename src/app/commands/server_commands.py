@@ -1,4 +1,4 @@
-import dynamo as db
+import wrappers.dynamo as db
 
 REGION_LIST = ['BR', 'EUNE', 'EUW', 'JP', 'KR', 'LAN', 'LAS', 'NA', 'OCE', 'TR', 'RU']
 
