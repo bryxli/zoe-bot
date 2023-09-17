@@ -46,7 +46,7 @@ def change_region(data):
     try:
         arg = data["options"][0]["value"]   
     except KeyError:
-        return REGION_LIST
+        return ' '.join(REGION_LIST)
     current_region = arg.upper()
     if current_region not in REGION_LIST:
         return 'region not found'
