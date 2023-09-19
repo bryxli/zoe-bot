@@ -1,0 +1,12 @@
+{
+    "id": "interaction_id",
+    "application_id": "application_id",
+    "type": 2,
+    "data": {	
+        "id": "command_id", 	
+        "name": "command_name", 
+        "type": 1
+    },
+    "token": "continuation_token",
+    "version": 1
+}
