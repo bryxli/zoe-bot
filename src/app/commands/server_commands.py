@@ -1,6 +1,19 @@
 import wrappers.dynamo as db
 
+COMMAND_SUCCESS = 'setup'
+COMMAND_RESET = 'reset'
+COMMAND_REGION = 'region'
+
+SETUP_SUCCESS = 'guild initialized'
+DELETE_SUCCESS = 'guild deleted'
+REGION_SUCCESS = 'guild region changed'
+
+GUILD_EXISTS = 'guild aready exists'
+GUILD_DOES_NOT_EXIST = 'guild not registered'
+REGION_DOES_NOT_EXIST = 'region not found'
+
 REGION_LIST = ['BR', 'EUNE', 'EUW', 'JP', 'KR', 'LAN', 'LAS', 'NA', 'OCE', 'TR', 'RU']
+ACKNOWLEDGMENT_PROMPT = 'this action can be harmful, running /reset or /region <region> will delete all registered users. acknowledge with /acknowledge'
 
 guild_id = ''
 channel_id = ''
@@ -12,11 +25,11 @@ def init(command, data):
     guild_id = data['guild_id']
     channel_id = data['channel_id']
 
-    if command == 'setup':
+    if command == COMMAND_SUCCESS:
         output = init_guild()
-    elif command == 'reset':
+    elif command == COMMAND_RESET:
         output = delete_guild()
-    elif command == 'region':
+    elif command == COMMAND_REGION:
         output = change_region(data['data'])
 
     return output
@@ -24,38 +37,38 @@ def init(command, data):
 
 def init_guild():
     if db.guild_exists(guild_id):
-        return 'guild aready exists'
+        return GUILD_EXISTS
     db.create_guild(guild_id, channel_id)
-    return f'guild initialized'
+    return SETUP_SUCCESS
 
 
 def delete_guild():
     if not check_acknowledgment():
-        return 'this action can be harmful, running /reset or /region <region> will delete all registered users. acknowledge with /acknowledge'
+        return ACKNOWLEDGMENT_PROMPT
     if not db.guild_exists(guild_id):
-        return 'guild not registered'
+        return GUILD_DOES_NOT_EXIST
     db.destroy_guild(guild_id)
-    return 'guild deleted'
+    return DELETE_SUCCESS
 
 
 def change_region(data):
     if not check_acknowledgment():
-        return 'this action can be harmful, running /reset or /region <region> will delete all registered users. acknowledge with /acknowledge'
+        return ACKNOWLEDGMENT_PROMPT
     if not db.guild_exists(guild_id):
-        return 'guild has not been setup'
+        return GUILD_DOES_NOT_EXIST
     try:
         arg = data["options"][0]["value"]   
     except KeyError:
         return ' '.join(REGION_LIST)
     current_region = arg.upper()
     if current_region not in REGION_LIST:
-        return 'region not found'
+        return REGION_DOES_NOT_EXIST
     updates = {
         'region': {'Value': {'S': current_region}, 'Action': 'PUT'},
         'userlist': {'Value': {'L': []}, 'Action': 'PUT'},
     }
     db.update_guild(guild_id, updates)
-    return 'guild region changed'
+    return REGION_SUCCESS
 
 
 # TODO: before running delete_guild() and change_region(), check that user has aknowledged potential harm that those commands can cause
