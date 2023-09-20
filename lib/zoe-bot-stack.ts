@@ -16,11 +16,29 @@ export class ZoeBotStack extends cdk.Stack {
       tableName: 'ZoeBotTable'
     });
 
-    const dockerFunction = new lambda.DockerImageFunction(
+    const lambdaMain = new lambda.DockerImageFunction(
       this,
-      "ZoeFunction",
+      "ZoeFunctionMain",
       {
-        code: lambda.DockerImageCode.fromImageAsset("./src"),
+        code: lambda.DockerImageCode.fromImageAsset("./src/main"),
+        memorySize: 1024,
+        timeout: cdk.Duration.seconds(10),
+        architecture: lambda.Architecture.X86_64,
+        environment: {
+          DISCORD_PUBLIC_KEY: config.discord_public_key,
+          TOKEN: config.token,
+          APPLICATION_ID: config.application_id,
+          GUILD_ID: config.guild_id,
+          RIOT_KEY: config.riot_key
+        },
+      }
+    );
+
+    const lambdaTask = new lambda.DockerImageFunction(
+      this,
+      "ZoeFunctionTask",
+      {
+        code: lambda.DockerImageCode.fromImageAsset("./src/task"),
         memorySize: 1024,
         timeout: cdk.Duration.seconds(10),
         architecture: lambda.Architecture.X86_64,
@@ -34,9 +52,10 @@ export class ZoeBotStack extends cdk.Stack {
       }
     );
     
-    table.grantFullAccess(dockerFunction);
+    table.grantFullAccess(lambdaMain);
+    table.grantFullAccess(lambdaTask);
 
-    const ZoeUrl = dockerFunction.addFunctionUrl({
+    const ZoeUrl = lambdaMain.addFunctionUrl({
       authType: lambda.FunctionUrlAuthType.NONE,
       cors: {
         allowedOrigins: ["*"],
