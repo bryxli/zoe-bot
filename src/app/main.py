@@ -10,8 +10,6 @@ import random
 import commands.server_commands
 import commands.league_commands
 
-import task
-
 DISCORD_PUBLIC_KEY = os.environ.get("DISCORD_PUBLIC_KEY")
 SERVER_COMMANDS = ['setup','reset','region']
 LEAGUE_COMMANDS = ['adduser','deluser','userlist']
@@ -39,10 +37,7 @@ def interact(raw_request):
         data = raw_request["data"]
         command_name = data["name"]
 
-        if command_name == 'task':
-            task.run()
-            message_content = 'task ran'
-        elif command_name == "help":
+        if command_name == "help":
             message_content = 'TODO'
         elif command_name == "speak":
             response = template['response']
