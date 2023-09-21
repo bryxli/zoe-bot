@@ -56,7 +56,7 @@ def handler(event, context):
                         }
                         data = {
                             'username': 'zœ',
-                            'avatar_url': '',
+                            'avatar_url': 'https://github.com/bryxli/zoe-bot/blob/main/src/task/app/zoe.png',
                             "content": message_content
                         }
                         requests.post(webhook_url, headers=headers, data=json.dumps(data))
