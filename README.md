@@ -62,7 +62,6 @@ Initialize config.json in root directory using this JSON template.
 - /userlist - display guild userlist
 - /speak - zoe will talk to you
 
-
 ### Getting the webhook URL
 
 1. Open Discord context menu of respective server
