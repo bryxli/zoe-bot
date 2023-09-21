@@ -1,52 +1,26 @@
 import json
 import random
+import requests
 from string import Template
 
-import disnake
-from disnake.ext import commands, tasks
-
-from commands.help_command import HelpCommand
-from commands.server_commands import Server
-from commands.league_commands import League
-
-import wrappers.cassiopeia as cass
 import wrappers.dynamo as db
-
-with open('config.json') as file:
-    config = json.load(file)
+import wrappers.league as lol
 
 with open("template.json") as file:
     template = json.load(file)
 
-bot = commands.Bot(command_prefix=commands.when_mentioned_or(config['prefix']), intents=disnake.Intents.all(), help_command=HelpCommand())
-bot.add_cog(Server(bot))
-bot.add_cog(League(bot))
 
-@bot.event
-async def on_ready() -> None:
-    await bot.change_presence(activity=disnake.Game("?help"))
-    loop.start()
-
-
-@tasks.loop(minutes=5.0)
-async def loop():
+def handler(event, context):
     data = db.get_all()['Items']
     for guild in data:
         guild_id = guild['guild_id']['N']
-        channel_id = guild['channel_id']['N']
-        print(f'checking in {guild_id}:{channel_id}')
+        webhook_url = guild['webhook_url']['S']
 
         try:
-            discord_guild = bot.get_guild(int(guild_id))
-            discord_channel = discord_guild.get_channel(int(channel_id))
-
-            # [{'M':{account_id:{'S':last_created}}}...]
             for user_data in guild['userlist']['L']:
                 account_id = list(user_data['M'].keys())[0]
-                print(f'found user {account_id}')
 
-                summoner = cass.find_player_by_accountid(
-                    account_id, guild['region']['S'])
+                summoner = lol.find_player_by_accountid(account_id, guild['region']['S'])
 
                 match_history = summoner.match_history
                 if (match_history.count > 0):
@@ -59,7 +33,6 @@ async def loop():
                     last_created_old = user_data['M'][account_id]['S']
                     last_created = str(match.creation)
                     if last_created != last_created_old:
-                        print('found new match')
 
                         player = match.participants[id]
                         summoner_name = summoner.name
@@ -74,14 +47,16 @@ async def loop():
 
                         db.update_user(guild_id, account_id, last_created)
 
-                        await discord_channel.send(t.substitute(summoner_name=summoner_name, kda=kda, champion_name=champion_name))
+                        message_content = t.substitute(summoner_name=summoner_name, kda=kda, champion_name=champion_name)
+
+                        headers = {
+                            "Content-Type": "application/json"
+                        }
+                        data = {
+                            'username': 'zœ',
+                            'avatar_url': 'https://github.com/bryxli/zoe-bot/blob/main/src/task/app/zoe.png',
+                            "content": message_content
+                        }
+                        requests.post(webhook_url, headers=headers, data=json.dumps(data))
         except Exception as e:
             print(e)
-
-
-@bot.command(description='zoe will talk to you')
-async def speak(ctx):
-    response = template['response']
-    await ctx.send(random.choice(response))
-
-bot.run(config['token'])

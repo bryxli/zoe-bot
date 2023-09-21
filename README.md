@@ -2,106 +2,61 @@
 
 ## Description
 
-Discord bot that traverses through the Riot Games API to find information about players of the game League of Legends. Hosted on AWS EC2 with a DynamoDB instance.
+Discord bot that traverses through the Riot Games API to find information about players of the game League of Legends.
 
-If a username has spaces, make sure to enclose it in quotes. Ex: ?adduser "user name"
+If a username has spaces, make sure to enclose it in quotes. Ex: /adduser "user name"
+
+Currently, the bot is set to the region `us-east-1`.
 
 ## Prerequisites
 
 Zoe is an IaC application that utilizes AWS CDK and Discord. Make sure to have the following installed and configured.
  * [Node.js / npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
  * [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html)
- * [AWS CDK (TypeScript)](https://docs.aws.amazon.com/cdk/v2/guide/getting_started.html)
- * [Discord Application](https://discord.com/developers/docs/getting-started)
 
 ## Running the bot
 
-### Startup commands
- 
- * `npm install`   install Node.js dependencies
- * `cdk bootstrap`   initialize assets before deploy
- * `cdk synth`       emits the synthesized CloudFormation template
- * `cdk deploy`      deploy this stack to your default AWS account/region
- * `aws ssm start-session --target i-xxxxxxxxx` remote session for shell access
+### Configuration
 
-
-### UserData Script
-
-You can check to see if [startup.sh](./startup.sh) ran by seeing if python3 is installed.
-```
-python3
-```
-If python3 is not installed, you will have to run [startup.sh](./startup.sh) manually before creating the config. I am unsure why this is happening, please message me if you know why!
-
-### Create config.json
-
-```
-cd /home/ssm-user/zoe-bot
-sudo touch config.json
-sudo vim config.json
-```
-
-Enter config.json (see below), then `:wq`
-
-### Run
-
-```
-python3 src/app.py
-```
-
-## Extras
-
-### Example [config.json](config.json)
+Initialize config.json in root directory using this JSON template.
 
 ```
 {
-    "prefix": "?",
-    "token": "",
-    "permissions": "2048",
+    "discord_public_key": "",
     "application_id": "",
+    "token": "",
     "riot_key": ""
 }
 ```
 
-### Example [template.json](template.json)
+* discord_public_key - found in [Discord Developer Portal](https://discord.com/developers/applications) under General Information [after this step](#initiating-the-bot)
+* application_id - found in [Discord Developer Portal](https://discord.com/developers/applications) under General Information [after this step](#initiating-the-bot)
+* token - found in [Discord Developer Portal](https://discord.com/developers/applications) under Bot > Reset Token [after this step](#initiating-the-bot)
+* riot_key - obtained from [Riot Developer Portal](https://developer.riotgames.com/)
 
-Template to give Zoe custom responses! Responses are picked randomly based on game outcome.
-```
-{
-    "win": ["you","can","have","an","arbitrary"],
-    "lose": ["amount","of"],
-    "response": ["string","values","in","each","list","of","bot","responses"]
-}
-```
+### Startup
+ 
+ 1. `npm install` - install Node.js dependencies
+ 2. `cdk bootstrap` - initialize assets before deploy
+ 3. `cdk deploy` - deploy this stack to your default AWS account/region
 
-### Region
+### Initiating the bot
 
-Currently, boto3 is set to the region `us-east-1`. You may have to change this [here](src/db_wrapper.py) depending on the configuration of the AWS CLI.
+1. Create a new [Application](https://discord.com/developers/applications)
+2. Enable _Privileged Gateway Intents_ under Bot
+3. Save Changes
+4. Paste URL output into _Interactions Endpoint URL_ under General Information
+5. Save Changes
+6. Invite to server with `https://discord.com/api/oauth2/authorize?client_id=`__<client_id>__`&scope=applications.commands`
 
-### Linux Screen
+    Note: Replace __<client_id>__ with _Application ID_
 
-It is recommended to use Linux Screen so the bot stays alive upon exit.
-```
-sudo screen -S zoe
-```
+### Using the bot
 
-After initializing the bot, detach from the screen and exit the session.
-```
-Ctrl-a d
-exit
-```
-
-Reattachment
-```
-sudo screen -r zoe
-```
-
-### NPM
-
-If you want to run the bot using `npm run python3` from the project directory, this is how to install NPM.
-```
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
-. ~/.nvm/nvm.sh
-nvm install 16
-npm install -g npm
-```
+* /setup \<webhook url> - create guild instance
+* /reset - reset instance
+* /region \<region> - change guild region
+* /adduser \<username> - add user to guild
+* /deluser \<username> - delete user from guild
+* /userlist - display guild userlist
+* /speak - zoe will talk to you
