@@ -48,7 +48,7 @@ Initialize config.json in root directory using this JSON template.
 3. Save Changes
 4. Paste URL output into _Interactions Endpoint URL_ under General Information
 5. Save Changes
-6. Invite to server with `https://discord.com/api/oauth2/authorize?client_id=`**<client_id>**`&scope=applications.commands`
+6. Invite to server with `https://discord.com/api/oauth2/authorize?client_id=<client_id>&scope=applications.commands`
 
    Note: Replace **<client_id>** with _Application ID_
 
@@ -61,3 +61,12 @@ Initialize config.json in root directory using this JSON template.
 - /deluser \<username> - delete user from guild
 - /userlist - display guild userlist
 - /speak - zoe will talk to you
+
+
+### Getting the webhook URL
+
+1. Open Discord context menu of respective server
+2. Create a new webhook under Server Settings > Integrations > Webhooks > New Webhook
+3. Change the channel to desired output channel
+4. If channel was changed, Save Changes
+5. Copy Webhook URL
