@@ -15,11 +15,6 @@
     "lint": "prettier --check .",
     "format": "prettier --write ."
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
   "lint-staged": {
     "*": "prettier --write"
   },

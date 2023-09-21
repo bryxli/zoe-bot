@@ -18,16 +18,28 @@ export class ZoeBotStack extends cdk.Stack {
       tableName: "ZoeBotTable",
     });
 
-      const lambdaMain = new lambda.DockerImageFunction(this, "ZoeFunctionMain", {
+    const lambdaRegister = new lambda.DockerImageFunction(
+      this,
+      "ZoeFunctionRegister",
+      {
+        code: lambda.DockerImageCode.fromImageAsset("./src/register"),
+        memorySize: 1024,
+        timeout: cdk.Duration.minutes(5),
+        architecture: lambda.Architecture.X86_64,
+        environment: {
+          TOKEN: config.token,
+          APPLICATION_ID: config.application_id,
+        },
+      },
+    );
+
+    const lambdaMain = new lambda.DockerImageFunction(this, "ZoeFunctionMain", {
       code: lambda.DockerImageCode.fromImageAsset("./src/main"),
       memorySize: 1024,
       timeout: cdk.Duration.seconds(10),
       architecture: lambda.Architecture.X86_64,
       environment: {
         DISCORD_PUBLIC_KEY: config.discord_public_key,
-        TOKEN: config.token,
-        APPLICATION_ID: config.application_id,
-        GUILD_ID: config.guild_id,
         RIOT_KEY: config.riot_key,
       },
     });
@@ -38,10 +50,6 @@ export class ZoeBotStack extends cdk.Stack {
       timeout: cdk.Duration.seconds(10),
       architecture: lambda.Architecture.X86_64,
       environment: {
-        DISCORD_PUBLIC_KEY: config.discord_public_key,
-        TOKEN: config.token,
-        APPLICATION_ID: config.application_id,
-        GUILD_ID: config.guild_id,
         RIOT_KEY: config.riot_key,
       },
     });
@@ -49,11 +57,21 @@ export class ZoeBotStack extends cdk.Stack {
     table.grantFullAccess(lambdaMain);
     table.grantFullAccess(lambdaTask);
 
-    const rule = new events.Rule(this, "ZoeBotRule", {
-      schedule: events.Schedule.rate(cdk.Duration.minutes(5)),
-    });
+    // TODO: this event is not triggering upon CloudFormation deployment
+    new events.Rule(this, "ZoeBotUploadRule", {
+      eventPattern: {
+        source: ["aws.cloudformation"],
+        detailType: [
+          "AWS CloudFormation Stack Creation Complete",
+          "AWS CloudFormation Stack Update Complete",
+        ],
+        resources: [this.stackId],
+      },
+    }).addTarget(new targets.LambdaFunction(lambdaRegister));
 
-    rule.addTarget(new targets.LambdaFunction(lambdaTask));
+    new events.Rule(this, "ZoeBotTaskRule", {
+      schedule: events.Schedule.rate(cdk.Duration.minutes(5)),
+    }).addTarget(new targets.LambdaFunction(lambdaTask));
 
     const ZoeUrl = lambdaMain.addFunctionUrl({
       authType: lambda.FunctionUrlAuthType.NONE,
