@@ -57,6 +57,7 @@ export class ZoeBotStack extends cdk.Stack {
     table.grantFullAccess(lambdaMain);
     table.grantFullAccess(lambdaTask);
 
+    // TODO: this event is not triggering upon CloudFormation deployment
     new events.Rule(this, "ZoeBotUploadRule", {
       eventPattern: {
         source: ["aws.cloudformation"],
