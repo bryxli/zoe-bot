@@ -3,6 +3,8 @@ import { Construct } from "constructs";
 
 import * as dynamodb from 'aws-cdk-lib/aws-dynamodb';
 import * as lambda from "aws-cdk-lib/aws-lambda";
+import * as events from "aws-cdk-lib/aws-events";
+import * as targets from "aws-cdk-lib/aws-events-targets";
 
 import * as config from '../config.json'
 
@@ -54,6 +56,12 @@ export class ZoeBotStack extends cdk.Stack {
     
     table.grantFullAccess(lambdaMain);
     table.grantFullAccess(lambdaTask);
+
+    const rule = new events.Rule(this, 'ZoeBotRule', {
+      schedule: events.Schedule.rate(cdk.Duration.minutes(5)),
+    });
+
+    rule.addTarget(new targets.LambdaFunction(lambdaTask));
 
     const ZoeUrl = lambdaMain.addFunctionUrl({
       authType: lambda.FunctionUrlAuthType.NONE,

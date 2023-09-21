@@ -1,5 +1,3 @@
-# TODO: create a cloudwatch event to trigger this lambda every 5 minutes
-
 import json
 import random
 import requests
