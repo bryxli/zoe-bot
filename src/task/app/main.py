@@ -55,6 +55,8 @@ def handler(event, context):
                             "Content-Type": "application/json"
                         }
                         data = {
+                            'username': 'zœ',
+                            'avatar_url': '',
                             "content": message_content
                         }
                         requests.post(webhook_url, headers=headers, data=json.dumps(data))

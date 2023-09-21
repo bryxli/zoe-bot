@@ -40,7 +40,7 @@ def init_guild(data):
         return GUILD_EXISTS
     
     arg = data["options"][0]["value"]
-    url_pattern = r'https:\/\/discordapp\.com\/api\/webhooks\/\d+\/.+'
+    url_pattern = r'https:\/\/discord\.com\/api\/webhooks\/\d+\/.+'
 
     if not re.match(url_pattern, arg):
         return 'TODO'
