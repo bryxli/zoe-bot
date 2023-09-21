@@ -53,11 +53,17 @@ export class ZoeBotStack extends cdk.Stack {
     table.grantFullAccess(lambdaMain);
     table.grantFullAccess(lambdaTask);
 
-    const rule = new events.Rule(this, "ZoeBotRule", {
-      schedule: events.Schedule.rate(cdk.Duration.minutes(5)),
-    });
+    new events.Rule(this, 'ZoeBotUploadRule', {
+      eventPattern: {
+        source: ['aws.cloudformation'],
+        detailType: ['AWS CloudFormation Stack Creation Complete'],
+        resources: [this.stackId],
+      },
+    }).addTarget(new targets.LambdaFunction(lambdaRegister));
 
-    rule.addTarget(new targets.LambdaFunction(lambdaTask));
+    new events.Rule(this, "ZoeBotRule", {
+      schedule: events.Schedule.rate(cdk.Duration.minutes(5)),
+    }).addTarget(new targets.LambdaFunction(lambdaTask));
 
     const ZoeUrl = lambdaMain.addFunctionUrl({
       authType: lambda.FunctionUrlAuthType.NONE,
