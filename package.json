@@ -21,7 +21,7 @@
     }
   },
   "lint-staged": {
-    "*": "prettier --write"
+    "*.ts": "prettier --write"
   },
   "devDependencies": {
     "husky": "^8.0.3",
