@@ -2,7 +2,7 @@ import re
 
 import wrappers.dynamo as db
 
-COMMAND_SUCCESS = 'setup'
+COMMAND_SETUP = 'setup'
 COMMAND_RESET = 'reset'
 COMMAND_REGION = 'region'
 
@@ -28,7 +28,7 @@ def init(command, data):
 
     guild_id = data['guild_id']
 
-    if command == COMMAND_SUCCESS:
+    if command == COMMAND_SETUP:
         output = init_guild(data['data'])
     elif command == COMMAND_RESET:
         output = delete_guild()

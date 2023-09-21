@@ -34,7 +34,6 @@ def upload_command(command):
         print(f"Command {command_name} created: {response.status_code}")
     elif response.status_code == 429:
         failed.append(command)
-        # Rate limited, sleep and retry after the reset time
         print(f"Command {command_name} failed: {response.status_code} Pausing for 5 seconds...")
         time.sleep(5)
     else:
