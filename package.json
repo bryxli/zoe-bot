@@ -11,6 +11,7 @@
   "scripts": {
     "build": "tsc",
     "watch": "tsc -w",
+    "prepare": "husky install",
     "lint": "prettier --check .",
     "format": "prettier --write ."
   },

@@ -18,7 +18,7 @@ export class ZoeBotStack extends cdk.Stack {
       tableName: "ZoeBotTable",
     });
 
-    const lambdaMain = new lambda.DockerImageFunction(this, "ZoeFunctionMain", {
+      const lambdaMain = new lambda.DockerImageFunction(this, "ZoeFunctionMain", {
       code: lambda.DockerImageCode.fromImageAsset("./src/main"),
       memorySize: 1024,
       timeout: cdk.Duration.seconds(10),
