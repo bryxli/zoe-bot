@@ -47,7 +47,7 @@ Initialize config.json in root directory using this JSON template.
 3. Save Changes
 4. Paste URL output into _Interactions Endpoint URL_ under General Information
 5. Save Changes
-6. Invite to server with `https://discord.com/api/oauth2/authorize?client_id=`__<client_id>__`&scope=applications.commands`
+6. Invite to server with `https://discord.com/api/oauth2/authorize?client_id=<client_id>&scope=applications.commands`
 
     Note: Replace __<client_id>__ with _Application ID_
 
