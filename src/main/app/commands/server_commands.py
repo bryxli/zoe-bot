@@ -1,3 +1,5 @@
+import re
+
 import wrappers.dynamo as db
 
 COMMAND_SUCCESS = 'setup'
@@ -12,21 +14,22 @@ GUILD_EXISTS = 'guild aready exists'
 GUILD_DOES_NOT_EXIST = 'guild not registered'
 REGION_DOES_NOT_EXIST = 'region not found'
 
+WEBHOOK_NOT_FOUND = 'please enter a valid webhook\n\n' \
+    + 'bot documentation - https://github.com/bryxli/zoe-bot/blob/main/README.md#inviting-the-bot\n' \
+    + 'discord support article - https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks'
 REGION_LIST = ['BR', 'EUNE', 'EUW', 'JP', 'KR', 'LAN', 'LAS', 'NA', 'OCE', 'TR', 'RU']
 ACKNOWLEDGMENT_PROMPT = 'this action can be harmful, running /reset or /region <region> will delete all registered users. acknowledge with /acknowledge'
 
 guild_id = ''
-channel_id = ''
 
 
 def init(command, data):
-    global guild_id, channel_id
+    global guild_id
 
     guild_id = data['guild_id']
-    channel_id = data['channel_id']
 
     if command == COMMAND_SUCCESS:
-        output = init_guild()
+        output = init_guild(data['data'])
     elif command == COMMAND_RESET:
         output = delete_guild()
     elif command == COMMAND_REGION:
@@ -35,10 +38,16 @@ def init(command, data):
     return output
 
 
-def init_guild():
+def init_guild(data):
     if db.guild_exists(guild_id):
         return GUILD_EXISTS
-    db.create_guild(guild_id, channel_id)
+    
+    arg = data["options"][0]["value"]
+    url_pattern = r'https:\/\/discord\.com\/api\/webhooks\/\d+\/.+'
+
+    if not re.match(url_pattern, arg):
+        return WEBHOOK_NOT_FOUND
+    db.create_guild(guild_id, arg)
     return SETUP_SUCCESS
 
 

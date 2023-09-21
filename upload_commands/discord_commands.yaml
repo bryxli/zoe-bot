@@ -3,6 +3,11 @@
 
 - name: setup
   description: create guild instance
+  options:
+  - name: webhook-url
+    description: channel webhook url
+    type: 3
+    required: true
 
 - name: reset
   description: reset instance
@@ -24,7 +29,7 @@
       required: true
 
 - name: deluser
-  description: deletes user from guild, user must be a valid League of Legends username and exist
+  description: delete user from guild, user must be a valid League of Legends username and exist
   options:
     - name: username
       description: League of Legends username

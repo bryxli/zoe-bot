@@ -24,10 +24,10 @@ def get_guild(guild_id):
     return response['Item']
 
 
-def create_guild(guild_id, channel_id):
+def create_guild(guild_id, webhook_url):
     item = {
         'guild_id': {'N': guild_id},
-        'channel_id': {'N': channel_id},
+        'webhook_url': {'S': webhook_url},
         'region': {'S': 'NA'},
         'userlist': {'L': []},
     }
