@@ -1,9 +1,6 @@
-# TODO: update run() to use webhook instead of channel_id
-# TODO: using webhook, POST response
 # TODO: create a cloudwatch event to trigger this lambda every 5 minutes
 
 import json
-import os
 import random
 import requests
 from string import Template
@@ -15,17 +12,15 @@ with open("template.json") as file:
     template = json.load(file)
 
 
-def run():
+def handler(event, context):
     data = db.get_all()['Items']
     for guild in data:
         guild_id = guild['guild_id']['N']
-        channel_id = guild['channel_id']['N']
-        print(f'checking in {guild_id}:{channel_id}')
+        webhook_url = guild['webhook_url']['S']
 
         try:
             for user_data in guild['userlist']['L']:
                 account_id = list(user_data['M'].keys())[0]
-                print(f'found user {account_id}')
 
                 summoner = lol.find_player_by_accountid(account_id, guild['region']['S'])
 
@@ -40,7 +35,6 @@ def run():
                     last_created_old = user_data['M'][account_id]['S']
                     last_created = str(match.creation)
                     if last_created != last_created_old:
-                        print('found new match')
 
                         player = match.participants[id]
                         summoner_name = summoner.name
@@ -57,20 +51,12 @@ def run():
 
                         message_content = t.substitute(summoner_name=summoner_name, kda=kda, champion_name=champion_name)
 
+                        headers = {
+                            "Content-Type": "application/json"
+                        }
                         data = {
                             "content": message_content
                         }
-                        headers = {
-                            "Authorization": f"Bot {TOKEN}", # TODO: is there a way to send message without TOKEN? how are messages sent with discord_interactions?
-                            "Content-Type": "application/json"
-                        }
-                        url = f"https://discord.com/api/v10/guilds/{guild_id}/channels/{channel_id}/messages"
-
-                        response = requests.post(url, data=json.dumps(data), headers=headers) # TODO: test that this request posts to respective channels
-
-                        if response.status_code == 200:
-                            print("Message sent successfully")
-                        else:
-                            print(f"Failed to send message. Status code: {response.status_code}, Response: {response.text}")
+                        requests.post(webhook_url, headers=headers, data=json.dumps(data))
         except Exception as e:
             print(e)
