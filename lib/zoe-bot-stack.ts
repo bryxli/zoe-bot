@@ -18,6 +18,17 @@ export class ZoeBotStack extends cdk.Stack {
       tableName: "ZoeBotTable",
     });
 
+    const lambdaRegister = new lambda.DockerImageFunction(this, "ZoeFunctionRegister", {
+      code: lambda.DockerImageCode.fromImageAsset("./src/register"),
+      memorySize: 1024,
+      timeout: cdk.Duration.minutes(5),
+      architecture: lambda.Architecture.X86_64,
+      environment: {
+        TOKEN: config.token,
+        APPLICATION_ID: config.application_id,
+      },
+    });
+
     const lambdaMain = new lambda.DockerImageFunction(this, "ZoeFunctionMain", {
       code: lambda.DockerImageCode.fromImageAsset("./src/main"),
       memorySize: 1024,
@@ -25,9 +36,6 @@ export class ZoeBotStack extends cdk.Stack {
       architecture: lambda.Architecture.X86_64,
       environment: {
         DISCORD_PUBLIC_KEY: config.discord_public_key,
-        TOKEN: config.token,
-        APPLICATION_ID: config.application_id,
-        GUILD_ID: config.guild_id,
         RIOT_KEY: config.riot_key,
       },
     });
@@ -38,10 +46,6 @@ export class ZoeBotStack extends cdk.Stack {
       timeout: cdk.Duration.seconds(10),
       architecture: lambda.Architecture.X86_64,
       environment: {
-        DISCORD_PUBLIC_KEY: config.discord_public_key,
-        TOKEN: config.token,
-        APPLICATION_ID: config.application_id,
-        GUILD_ID: config.guild_id,
         RIOT_KEY: config.riot_key,
       },
     });

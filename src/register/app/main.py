@@ -3,7 +3,6 @@ import yaml
 import os
 import time
 
-
 TOKEN = os.environ.get("TOKEN")
 APPLICATION_ID = os.environ.get("APPLICATION_ID")
 
@@ -15,7 +14,6 @@ with open("discord_commands.yaml", "r") as file:
 
 commands = yaml.safe_load(yaml_content)
 headers = {"Authorization": f"Bot {TOKEN}", "Content-Type": "application/json"}
-
 
 failed = []
 
@@ -35,7 +33,8 @@ def upload_command(command):
         print(f"Failed to create command {command_name}: {response.status_code}")
 
 
-for command in commands:
-    upload_command(command)
-    if len(failed) > 0:
-        upload_command(failed.pop())
+def handler(event, context):
+    for command in commands:
+        upload_command(command)
+        if len(failed) > 0:
+            upload_command(failed.pop())
