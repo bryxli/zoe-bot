@@ -18,16 +18,20 @@ export class ZoeBotStack extends cdk.Stack {
       tableName: "ZoeBotTable",
     });
 
-    const lambdaRegister = new lambda.DockerImageFunction(this, "ZoeFunctionRegister", {
-      code: lambda.DockerImageCode.fromImageAsset("./src/register"),
-      memorySize: 1024,
-      timeout: cdk.Duration.minutes(5),
-      architecture: lambda.Architecture.X86_64,
-      environment: {
-        TOKEN: config.token,
-        APPLICATION_ID: config.application_id,
+    const lambdaRegister = new lambda.DockerImageFunction(
+      this,
+      "ZoeFunctionRegister",
+      {
+        code: lambda.DockerImageCode.fromImageAsset("./src/register"),
+        memorySize: 1024,
+        timeout: cdk.Duration.minutes(5),
+        architecture: lambda.Architecture.X86_64,
+        environment: {
+          TOKEN: config.token,
+          APPLICATION_ID: config.application_id,
+        },
       },
-    });
+    );
 
     const lambdaMain = new lambda.DockerImageFunction(this, "ZoeFunctionMain", {
       code: lambda.DockerImageCode.fromImageAsset("./src/main"),
@@ -53,10 +57,13 @@ export class ZoeBotStack extends cdk.Stack {
     table.grantFullAccess(lambdaMain);
     table.grantFullAccess(lambdaTask);
 
-    new events.Rule(this, 'ZoeBotUploadRule', {
+    new events.Rule(this, "ZoeBotUploadRule", {
       eventPattern: {
-        source: ['aws.cloudformation'],
-        detailType: ['AWS CloudFormation Stack Creation Complete'],
+        source: ["aws.cloudformation"],
+        detailType: [
+          "AWS CloudFormation Stack Creation Complete",
+          "AWS CloudFormation Stack Update Complete",
+        ],
         resources: [this.stackId],
       },
     }).addTarget(new targets.LambdaFunction(lambdaRegister));
