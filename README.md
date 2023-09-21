@@ -60,3 +60,11 @@ Initialize config.json in root directory using this JSON template.
 * /deluser \<username> - delete user from guild
 * /userlist - display guild userlist
 * /speak - zoe will talk to you
+
+### Getting the webhook URL
+
+1. Open Discord context menu of respective server
+2. Create a new webhook under Server Settings > Integrations > Webhooks > New Webhook
+3. Change the channel to desired output channel
+4. If channel was changed, Save Changes
+5. Copy Webhook URL
