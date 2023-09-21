@@ -1,4 +1,4 @@
-# Zoe Bot  <img src=favicon.ico width="50" height="50">
+# Zoe Bot <img src=favicon.ico width="50" height="50">
 
 ## Description
 
@@ -11,8 +11,9 @@ Currently, the bot is set to the region `us-east-1`.
 ## Prerequisites
 
 Zoe is an IaC application that utilizes AWS CDK and Discord. Make sure to have the following installed and configured.
- * [Node.js / npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
- * [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html)
+
+- [Node.js / npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
+- [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html)
 
 ## Running the bot
 
@@ -29,16 +30,16 @@ Initialize config.json in root directory using this JSON template.
 }
 ```
 
-* discord_public_key - found in [Discord Developer Portal](https://discord.com/developers/applications) under General Information [after this step](#initiating-the-bot)
-* application_id - found in [Discord Developer Portal](https://discord.com/developers/applications) under General Information [after this step](#initiating-the-bot)
-* token - found in [Discord Developer Portal](https://discord.com/developers/applications) under Bot > Reset Token [after this step](#initiating-the-bot)
-* riot_key - obtained from [Riot Developer Portal](https://developer.riotgames.com/)
+- discord_public_key - found in [Discord Developer Portal](https://discord.com/developers/applications) under General Information [after this step](#initiating-the-bot)
+- application_id - found in [Discord Developer Portal](https://discord.com/developers/applications) under General Information [after this step](#initiating-the-bot)
+- token - found in [Discord Developer Portal](https://discord.com/developers/applications) under Bot > Reset Token [after this step](#initiating-the-bot)
+- riot_key - obtained from [Riot Developer Portal](https://developer.riotgames.com/)
 
 ### Startup
- 
- 1. `npm install` - install Node.js dependencies
- 2. `cdk bootstrap` - initialize assets before deploy
- 3. `cdk deploy` - deploy this stack to your default AWS account/region
+
+1.  `npm install` - install Node.js dependencies
+2.  `cdk bootstrap` - initialize assets before deploy
+3.  `cdk deploy` - deploy this stack to your default AWS account/region
 
 ### Initiating the bot
 
@@ -47,16 +48,16 @@ Initialize config.json in root directory using this JSON template.
 3. Save Changes
 4. Paste URL output into _Interactions Endpoint URL_ under General Information
 5. Save Changes
-6. Invite to server with `https://discord.com/api/oauth2/authorize?client_id=`__<client_id>__`&scope=applications.commands`
+6. Invite to server with `https://discord.com/api/oauth2/authorize?client_id=`**<client_id>**`&scope=applications.commands`
 
-    Note: Replace __<client_id>__ with _Application ID_
+   Note: Replace **<client_id>** with _Application ID_
 
 ### Using the bot
 
-* /setup \<webhook url> - create guild instance
-* /reset - reset instance
-* /region \<region> - change guild region
-* /adduser \<username> - add user to guild
-* /deluser \<username> - delete user from guild
-* /userlist - display guild userlist
-* /speak - zoe will talk to you
+- /setup \<webhook url> - create guild instance
+- /reset - reset instance
+- /region \<region> - change guild region
+- /adduser \<username> - add user to guild
+- /deluser \<username> - delete user from guild
+- /userlist - display guild userlist
+- /speak - zoe will talk to you
