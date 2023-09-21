@@ -1,6 +1,3 @@
-# TODO: Integrate with CDK deployment
-# TODO: Not every command is uploaded successfully - have to switch around command order resulting in multiple uploads due to 429 errors
-
 import requests
 import yaml
 import os
@@ -8,9 +5,7 @@ import time
 
 
 TOKEN = os.environ.get("TOKEN")
-TOKEN = 'MTA4Mjg0NjIyODY3MDMyNDc4Ng.GBJoxJ.M7u83GfB5C3-XRgqOonX2eGwkRId3xBNxZfysc'
 APPLICATION_ID = os.environ.get("APPLICATION_ID")
-APPLICATION_ID= '1082846228670324786'
 
 URL = f"https://discord.com/api/v9/applications/{APPLICATION_ID}/commands"
 
