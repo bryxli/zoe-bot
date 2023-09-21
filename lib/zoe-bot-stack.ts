@@ -61,7 +61,7 @@ export class ZoeBotStack extends cdk.Stack {
       },
     }).addTarget(new targets.LambdaFunction(lambdaRegister));
 
-    new events.Rule(this, "ZoeBotRule", {
+    new events.Rule(this, "ZoeBotTaskRule", {
       schedule: events.Schedule.rate(cdk.Duration.minutes(5)),
     }).addTarget(new targets.LambdaFunction(lambdaTask));
 
