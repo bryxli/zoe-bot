@@ -18,6 +18,11 @@ export class ZoeBotStack extends cdk.Stack {
       tableName: "ZoeBotTable",
     });
 
+    const dynamoLayer = new lambda.LayerVersion(this, "ZoeDynamoLayer", {
+      code: lambda.Code.fromAsset("./src/layers/dynamo"),
+      compatibleRuntimes: [lambda.Runtime.PYTHON_3_9],
+    });
+
     const lambdaRegister = new lambda.DockerImageFunction(
       this,
       "ZoeFunctionRegister",

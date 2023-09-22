@@ -4,3 +4,4 @@
 .prettierignore
 **/*.txt
 **/*.py
+Dockerfile
