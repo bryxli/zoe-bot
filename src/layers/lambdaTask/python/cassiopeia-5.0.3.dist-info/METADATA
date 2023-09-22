@@ -1,0 +1,26 @@
+Metadata-Version: 2.1
+Name: cassiopeia
+Version: 5.0.3
+Summary: Riot Games Developer API Wrapper (3rd Party)
+Home-page: https://github.com/meraki-analytics/cassiopeia
+Author: Jason Maldonis; Rob Rua
+Author-email: team@merakianalytics.com
+License: MIT
+Keywords: LoL,League of Legends,Riot Games,API,REST
+Classifier: Development Status :: 4 - Beta
+Classifier: Programming Language :: Python :: 3
+Classifier: Environment :: Web Environment
+Classifier: Operating System :: OS Independent
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Topic :: Games/Entertainment
+Classifier: Topic :: Games/Entertainment :: Real Time Strategy
+Classifier: Topic :: Games/Entertainment :: Role-Playing
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+License-File: LICENSE.txt
+Requires-Dist: datapipelines (>=1.0.7)
+Requires-Dist: merakicommons (>=1.0.10)
+Requires-Dist: Pillow
+Requires-Dist: arrow
+Requires-Dist: requests
+

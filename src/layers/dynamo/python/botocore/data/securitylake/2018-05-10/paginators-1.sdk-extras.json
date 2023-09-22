@@ -1,0 +1,10 @@
+{
+  "version": 1.0,
+  "merge": {
+    "pagination": {
+      "GetDataLakeSources": {
+        "non_aggregate_keys": ["dataLakeArn"]
+      }
+    }
+  }
+}
