@@ -1,1 +1,3 @@
-python/* linguist-vendored
+python/** linguist-vendored
+python/dynamo.py linguist-vendored=false
+python/league.py linguist-vendored=false
