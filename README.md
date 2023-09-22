@@ -6,8 +6,6 @@ Discord bot that traverses through the Riot Games API to find information about 
 
 If a username has spaces, make sure to enclose it in quotes. Ex: /adduser "user name"
 
-Currently, the bot is set to the region `us-east-1`.
-
 ## Prerequisites
 
 Zoe is an IaC application that utilizes AWS CDK and Discord. Make sure to have the following installed and configured.
@@ -23,6 +21,7 @@ Initialize config.json in root directory using this JSON template.
 
 ```
 {
+    "aws_region": "",
     "discord_public_key": "",
     "application_id": "",
     "token": "",
@@ -30,6 +29,7 @@ Initialize config.json in root directory using this JSON template.
 }
 ```
 
+- aws_region - AWS region that CDK will be deployed to
 - discord_public_key - found in [Discord Developer Portal](https://discord.com/developers/applications) under General Information [after this step](#initiating-the-bot)
 - application_id - found in [Discord Developer Portal](https://discord.com/developers/applications) under General Information [after this step](#initiating-the-bot)
 - token - found in [Discord Developer Portal](https://discord.com/developers/applications) under Bot > Reset Token [after this step](#initiating-the-bot)
