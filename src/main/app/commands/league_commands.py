@@ -1,5 +1,5 @@
 import wrappers.league as lol
-import wrappers.dynamo as db
+import dynamo as db
 
 COMMAND_ADDUSER = 'adduser'
 COMMAND_DELUSER = 'deluser'

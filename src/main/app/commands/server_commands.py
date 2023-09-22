@@ -1,6 +1,6 @@
 import re
 
-import wrappers.dynamo as db
+import dynamo as db
 
 COMMAND_SETUP = 'setup'
 COMMAND_RESET = 'reset'

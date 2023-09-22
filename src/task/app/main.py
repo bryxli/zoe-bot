@@ -3,7 +3,7 @@ import random
 import requests
 from string import Template
 
-import wrappers.dynamo as db
+import dynamo as db
 import wrappers.league as lol
 
 with open("template.json") as file:

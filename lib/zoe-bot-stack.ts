@@ -48,6 +48,7 @@ export class ZoeBotStack extends cdk.Stack {
         RIOT_KEY: config.riot_key,
         SET_AWS_REGION: config.aws_region,
       },
+      layers: [dynamoLayer],
     });
 
     const lambdaTask = new lambda.DockerImageFunction(this, "ZoeFunctionTask", {
@@ -59,6 +60,7 @@ export class ZoeBotStack extends cdk.Stack {
         RIOT_KEY: config.riot_key,
         SET_AWS_REGION: config.aws_region,
       },
+      layers: [dynamoLayer],
     });
 
     table.grantFullAccess(lambdaMain);
