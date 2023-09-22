@@ -4,6 +4,7 @@ import os
 from dynamo import ZoeBotTable
 
 AWS_REGION = os.environ.get("SET_AWS_REGION")
+TOKEN = os.environ.get("TOKEN")
 
 COMMAND_SETUP = 'setup'
 COMMAND_RESET = 'reset'
@@ -33,7 +34,7 @@ def init(command, data):
     guild_id = data['guild_id']
 
     if command == COMMAND_SETUP:
-        output = init_guild(data['data'])
+        output = init_guild(data)
     elif command == COMMAND_RESET:
         output = delete_guild()
     elif command == COMMAND_REGION:
@@ -46,7 +47,18 @@ def init_guild(data):
     if db.guild_exists(guild_id):
         return GUILD_EXISTS
     
-    arg = data["options"][0]["value"]
+    channel_id = data["channel_id"]
+    
+    headers = {"Authorization": f"Bot {TOKEN}", "Content-Type": "application/json"}
+    body = {
+        'name': 'zœ',
+    }
+    create_webhook_url = f"https://discordapp.com/api/channels/{channel_id}/webhooks"
+
+    print(create_webhook_url)
+    # requests.post(webhook_url, headers=headers, data=json.dumps(data))
+
+    arg = data["data"]["options"][0]["value"]
     url_pattern = r'https:\/\/discord\.com\/api\/webhooks\/\d+\/.+'
 
     if not re.match(url_pattern, arg):

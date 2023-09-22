@@ -68,6 +68,7 @@ export class ZoeBotStack extends cdk.Stack {
         DISCORD_PUBLIC_KEY: config.discord_public_key,
         RIOT_KEY: config.riot_key,
         SET_AWS_REGION: config.aws_region,
+        TOKEN: config.token,
       },
       layers: [mainLayer, dynamoLayer, leagueLayer],
     });
