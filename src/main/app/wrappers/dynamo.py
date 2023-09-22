@@ -1,6 +1,9 @@
 import boto3
+import os
 
-client = boto3.client('dynamodb', region_name='us-east-1')
+REGION = os.environ.get("AWS_REGION")
+
+client = boto3.client('dynamodb', region_name=REGION)
 table_name = 'ZoeBotTable'
 
 
