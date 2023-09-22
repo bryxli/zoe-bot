@@ -1,4 +1,4 @@
-import wrappers.league as lol
+import league as lol
 import dynamo as db
 
 COMMAND_ADDUSER = 'adduser'

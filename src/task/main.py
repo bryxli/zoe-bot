@@ -4,7 +4,7 @@ import requests
 from string import Template
 
 import dynamo as db
-import wrappers.league as lol
+import league as lol
 
 with open("template.json") as file:
     template = json.load(file)

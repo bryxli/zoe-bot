@@ -18,28 +18,49 @@ export class ZoeBotStack extends cdk.Stack {
       tableName: "ZoeBotTable",
     });
 
+    const registerLayer = new lambda.LayerVersion(this, "ZoeRegisterLayer", {
+      code: lambda.Code.fromAsset("./src/layers/lambdaRegister"),
+      compatibleRuntimes: [lambda.Runtime.PYTHON_3_9],
+    });
+
+    const mainLayer = new lambda.LayerVersion(this, "ZoeMainLayer", {
+      code: lambda.Code.fromAsset("./src/layers/lambdaMain"),
+      compatibleRuntimes: [lambda.Runtime.PYTHON_3_9],
+    });
+
+    const taskLayer = new lambda.LayerVersion(this, "ZoeTaskLayer", {
+      code: lambda.Code.fromAsset("./src/layers/lambdaTask"),
+      compatibleRuntimes: [lambda.Runtime.PYTHON_3_9],
+    });
+
     const dynamoLayer = new lambda.LayerVersion(this, "ZoeDynamoLayer", {
       code: lambda.Code.fromAsset("./src/layers/dynamo"),
       compatibleRuntimes: [lambda.Runtime.PYTHON_3_9],
     });
 
-    const lambdaRegister = new lambda.DockerImageFunction(
-      this,
-      "ZoeFunctionRegister",
-      {
-        code: lambda.DockerImageCode.fromImageAsset("./src/register"),
-        memorySize: 1024,
-        timeout: cdk.Duration.minutes(5),
-        architecture: lambda.Architecture.X86_64,
-        environment: {
-          TOKEN: config.token,
-          APPLICATION_ID: config.application_id,
-        },
-      },
-    );
+    const leagueLayer = new lambda.LayerVersion(this, "ZoeLeagueLayer", {
+      code: lambda.Code.fromAsset("./src/layers/league"),
+      compatibleRuntimes: [lambda.Runtime.PYTHON_3_9],
+    });
 
-    const lambdaMain = new lambda.DockerImageFunction(this, "ZoeFunctionMain", {
-      code: lambda.DockerImageCode.fromImageAsset("./src/main"),
+    const lambdaRegister = new lambda.Function(this, "ZoeFunctionRegister", {
+      runtime: lambda.Runtime.PYTHON_3_9,
+      handler: "main.handler",
+      code: lambda.Code.fromAsset("./src/register"),
+      memorySize: 1024,
+      timeout: cdk.Duration.minutes(5),
+      architecture: lambda.Architecture.X86_64,
+      environment: {
+        TOKEN: config.token,
+        APPLICATION_ID: config.application_id,
+      },
+      layers: [registerLayer],
+    });
+
+    const lambdaMain = new lambda.Function(this, "ZoeFunctionMain", {
+      runtime: lambda.Runtime.PYTHON_3_9,
+      handler: "main.handler",
+      code: lambda.Code.fromAsset("./src/main"),
       memorySize: 1024,
       timeout: cdk.Duration.seconds(10),
       architecture: lambda.Architecture.X86_64,
@@ -48,11 +69,13 @@ export class ZoeBotStack extends cdk.Stack {
         RIOT_KEY: config.riot_key,
         SET_AWS_REGION: config.aws_region,
       },
-      layers: [dynamoLayer],
+      layers: [mainLayer, dynamoLayer, leagueLayer],
     });
 
-    const lambdaTask = new lambda.DockerImageFunction(this, "ZoeFunctionTask", {
-      code: lambda.DockerImageCode.fromImageAsset("./src/task"),
+    const lambdaTask = new lambda.Function(this, "ZoeFunctionTask", {
+      runtime: lambda.Runtime.PYTHON_3_9,
+      handler: "main.handler",
+      code: lambda.Code.fromAsset("./src/task"),
       memorySize: 1024,
       timeout: cdk.Duration.seconds(10),
       architecture: lambda.Architecture.X86_64,
@@ -60,7 +83,7 @@ export class ZoeBotStack extends cdk.Stack {
         RIOT_KEY: config.riot_key,
         SET_AWS_REGION: config.aws_region,
       },
-      layers: [dynamoLayer],
+      layers: [taskLayer, dynamoLayer, leagueLayer],
     });
 
     table.grantFullAccess(lambdaMain);
