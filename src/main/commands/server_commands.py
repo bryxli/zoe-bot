@@ -1,6 +1,9 @@
 import re
+import os
 
 import dynamo as db
+
+AWS_REGION = os.environ.get("SET_AWS_REGION")
 
 COMMAND_SETUP = 'setup'
 COMMAND_RESET = 'reset'

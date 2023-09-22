@@ -1,10 +1,14 @@
 import json
+import os
 import random
 import requests
 from string import Template
 
 import dynamo as db
 import league as lol
+
+AWS_REGION = os.environ.get("SET_AWS_REGION")
+RIOT_KEY = os.environ.get("RIOT_KEY")
 
 with open("template.json") as file:
     template = json.load(file)

@@ -1,5 +1,10 @@
-import league as lol
+import os
+
 import dynamo as db
+import league as lol
+
+AWS_REGION = os.environ.get("SET_AWS_REGION")
+RIOT_KEY = os.environ.get("RIOT_KEY")
 
 COMMAND_ADDUSER = 'adduser'
 COMMAND_DELUSER = 'deluser'
