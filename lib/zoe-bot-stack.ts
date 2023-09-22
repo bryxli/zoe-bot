@@ -39,9 +39,9 @@ export class ZoeBotStack extends cdk.Stack {
       timeout: cdk.Duration.seconds(10),
       architecture: lambda.Architecture.X86_64,
       environment: {
-        AWS_REGION: config.aws_region,
         DISCORD_PUBLIC_KEY: config.discord_public_key,
         RIOT_KEY: config.riot_key,
+        SET_AWS_REGION: config.aws_region,
       },
     });
 
@@ -51,8 +51,8 @@ export class ZoeBotStack extends cdk.Stack {
       timeout: cdk.Duration.seconds(10),
       architecture: lambda.Architecture.X86_64,
       environment: {
-        AWS_REGION: config.aws_region,
         RIOT_KEY: config.riot_key,
+        SET_AWS_REGION: config.aws_region,
       },
     });
 
