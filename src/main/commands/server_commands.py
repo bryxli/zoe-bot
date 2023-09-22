@@ -1,6 +1,9 @@
 import re
+import os
 
-import dynamo as db
+from dynamo import ZoeBotTable
+
+AWS_REGION = os.environ.get("SET_AWS_REGION")
 
 COMMAND_SETUP = 'setup'
 COMMAND_RESET = 'reset'
@@ -20,6 +23,7 @@ WEBHOOK_NOT_FOUND = 'please enter a valid webhook\n\n' \
 REGION_LIST = ['BR', 'EUNE', 'EUW', 'JP', 'KR', 'LAN', 'LAS', 'NA', 'OCE', 'TR', 'RU']
 ACKNOWLEDGMENT_PROMPT = 'this action can be harmful, running /reset or /region <region> will delete all registered users. acknowledge with /acknowledge'
 
+db = ZoeBotTable(AWS_REGION)
 guild_id = ''
 
 
