@@ -1,7 +1,7 @@
 import boto3
 import os
 
-REGION = os.environ.get("SET_AWS_REGION")
+REGION = os.environ.get("SET_AWS_REGION") # TODO: pass in REGION from lambda function, layer not able to access
 
 client = boto3.client('dynamodb', region_name=REGION)
 table_name = 'ZoeBotTable'

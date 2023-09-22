@@ -1,7 +1,7 @@
 import os
 import cassiopeia as cass
 
-RIOT_KEY = os.environ.get("RIOT_KEY")
+RIOT_KEY = os.environ.get("RIOT_KEY") # TODO: pass in RIOT_KEY from lambda function, layer not able to access
 
 settings = {
     'global': {'version_from_match': 'patch'},
