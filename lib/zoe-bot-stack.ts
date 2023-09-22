@@ -34,32 +34,14 @@ export class ZoeBotStack extends cdk.Stack {
     });
 
     const dynamoLayer = new lambda.LayerVersion(this, "ZoeDynamoLayer", {
-      code: lambda.Code.fromAsset("./src/layers/wrappersDynamo"),
+      code: lambda.Code.fromAsset("./src/layers/dynamo"),
       compatibleRuntimes: [lambda.Runtime.PYTHON_3_9],
     });
 
     const leagueLayer = new lambda.LayerVersion(this, "ZoeLeagueLayer", {
-      code: lambda.Code.fromAsset("./src/layers/wrappersLeague"),
+      code: lambda.Code.fromAsset("./src/layers/league"),
       compatibleRuntimes: [lambda.Runtime.PYTHON_3_9],
     });
-
-    const serverCommandsLayer = new lambda.LayerVersion(
-      this,
-      "ZoeServerCommandsLayer",
-      {
-        code: lambda.Code.fromAsset("./src/layers/commandsServer"),
-        compatibleRuntimes: [lambda.Runtime.PYTHON_3_9],
-      },
-    );
-
-    const leagueCommandsLayer = new lambda.LayerVersion(
-      this,
-      "ZoeLeagueCommandsLayer",
-      {
-        code: lambda.Code.fromAsset("./src/layers/commandsLeague"),
-        compatibleRuntimes: [lambda.Runtime.PYTHON_3_9],
-      },
-    );
 
     const lambdaRegister = new lambda.Function(this, "ZoeFunctionRegister", {
       runtime: lambda.Runtime.PYTHON_3_9,
@@ -87,13 +69,7 @@ export class ZoeBotStack extends cdk.Stack {
         RIOT_KEY: config.riot_key,
         SET_AWS_REGION: config.aws_region,
       },
-      layers: [
-        mainLayer,
-        dynamoLayer,
-        leagueLayer,
-        serverCommandsLayer,
-        leagueCommandsLayer,
-      ],
+      layers: [mainLayer, dynamoLayer, leagueLayer],
     });
 
     const lambdaTask = new lambda.Function(this, "ZoeFunctionTask", {
