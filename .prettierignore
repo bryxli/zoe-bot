@@ -3,3 +3,7 @@
 .npmignore
 .prettierignore
 **/*.txt
+**/*.py
+Dockerfile
+**/*.png
+**/python/*
