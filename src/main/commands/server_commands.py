@@ -1,5 +1,6 @@
-import re
+import json
 import os
+import requests
 
 from dynamo import ZoeBotTable
 
@@ -55,14 +56,9 @@ def init_guild(data):
     }
     create_webhook_url = f"https://discordapp.com/api/channels/{channel_id}/webhooks"
 
-    print(create_webhook_url)
-    # requests.post(webhook_url, headers=headers, data=json.dumps(data))
+    webhook = requests.post(create_webhook_url, headers=headers, data=json.dumps(body))
+    arg = webhook.json()["url"]
 
-    arg = data["data"]["options"][0]["value"]
-    url_pattern = r'https:\/\/discord\.com\/api\/webhooks\/\d+\/.+'
-
-    if not re.match(url_pattern, arg):
-        return WEBHOOK_NOT_FOUND
     db.create_guild(guild_id, arg)
     return SETUP_SUCCESS
 
