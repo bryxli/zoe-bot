@@ -4,11 +4,14 @@ import random
 import requests
 from string import Template
 
-import dynamo as db
-import league as lol
+from dynamo import ZoeBotTable
+from league import RiotAPI
 
 AWS_REGION = os.environ.get("SET_AWS_REGION")
 RIOT_KEY = os.environ.get("RIOT_KEY")
+
+db = ZoeBotTable(AWS_REGION)
+lol = RiotAPI(RIOT_KEY)
 
 with open("template.json") as file:
     template = json.load(file)

@@ -1,7 +1,7 @@
 import os
 
-import dynamo as db
-import league as lol
+from dynamo import ZoeBotTable
+from league import RiotAPI
 
 AWS_REGION = os.environ.get("SET_AWS_REGION")
 RIOT_KEY = os.environ.get("RIOT_KEY")
@@ -21,6 +21,8 @@ PLAYER_DOES_NOT_EXIST = 'player not registered'
 INVALID_USERNAME = 'please enter a valid username'
 NO_USERS_IN_USERLIST = 'no users are registered'
 
+db = ZoeBotTable(AWS_REGION)
+lol = RiotAPI(RIOT_KEY)
 guild_id = ''
 
 
