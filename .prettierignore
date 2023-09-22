@@ -2,6 +2,7 @@
 .gitignore
 .npmignore
 .prettierignore
+.gitattributes
 **/*.txt
 **/*.py
 Dockerfile
