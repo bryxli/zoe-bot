@@ -1,3 +1,5 @@
+# TODO: when calling dynamo or league, program hangs. problem in layer?
+
 import league as lol
 import dynamo as db
 
