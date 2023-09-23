@@ -1,25 +1,8 @@
-import os
+from ..constants.env import AWS_REGION,RIOT_KEY
+from ..constants.league import *
 
 from dynamo import ZoeBotTable
 from league import RiotAPI
-
-AWS_REGION = os.environ.get("SET_AWS_REGION")
-RIOT_KEY = os.environ.get("RIOT_KEY")
-
-COMMAND_ADDUSER = 'adduser'
-COMMAND_DELUSER = 'deluser'
-COMMAND_USERLIST = 'userlist'
-
-ADDUSER_SUCCESS = 'player registered'
-DELUSER_SUCCESS = 'player deleted'
-
-GUILD_EXISTS = 'guild aready exists'
-GUILD_DOES_NOT_EXIST = 'guild not registered'
-PLAYER_EXISTS = 'player aready exists'
-PLAYER_DOES_NOT_EXIST = 'player not registered'
-
-INVALID_USERNAME = 'please enter a valid username'
-NO_USERS_IN_USERLIST = 'no users are registered'
 
 db = ZoeBotTable(AWS_REGION)
 lol = RiotAPI(RIOT_KEY)

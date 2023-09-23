@@ -1,4 +1,3 @@
-import os
 from flask import Flask, jsonify, request
 from mangum import Mangum
 from asgiref.wsgi import WsgiToAsgi
@@ -10,19 +9,8 @@ import random
 import commands.server_commands
 import commands.league_commands
 
-DISCORD_PUBLIC_KEY = os.environ.get("DISCORD_PUBLIC_KEY")
-
-SERVER_COMMANDS = ['setup','reset','region','acknowledge']
-LEAGUE_COMMANDS = ['adduser','deluser','userlist']
-
-HELP_RESPONSE = '/setup <webhook url> - create guild instance\n' \
-            + '/reset - reset instance\n' \
-            + '/region <region> - change guild region\n' \
-            + '/adduser <username> - add user to guild\n' \
-            + '/deluser <username> - delete user from guild\n' \
-            + '/userlist - display guild userlist\n' \
-            + '/speak - zoe will talk to you\n' \
-            + '/acknowledge' - 'acknowledge dangerous commands'
+from constants.env import DISCORD_PUBLIC_KEY
+from constants.main import *
 
 with open("template.json") as file:
     template = json.load(file)
