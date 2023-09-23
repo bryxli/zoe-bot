@@ -10,10 +10,12 @@ TOKEN = os.environ.get("TOKEN")
 COMMAND_SETUP = 'setup'
 COMMAND_RESET = 'reset'
 COMMAND_REGION = 'region'
+COMMAND_ACKNOWLEDGE = 'acknowledge'
 
 SETUP_SUCCESS = 'guild initialized'
 DELETE_SUCCESS = 'guild deleted'
 REGION_SUCCESS = 'guild region changed'
+ACKNOWLEDGE_SUCCESS = 'successfully acknowledged'
 
 GUILD_EXISTS = 'guild aready exists'
 GUILD_DOES_NOT_EXIST = 'guild not registered'
@@ -37,6 +39,8 @@ def init(command, data):
         output = delete_guild()
     elif command == COMMAND_REGION:
         output = change_region(data['data'])
+    elif command == COMMAND_ACKNOWLEDGE:
+        output = acknowledge()
 
     return output
 
@@ -63,7 +67,7 @@ def init_guild(data):
 def delete_guild():
     if not db.guild_exists(guild_id):
         return GUILD_DOES_NOT_EXIST
-    if not check_acknowledgment():
+    if not db.check_acknowledgment(guild_id):
         return ACKNOWLEDGMENT_PROMPT
     db.destroy_guild(guild_id)
     return DELETE_SUCCESS
@@ -72,7 +76,7 @@ def delete_guild():
 def change_region(data):
     if not db.guild_exists(guild_id):
         return GUILD_DOES_NOT_EXIST
-    if not check_acknowledgment():
+    if not db.check_acknowledgment(guild_id):
         return ACKNOWLEDGMENT_PROMPT
     try:
         arg = data["options"][0]["value"]   
@@ -88,7 +92,9 @@ def change_region(data):
     db.update_guild(guild_id, updates)
     return REGION_SUCCESS
 
-
-def check_acknowledgment():
-    return db.check_acknowledgment(guild_id)
-    
+def acknowledge():
+    updates = {
+        'acknowledgment' : {'Value': {'BOOL': True}, 'Action': 'PUT'}
+    }
+    db.update_guild(guild_id, updates)
+    return ACKNOWLEDGE_SUCCESS

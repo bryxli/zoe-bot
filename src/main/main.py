@@ -12,7 +12,7 @@ import commands.league_commands
 
 DISCORD_PUBLIC_KEY = os.environ.get("DISCORD_PUBLIC_KEY")
 
-SERVER_COMMANDS = ['setup','reset','region']
+SERVER_COMMANDS = ['setup','reset','region','acknowledge']
 LEAGUE_COMMANDS = ['adduser','deluser','userlist']
 
 HELP_RESPONSE = '/setup <webhook url> - create guild instance\n' \
@@ -21,7 +21,8 @@ HELP_RESPONSE = '/setup <webhook url> - create guild instance\n' \
             + '/adduser <username> - add user to guild\n' \
             + '/deluser <username> - delete user from guild\n' \
             + '/userlist - display guild userlist\n' \
-            + '/speak - zoe will talk to you'
+            + '/speak - zoe will talk to you\n' \
+            + '/acknowledge' - 'acknowledge dangerous commands'
 
 with open("template.json") as file:
     template = json.load(file)
