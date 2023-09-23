@@ -15,7 +15,7 @@ DISCORD_PUBLIC_KEY = os.environ.get("DISCORD_PUBLIC_KEY")
 SERVER_COMMANDS = ['setup','reset','region','acknowledge']
 LEAGUE_COMMANDS = ['adduser','deluser','userlist']
 
-HELP_RESPONSE = '/setup <webhook url> - create guild instance\n' \
+HELP_RESPONSE = '/setup - create guild instance\n' \
     + '/reset - reset instance\n' \
     + '/region <region> - change guild region\n' \
     + '/adduser <username> - add user to guild\n' \
