@@ -61,19 +61,19 @@ def init_guild(data):
 
 
 def delete_guild():
-    if not check_acknowledgment():
-        return ACKNOWLEDGMENT_PROMPT
     if not db.guild_exists(guild_id):
         return GUILD_DOES_NOT_EXIST
+    if not check_acknowledgment():
+        return ACKNOWLEDGMENT_PROMPT
     db.destroy_guild(guild_id)
     return DELETE_SUCCESS
 
 
 def change_region(data):
-    if not check_acknowledgment():
-        return ACKNOWLEDGMENT_PROMPT
     if not db.guild_exists(guild_id):
         return GUILD_DOES_NOT_EXIST
+    if not check_acknowledgment():
+        return ACKNOWLEDGMENT_PROMPT
     try:
         arg = data["options"][0]["value"]   
     except KeyError:
@@ -89,8 +89,6 @@ def change_region(data):
     return REGION_SUCCESS
 
 
-# TODO: before running delete_guild() and change_region(), check that user has aknowledged potential harm that those commands can cause
-#       will involve creating a new function in dynamo.py, changing structure of the table, and creating a new slash command to acknowledge
 def check_acknowledgment():
-    return True
+    return db.check_acknowledgment(guild_id)
     
