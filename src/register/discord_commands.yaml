@@ -15,6 +15,9 @@
       type: 3
       required: false
 
+- name: acknowledge
+  description: acknowledge dangerous commands
+
 - name: adduser
   description: add user to guild, user must be a valid League of Legends username
   options:

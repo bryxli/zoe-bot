@@ -10,10 +10,12 @@ TOKEN = os.environ.get("TOKEN")
 COMMAND_SETUP = 'setup'
 COMMAND_RESET = 'reset'
 COMMAND_REGION = 'region'
+COMMAND_ACKNOWLEDGE = 'acknowledge'
 
 SETUP_SUCCESS = 'guild initialized'
 DELETE_SUCCESS = 'guild deleted'
 REGION_SUCCESS = 'guild region changed'
+ACKNOWLEDGE_SUCCESS = 'successfully acknowledged'
 
 GUILD_EXISTS = 'guild aready exists'
 GUILD_DOES_NOT_EXIST = 'guild not registered'
@@ -37,6 +39,8 @@ def init(command, data):
         output = delete_guild()
     elif command == COMMAND_REGION:
         output = change_region(data['data'])
+    elif command == COMMAND_ACKNOWLEDGE:
+        output = acknowledge()
 
     return output
 
@@ -61,19 +65,19 @@ def init_guild(data):
 
 
 def delete_guild():
-    if not check_acknowledgment():
-        return ACKNOWLEDGMENT_PROMPT
     if not db.guild_exists(guild_id):
         return GUILD_DOES_NOT_EXIST
+    if not db.check_acknowledgment(guild_id):
+        return ACKNOWLEDGMENT_PROMPT
     db.destroy_guild(guild_id)
     return DELETE_SUCCESS
 
 
 def change_region(data):
-    if not check_acknowledgment():
-        return ACKNOWLEDGMENT_PROMPT
     if not db.guild_exists(guild_id):
         return GUILD_DOES_NOT_EXIST
+    if not db.check_acknowledgment(guild_id):
+        return ACKNOWLEDGMENT_PROMPT
     try:
         arg = data["options"][0]["value"]   
     except KeyError:
@@ -88,9 +92,9 @@ def change_region(data):
     db.update_guild(guild_id, updates)
     return REGION_SUCCESS
 
-
-# TODO: before running delete_guild() and change_region(), check that user has aknowledged potential harm that those commands can cause
-#       will involve creating a new function in dynamo.py, changing structure of the table, and creating a new slash command to acknowledge
-def check_acknowledgment():
-    return True
-    
+def acknowledge():
+    updates = {
+        'acknowledgment' : {'Value': {'BOOL': True}, 'Action': 'PUT'}
+    }
+    db.update_guild(guild_id, updates)
+    return ACKNOWLEDGE_SUCCESS

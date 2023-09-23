@@ -34,6 +34,7 @@ class ZoeBotTable:
             'webhook_url': {'S': webhook_url},
             'region': {'S': 'NA'},
             'userlist': {'L': []},
+            'acknowledgment' : {'BOOL': False}
         }
         self.client.put_item(
             TableName=self.table_name,
@@ -98,4 +99,8 @@ class ZoeBotTable:
     def update_user(self, guild_id, account_id, last_created):
         self.delete_user(guild_id, account_id)
         self.add_user(guild_id, account_id, last_created)
-    
+
+
+    def check_acknowledgment(self, guild_id):
+        return self.get_guild(guild_id)['acknowledgment']['BOOL']
+        
