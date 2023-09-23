@@ -53,17 +53,9 @@ Initialize config.json in root directory using this JSON template.
 
    Note: Replace **<client_id>** with _Application ID_
 
-### Getting the webhook URL
-
-1. Open Discord context menu of respective server
-2. Create a new webhook under Server Settings > Integrations > Webhooks > New Webhook
-3. Change the channel to desired output channel
-4. If channel was changed, Save Changes
-5. Copy Webhook URL
-
 ### Using the bot
 
-- /setup \<webhook url> - create guild instance
+- /setup - create guild instance
 - /reset - reset instance
 - /region \<region> - change guild region
 - /adduser \<username> - add user to guild
