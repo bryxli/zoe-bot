@@ -40,9 +40,10 @@ def init_guild(data):
     create_webhook_url = f"https://discordapp.com/api/channels/{channel_id}/webhooks"
 
     webhook = requests.post(create_webhook_url, headers=headers, data=json.dumps(body))
-    arg = webhook.json()["url"]
+    webhook_id = webhook.json()["id"]
+    webhook_url = webhook.json()["url"]
 
-    db.create_guild(guild_id, arg)
+    db.create_guild(guild_id, webhook_id, webhook_url)
     return SETUP_SUCCESS
 
 
@@ -51,7 +52,15 @@ def delete_guild():
         return GUILD_DOES_NOT_EXIST
     if not db.check_acknowledgment(guild_id):
         return ACKNOWLEDGMENT_PROMPT
+
+    webhook_id = db.get_webhook(guild_id)
+
+    headers = {"Authorization": f"Bot {TOKEN}"}
+    delete_webhook_url = f"https://discordapp.com/api/webhooks/{webhook_id}"
+
     db.destroy_guild(guild_id)
+    requests.delete(delete_webhook_url, headers=headers)
+
     return DELETE_SUCCESS
 
 

@@ -28,9 +28,10 @@ class ZoeBotTable:
         return response.get('Item', {})
 
 
-    def create_guild(self, guild_id, webhook_url):
+    def create_guild(self, guild_id, webhook_id, webhook_url):
         item = {
             'guild_id': {'N': guild_id},
+            'webhook_id': {'S': webhook_id},
             'webhook_url': {'S': webhook_url},
             'region': {'S': 'NA'},
             'userlist': {'L': []},
@@ -103,4 +104,7 @@ class ZoeBotTable:
 
     def check_acknowledgment(self, guild_id):
         return self.get_guild(guild_id)['acknowledgment']['BOOL']
+    
+    def get_webhook(self, guild_id):
+        return self.get_guild(guild_id)['webhook_id']['S']
         
