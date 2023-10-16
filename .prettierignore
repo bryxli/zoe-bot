@@ -8,3 +8,5 @@
 Dockerfile
 **/*.png
 **/python/*
+**/*.ico
+**/*.svg
