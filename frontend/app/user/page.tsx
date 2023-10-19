@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 export default function User() {
   const router = useRouter();
@@ -29,7 +30,6 @@ export default function User() {
     })
       .then((result) => result.json())
       .then((response) => {
-        console.log(response);
         const { username, avatar, id } = response;
         setUserInfo({ username, avatar, id });
       })
@@ -38,7 +38,15 @@ export default function User() {
 
   return (
     <>
-      <h1>{userInfo.username}</h1>
+      <Image
+        src={`https://cdn.discordapp.com/avatars/${userInfo.id}/${userInfo.avatar}.jpg`}
+        alt="User Avatar"
+        width={150}
+        height={150}
+      />
+      <p>
+        You have successfully signed in as <b>{userInfo.username}</b>
+      </p>
     </>
   );
 }
