@@ -13,6 +13,7 @@ export default function Dashboard() {
     avatar: "",
     id: "",
   });
+  const [guilds, setGuilds] = useState([]);
 
   useEffect(() => {
     const fragment = new URLSearchParams(window.location.hash.slice(1));
@@ -36,10 +37,22 @@ export default function Dashboard() {
         setUserInfo({ username, avatar, id });
       })
       .catch(console.error);
+
+    fetch("https://discord.com/api/users/@me/guilds", {
+      headers: {
+        authorization: `${tokenType} ${accessToken}`,
+      },
+    })
+      .then((result) => result.json())
+      .then((response) => {
+        !response.hasOwnProperty("message") && setGuilds(response);
+      })
+      .catch(console.error);
   }, [router]);
 
   return (
     <>
+      {console.log(guilds)}
       <User
         username={userInfo.username}
         avatar={userInfo.avatar}
