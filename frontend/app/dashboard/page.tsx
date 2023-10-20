@@ -6,6 +6,16 @@ import { useRouter } from "next/navigation";
 import User from "../components/User";
 import SearchBox from "../components/SearchBox";
 
+interface Guild {
+  id: string;
+  name: string;
+  icon: null | string;
+  owner: boolean;
+  permissions: number;
+  permissions_new: string;
+  features: string[];
+}
+
 export default function Dashboard() {
   const router = useRouter();
   const [userInfo, setUserInfo] = useState({
@@ -50,9 +60,15 @@ export default function Dashboard() {
       .catch(console.error);
   }, [router]);
 
+  useEffect(() => {
+    const adminGuilds = guilds.filter((guild: Guild) => guild.owner); // Filter for admin guilds
+    adminGuilds.forEach((guild: Guild) => {
+      console.log(guild);
+    });
+  }, [guilds]);
+
   return (
     <>
-      {console.log(guilds)}
       <User
         username={userInfo.username}
         avatar={userInfo.avatar}
