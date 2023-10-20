@@ -2,9 +2,10 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import Image from "next/image";
 
-export default function User() {
+import User from "../components/User";
+
+export default function Dashboard() {
   const router = useRouter();
   const [userInfo, setUserInfo] = useState({
     username: "",
@@ -38,15 +39,11 @@ export default function User() {
 
   return (
     <>
-      <Image
-        src={`https://cdn.discordapp.com/avatars/${userInfo.id}/${userInfo.avatar}.jpg`}
-        alt="User Avatar"
-        width={150}
-        height={150}
+      <User
+        username={userInfo.username}
+        avatar={userInfo.avatar}
+        id={userInfo.id}
       />
-      <p>
-        You have successfully signed in as <b>{userInfo.username}</b>
-      </p>
     </>
   );
 }
