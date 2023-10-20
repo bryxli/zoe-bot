@@ -5,8 +5,8 @@ import { Inter } from "next/font/google";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Zoe Interface",
-  description: "Web interface for Zoe Bot",
+  title: "zoe-bot: the aspect of twighlight",
+  description: "zoe bot web application",
 };
 
 export default function RootLayout({
