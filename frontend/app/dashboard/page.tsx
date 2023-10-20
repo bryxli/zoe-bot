@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import User from "../components/User";
+import SearchBox from "../components/SearchBox";
 
 export default function Dashboard() {
   const router = useRouter();
@@ -44,6 +45,7 @@ export default function Dashboard() {
         avatar={userInfo.avatar}
         id={userInfo.id}
       />
+      <SearchBox />
     </>
   );
 }
