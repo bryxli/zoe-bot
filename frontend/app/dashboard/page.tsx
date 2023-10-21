@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { Col, Container, Row } from "react-bootstrap";
 
 import { GuildProps, UserProps } from "../types";
 
@@ -59,11 +60,21 @@ export default function Dashboard() {
   }, [guilds]);
 
   return (
-    <>
+    <Container className="mt-3">
       <User {...userInfo} />
-      {adminGuilds.length > 0 &&
-        adminGuilds.map((guild) => <Guild key={guild.id} {...guild} />)}
-      <SearchBox />
-    </>
+      {adminGuilds.length > 0 && (
+        <Row>
+          {adminGuilds.map((guild) => (
+            <Col key={guild.id}>
+              {" "}
+              <Guild {...guild} />{" "}
+            </Col>
+          ))}
+        </Row>
+      )}
+      <Row className="mt-3">
+        <SearchBox />
+      </Row>
+    </Container>
   );
 }
