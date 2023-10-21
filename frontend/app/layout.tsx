@@ -9,7 +9,7 @@ import Header from "./components/Header";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "zoe-bot: the aspect of twighlight",
+  title: "zoe: the aspect of twighlight",
   description: "zoe bot web application",
 };
 
