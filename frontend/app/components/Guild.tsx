@@ -1,6 +1,8 @@
 "use client";
 
-import { Guild } from "../types";
+import { Card } from "react-bootstrap";
+
+import { GuildProps } from "../types";
 
 export default function Guild({
   id,
@@ -10,4 +12,12 @@ export default function Guild({
   permissions,
   permissions_new,
   features,
-}: Guild) {}
+}: GuildProps) {
+  return (
+    <Card>
+      <Card.Body>
+        <Card.Title> {name} </Card.Title>
+      </Card.Body>
+    </Card>
+  );
+}

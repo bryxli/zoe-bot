@@ -3,18 +3,21 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
+import { GuildProps, UserProps } from "../types";
+
 import User from "../components/User";
 import SearchBox from "../components/SearchBox";
-import { Guild } from "../types";
+import Guild from "../components/Guild";
 
 export default function Dashboard() {
   const router = useRouter();
-  const [userInfo, setUserInfo] = useState({
+  const [userInfo, setUserInfo] = useState<UserProps>({
     username: "",
     avatar: "",
     id: "",
   });
-  const [guilds, setGuilds] = useState([]);
+  const [guilds, setGuilds] = useState<GuildProps[]>([]);
+  const [adminGuilds, setAdminGuilds] = useState<GuildProps[]>([]);
 
   useEffect(() => {
     const fragment = new URLSearchParams(window.location.hash.slice(1));
@@ -52,19 +55,14 @@ export default function Dashboard() {
   }, [router]);
 
   useEffect(() => {
-    const adminGuilds = guilds.filter((guild: Guild) => guild.owner); // Filter for admin guilds
-    adminGuilds.forEach((guild: Guild) => {
-      console.log(guild);
-    });
+    setAdminGuilds(guilds.filter((guild: GuildProps) => guild.owner));
   }, [guilds]);
 
   return (
     <>
-      <User
-        username={userInfo.username}
-        avatar={userInfo.avatar}
-        id={userInfo.id}
-      />
+      <User {...userInfo} />
+      {adminGuilds.length > 0 &&
+        adminGuilds.map((guild) => <Guild key={guild.id} {...guild} />)}
       <SearchBox />
     </>
   );

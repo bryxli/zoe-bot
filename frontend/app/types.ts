@@ -1,10 +1,10 @@
-export interface User {
+export interface UserProps {
   username: string;
   avatar: string;
   id: string;
 }
 
-export interface Guild {
+export interface GuildProps {
   id: string;
   name: string;
   icon: null | string;

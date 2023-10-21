@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 
 export default function SearchBox() {
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState<string>("");
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     const arg = event.target.value;

@@ -1,8 +1,8 @@
 import Image from "next/image";
 
-import { User } from "../types";
+import { UserProps } from "../types";
 
-export default function User({ username, avatar, id }: User) {
+export default function User({ username, avatar, id }: UserProps) {
   return (
     <>
       {id !== "" && avatar != "" && (
