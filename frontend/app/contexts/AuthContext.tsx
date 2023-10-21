@@ -1,18 +1,8 @@
 "use client";
 
-import { createContext, useState, ReactNode } from "react";
+import { createContext, useState } from "react";
 
-import { UserProps } from "../types";
-
-interface AuthContextData {
-  signIn: (params: UserProps) => void;
-  signOut: () => void;
-  userInfo: UserProps | null;
-}
-
-interface AuthProviderProps {
-  children: ReactNode;
-}
+import { AuthContextData, AuthProviderProps, UserProps } from "../types";
 
 export const AuthContext = createContext({} as AuthContextData);
 

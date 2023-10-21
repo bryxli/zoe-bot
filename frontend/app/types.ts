@@ -1,3 +1,15 @@
+import { ReactNode } from "react";
+
+export interface AuthContextData {
+  signIn: (params: UserProps) => void;
+  signOut: () => void;
+  userInfo: UserProps | null;
+}
+
+export interface AuthProviderProps {
+  children: ReactNode;
+}
+
 export interface UserProps {
   username: string;
   avatar: string;
