@@ -42,12 +42,13 @@ export default function Load() {
         },
       })
         .then((result) =>
-          result.status === 429 ? Promise.reject("429") : result.json(),
+          result.status === 429 ? Promise.resolve("429") : result.json(),
         )
         .then((response) => {
-          console.log("1");
-          processGuilds(response);
-          router.push("/dashboard");
+          if (response != 429) {
+            processGuilds(response);
+            router.push("/dashboard");
+          }
         })
         .catch(console.error);
   }, [processGuilds, router, signIn, userInfo]);

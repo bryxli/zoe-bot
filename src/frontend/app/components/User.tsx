@@ -11,6 +11,7 @@ export default function User({ username, avatar, id }: UserProps) {
           alt="User Avatar"
           width={150}
           height={150}
+          priority={true}
         />
       )}
       <p>
