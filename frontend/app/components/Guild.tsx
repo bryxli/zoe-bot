@@ -13,8 +13,12 @@ export default function Guild({
   permissions_new,
   features,
 }: GuildProps) {
+  const handleCardClick = () => {
+    console.log("TODO: Create modal");
+  };
+
   return (
-    <Card>
+    <Card style={{ cursor: "pointer" }} onClick={handleCardClick}>
       <Card.Body>
         <Card.Title> {name} </Card.Title>
       </Card.Body>
