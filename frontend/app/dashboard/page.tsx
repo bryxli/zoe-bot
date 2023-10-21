@@ -1,7 +1,8 @@
 "use client";
 
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { Col, Container, Row } from "react-bootstrap";
+import { useRouter } from "next/navigation";
 
 import User from "../components/User";
 import SearchBox from "../components/SearchBox";
@@ -10,10 +11,15 @@ import { AuthContext } from "../contexts/AuthContext";
 import { GuildContext } from "../contexts/GuildContext";
 
 export default function Dashboard() {
+  const router = useRouter();
   const authContext = useContext(AuthContext);
   const guildContext = useContext(GuildContext);
   const { userInfo } = authContext;
   const { adminGuilds } = guildContext;
+
+  useEffect(() => {
+    !userInfo && router.push("/");
+  }, [router, userInfo]);
 
   return (
     <Container className="mt-3">

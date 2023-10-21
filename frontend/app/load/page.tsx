@@ -20,9 +20,7 @@ export default function Load() {
       fragment.get("token_type"),
     ];
 
-    if (!accessToken) {
-      router.push("/");
-    }
+    !accessToken && router.push("/");
 
     !userInfo &&
       fetch("https://discord.com/api/users/@me", {
@@ -46,10 +44,12 @@ export default function Load() {
         .then((result) =>
           result.status === 429 ? Promise.reject("429") : result.json(),
         )
-        .then((response) => processGuilds(response))
+        .then((response) => {
+          console.log("1");
+          processGuilds(response);
+          router.push("/dashboard");
+        })
         .catch(console.error);
-
-    router.push("/dashboard");
   }, [processGuilds, router, signIn, userInfo]);
 
   return <></>;

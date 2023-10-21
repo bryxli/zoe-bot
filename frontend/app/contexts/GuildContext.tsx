@@ -2,16 +2,11 @@
 
 import { createContext, useEffect, useState } from "react";
 
-import {
-  GuildContextData,
-  GuildProps,
-  ProviderProps,
-  UserProps,
-} from "../types";
+import { GuildContextData, GuildProps, ProviderProps } from "../types";
 
 export const GuildContext = createContext({} as GuildContextData);
 
-export function AuthProvider({ children }: ProviderProps) {
+export function GuildProvider({ children }: ProviderProps) {
   const [guilds, setGuilds] = useState<GuildProps[]>([]);
   const [adminGuilds, setAdminGuilds] = useState<GuildProps[]>([]);
 

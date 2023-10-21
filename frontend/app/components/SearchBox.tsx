@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export default function SearchBox() {
   const [search, setSearch] = useState<string>("");
