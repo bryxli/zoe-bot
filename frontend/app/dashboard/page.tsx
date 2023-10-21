@@ -5,16 +5,7 @@ import { useRouter } from "next/navigation";
 
 import User from "../components/User";
 import SearchBox from "../components/SearchBox";
-
-interface Guild {
-  id: string;
-  name: string;
-  icon: null | string;
-  owner: boolean;
-  permissions: number;
-  permissions_new: string;
-  features: string[];
-}
+import { Guild } from "../types";
 
 export default function Dashboard() {
   const router = useRouter();
