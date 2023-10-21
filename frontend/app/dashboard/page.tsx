@@ -53,10 +53,10 @@ export default function Dashboard() {
         authorization: `${tokenType} ${accessToken}`,
       },
     })
-      .then((result) => result.json())
-      .then((response) => {
-        !response.hasOwnProperty("message") && setGuilds(response);
-      })
+      .then((result) =>
+        result.status === 429 ? Promise.reject("429") : result.json(),
+      )
+      .then((response) => setGuilds(response))
       .catch(console.error);
   }, [router]);
 
