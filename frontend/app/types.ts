@@ -1,13 +1,19 @@
 import { ReactNode } from "react";
 
+export interface ProviderProps {
+  children: ReactNode;
+}
+
 export interface AuthContextData {
   signIn: (params: UserProps) => void;
   signOut: () => void;
   userInfo: UserProps | null;
 }
 
-export interface AuthProviderProps {
-  children: ReactNode;
+export interface GuildContextData {
+  processGuilds: (params: GuildProps[]) => void;
+  guilds: GuildProps[];
+  adminGuilds: GuildProps[];
 }
 
 export interface UserProps {
