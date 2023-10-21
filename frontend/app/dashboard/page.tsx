@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import User from "../components/User";
 import SearchBox from "../components/SearchBox";
 import Guild from "../components/Guild";
+import Header from "../components/Header";
 import { AuthContext } from "../contexts/AuthContext";
 import { GuildContext } from "../contexts/GuildContext";
 
@@ -23,6 +24,7 @@ export default function Dashboard() {
 
   return (
     <Container className="mt-3">
+      <Header />
       {userInfo && <User {...userInfo} />}
       {adminGuilds && adminGuilds.length > 0 && (
         <Row>
