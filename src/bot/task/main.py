@@ -20,10 +20,10 @@ with open("template.json") as file:
 def handler(event, context):
     data = db.get_all()['Items']
     for guild in data:
-        guild_id = guild['guild_id']['N']
-        webhook_url = guild['webhook_url']['S']
-
         try:
+            guild_id = guild['guild_id']['N']
+            webhook_url = guild['webhook_url']['S']
+
             for user_data in guild['userlist']['L']:
                 account_id = list(user_data['M'].keys())[0]
 
