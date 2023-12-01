@@ -1,16 +1,16 @@
 {
   "name": "frontend",
-  "version": "0.1.0",
+  "version": "0.0.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "sst bind next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
     "bootstrap": "^5.3.2",
-    "next": "13.5.4",
+    "next": "13.4.19",
     "react": "^18",
     "react-bootstrap": "^2.9.1",
     "react-dom": "^18"

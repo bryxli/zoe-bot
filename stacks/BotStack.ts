@@ -17,23 +17,6 @@ export function BotStack({ stack }: StackContext) {
     code: lambda.Code.fromAsset("packages/functions/layers/league"),
   });
 
-  /* 
-  const registerLayer = new lambda.LayerVersion(
-    stack,
-    "function-register-layer", {
-      code: lambda.Code.fromAsset("packages/functions/layers/register"),
-    },
-  );
-
-  const mainLayer = new lambda.LayerVersion(stack, "function-main-layer", {
-    code: lambda.Code.fromAsset("packages/functions/layers/main"),
-  });
-
-  const taskLayer = new lambda.LayerVersion(stack, "function-task-layer", {
-    code: lambda.Code.fromAsset("packages/functions/layers/task"),
-  });
-  */
-
   const registerFunction = new Function(stack, "function-register", {
     handler: "packages/functions/src/register/main.handler",
     runtime: "python3.9",
@@ -90,7 +73,7 @@ export function BotStack({ stack }: StackContext) {
   });
 
   stack.addOutputs({
-    value: mainUrl.url,
+    InteractionsEndpoint: mainUrl.url,
   });
 
   /*
