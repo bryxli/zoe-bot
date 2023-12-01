@@ -1,12 +1,9 @@
-*.js
-!jest.config.js
-*.d.ts
 node_modules
-
-# CDK asset staging directory
-.cdk.staging
-cdk.out
-
 .venv
 config.json
 __pycache__
+.sst
+.build
+.open-next
+.DS_Store
+.env*.local
