@@ -30,6 +30,7 @@ jobs:
         with:
           name: config
           path: config.json
+
   create-config-dev:
     environment: dev-config
     runs-on: ubuntu-latest
@@ -46,6 +47,7 @@ jobs:
         with:
           name: config-dev
           path: config-dev.json
+
   create-config-prod:
     environment: prod-config
     runs-on: ubuntu-latest
@@ -62,11 +64,8 @@ jobs:
         with:
           name: config-prod
           path: config-prod.json
-  deploy:
-    needs:
-      - create-config
-      - create-config-dev
-      - create-config-prod
+
+  pre-deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Git clone the repository
@@ -92,7 +91,53 @@ jobs:
           role-to-assume: arn:aws:iam::${{secrets.AWS_ACCOUNT_ID}}:role/GitHub
           role-duration-seconds: 3600 #adjust as needed for your build time
           aws-region: us-east-1 # TODO: update readme for auto deployment setup
-      - name: Deploy app
+
+  deploy-dependabot:
+    if: github.actor == 'dependabot[bot]' && github.event_name == 'pull_request'
+    needs:
+      - create-config
+      - create-config-dev
+      - create-config-prod
+      - pre-deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy app for Dependabot
+        run: |
+          npm i
+          npx sst deploy --stage dependabot
+          npx sst remove --stage dependabot
+
+  deploy-dev:
+    if: github.actor != 'dependabot[bot]' && github.event_name == 'pull_request'
+    needs:
+      - create-config
+      - create-config-dev
+      - create-config-prod
+      - pre-deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy app for Dependabot
+        run: |
+          npm i
+          if [ "${{ github.actor }}" == "dependabot[bot]" ]; then
+            npx sst deploy --stage dependabot
+            npx sst remove --stage dependabot
+          elif [ "${{ github.event_name }}" == "push" ]; then
+            npx sst deploy --stage prod
+          elif [ "${{ github.event_name }}" == "pull_request" ]; then
+            npx sst deploy --stage dev
+          fi
+
+  deploy-prod:
+    if: github.event_name == 'push'
+    needs:
+      - create-config
+      - create-config-dev
+      - create-config-prod
+      - pre-deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy app for Dependabot
         run: |
           npm i
           if [ "${{ github.actor }}" == "dependabot[bot]" ]; then
