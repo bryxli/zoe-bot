@@ -82,17 +82,17 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: config
-          path: configs/config.json
+          path: configs
       - name: Download config-dev.json
         uses: actions/download-artifact@v2
         with:
           name: config-dev
-          path: configs/config-dev.json
+          path: configs
       - name: Download config-prod.json
         uses: actions/download-artifact@v2
         with:
           name: config-prod
-          path: configs/config-prod.json
+          path: configs
       - name: Debugging Output
         run: |
           echo "Current directory: $(pwd)"
