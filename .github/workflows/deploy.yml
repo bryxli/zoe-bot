@@ -8,8 +8,7 @@ on:
       - "*"
 
 env:
-  AWS_REGION: ${{secrets.AWS_REGION}}
-  RIOT_KEY: ${{secrets.RIOT_KEY}}
+  AWS_ACCOUNT_ID: ${{secrets.AWS_ACCOUNT_ID}}
 
 # Concurrency group name ensures concurrent workflow runs wait for any in-progress job to finish
 concurrency:
@@ -22,6 +21,9 @@ permissions:
 jobs:
   create-config:
     runs-on: ubuntu-latest
+    env:
+      AWS_REGION: ${{secrets.AWS_REGION}}
+      RIOT_KEY: ${{secrets.RIOT_KEY}}
     steps:
       - name: Create config.json
         run: |
@@ -94,7 +96,7 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v3
         with:
-          role-to-assume: arn:aws:iam::${{secrets.AWS_ACCOUNT_ID}}:role/GitHub
+          role-to-assume: arn:aws:iam::${{env.AWS_ACCOUNT_ID}}:role/GitHub
           role-duration-seconds: 3600 #adjust as needed for your build time
           aws-region: us-east-1 # TODO: update readme for auto deployment setup
       - name: Deploy app for Dependabot
