@@ -67,6 +67,10 @@ jobs:
 
   deploy-dependabot:
     if: github.actor == 'dependabot[bot]' && github.event_name == 'pull_request'
+    needs:
+      - create-config
+      - create-config-dev
+      - create-config-prod
     runs-on: ubuntu-latest
     steps:
       - name: Git clone the repository
@@ -100,6 +104,10 @@ jobs:
 
   deploy-dev:
     if: github.actor != 'dependabot[bot]' && github.event_name == 'pull_request'
+    needs:
+      - create-config
+      - create-config-dev
+      - create-config-prod
     runs-on: ubuntu-latest
     steps:
       - name: Git clone the repository
@@ -132,6 +140,10 @@ jobs:
 
   deploy-prod:
     if: github.event_name == 'push'
+    needs:
+      - create-config
+      - create-config-dev
+      - create-config-prod
     runs-on: ubuntu-latest
     steps:
       - name: Git clone the repository
