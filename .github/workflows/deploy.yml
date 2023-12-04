@@ -18,6 +18,7 @@ permissions:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    if: github.actor != 'dependabot[bot]'
     steps:
       - name: Git clone the repository
         uses: actions/checkout@v3
