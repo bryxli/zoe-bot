@@ -31,7 +31,7 @@ jobs:
           name: config
           path: config.json
   create-config-dev:
-    environment: dev
+    environment: dev-config
     runs-on: ubuntu-latest
     env:
       DISCORD_PUBLIC_KEY: ${{secrets.DISCORD_PUBLIC_KEY}}
@@ -47,7 +47,7 @@ jobs:
           name: config-dev
           path: config-dev.json
   create-config-prod:
-    environment: prod
+    environment: prod-config
     runs-on: ubuntu-latest
     env:
       DISCORD_PUBLIC_KEY: ${{secrets.DISCORD_PUBLIC_KEY}}
