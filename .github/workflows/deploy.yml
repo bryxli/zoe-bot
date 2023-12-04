@@ -19,9 +19,15 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     if: github.actor != 'dependabot[bot]'
+    env:
+      AWS_REGION: ${{secrets.AWS_REGION}}
+      RIOT_KEY: ${{secrets.RIOT_KEY}}
     steps:
       - name: Git clone the repository
         uses: actions/checkout@v3
+      - name: Create secrets
+        run: |
+          echo "{ \"aws_region\": \"$AWS_REGION\", \"riot_key\": \"$RIOT_KEY\" }" > config.json
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
