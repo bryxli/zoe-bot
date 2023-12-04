@@ -1,8 +1,5 @@
 node_modules
 .venv
-config.json
-config-dev.json
-config-prod.json
 __pycache__
 .sst
 .build

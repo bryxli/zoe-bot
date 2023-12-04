@@ -13,6 +13,6 @@ export default {
   },
   stacks(app) {
     app.stack(InfraStack).stack(BotStack);
-    app.stage === "prod" && app.stack(WebStack); // Currently only deploys web app to prod
+    app.stage !== "dev" && app.stack(WebStack); // Do not deploy to dev
   },
 } satisfies SSTConfig;
