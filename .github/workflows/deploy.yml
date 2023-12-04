@@ -9,7 +9,7 @@ on:
 
 # Concurrency group name ensures concurrent workflow runs wait for any in-progress job to finish
 concurrency:
-  group: merge-${{ github.ref }}
+  group: ${{ github.workflow }}
 
 permissions:
   id-token: write # This is required for requesting the JWT
