@@ -101,6 +101,9 @@ jobs:
           npm i
           npx sst deploy --stage dependabot
           npx sst remove --stage dependabot
+          git checkout main
+          git merge --no-ff ${{github.head_ref}}
+          git push origin main
 
   deploy-dev:
     if: github.actor != 'dependabot[bot]' && github.event_name == 'pull_request'
