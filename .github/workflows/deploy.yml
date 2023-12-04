@@ -169,8 +169,6 @@ jobs:
           role-to-assume: arn:aws:iam::${{secrets.AWS_ACCOUNT_ID}}:role/GitHub
           role-duration-seconds: 3600 #adjust as needed for your build time
           aws-region: us-east-1 # TODO: update readme for auto deployment setup
-      - name: Git clone the repository
-        uses: actions/checkout@v3
       - name: Deploy app for prod
         run: |
           npm i
