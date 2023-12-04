@@ -26,7 +26,7 @@ jobs:
         run: |
           echo "{ \"aws_region\": \"$AWS_REGION\", \"riot_key\": \"$RIOT_KEY\" }" > config.json
       - name: Upload config.json
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: config
           path: config.json
@@ -42,7 +42,7 @@ jobs:
         run: |
           echo "{ \"discord_public_key\": \"$DISCORD_PUBLIC_KEY\", \"application_id\": \"$APPLICATION_ID\", \"token\": \"$TOKEN\" }" > config-dev.json
       - name: Upload config-dev.json
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: config-dev
           path: config-dev.json
@@ -58,7 +58,7 @@ jobs:
         run: |
           echo "{ \"discord_public_key\": \"$DISCORD_PUBLIC_KEY\", \"application_id\": \"$APPLICATION_ID\", \"token\": \"$TOKEN\" }" > config-prod.json
       - name: Upload config-prod.json
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: config-prod
           path: config-prod.json
