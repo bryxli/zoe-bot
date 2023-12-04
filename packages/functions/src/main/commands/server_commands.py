@@ -3,10 +3,10 @@ import requests
 
 from dynamo import ZoeBotTable
 
-from constants.env import AWS_REGION,TOKEN
+from constants.env import AWS_REGION, TOKEN, STAGE
 from constants.server import *
 
-db = ZoeBotTable(AWS_REGION)
+db = ZoeBotTable(AWS_REGION, STAGE)
 guild_id = ''
 
 

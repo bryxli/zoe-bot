@@ -8,11 +8,11 @@ export default {
   config(_input) {
     return {
       name: "zoe-bot",
-      stage: "dev",
       region: config.aws_region,
     };
   },
   stacks(app) {
-    app.stack(InfraStack).stack(BotStack).stack(WebStack);
+    app.stack(InfraStack).stack(BotStack);
+    app.stage === "prod" && app.stack(WebStack); // Currently only deploys web app to prod
   },
 } satisfies SSTConfig;

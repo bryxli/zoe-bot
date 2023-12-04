@@ -2,10 +2,10 @@ import boto3
 
 
 class ZoeBotTable:
-    def __init__(self, region):
+    def __init__(self, region, stage):
         self.region = region
         self.client = boto3.client('dynamodb', region_name=self.region)
-        self.table_name = 'dev-zoe-bot-db' # TODO: update based on staging name
+        self.table_name = f'{stage}-zoe-bot-db'
 
 
     def get_all(self):

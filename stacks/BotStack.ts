@@ -5,8 +5,12 @@ import * as events from "aws-cdk-lib/aws-events";
 import * as cdk from "aws-cdk-lib";
 import * as targets from "aws-cdk-lib/aws-events-targets";
 import * as config from "../config.json";
+import * as devConfig from "../config-dev.json";
+import * as prodConfig from "../config-prod.json";
 
-export function BotStack({ stack }: StackContext) {
+export function BotStack({ app, stack }: StackContext) {
+  const currentConfig = app.stage === "prod" ? prodConfig : devConfig;
+
   const { table } = use(InfraStack);
 
   const dynamoLayer = new lambda.LayerVersion(stack, "util-dynamo-layer", {
@@ -24,8 +28,8 @@ export function BotStack({ stack }: StackContext) {
     timeout: "5 minutes",
     architecture: "x86_64",
     environment: {
-      TOKEN: config.token,
-      APPLICATION_ID: config.application_id,
+      TOKEN: currentConfig.token,
+      APPLICATION_ID: currentConfig.application_id,
     },
   });
 
@@ -37,10 +41,11 @@ export function BotStack({ stack }: StackContext) {
     timeout: "5 minutes",
     architecture: "x86_64",
     environment: {
-      DISCORD_PUBLIC_KEY: config.discord_public_key,
+      DISCORD_PUBLIC_KEY: currentConfig.discord_public_key,
       RIOT_KEY: config.riot_key,
       SET_AWS_REGION: config.aws_region,
-      TOKEN: config.token,
+      TOKEN: currentConfig.token,
+      STAGE: app.stage,
     },
     bind: [table],
   });
@@ -55,13 +60,16 @@ export function BotStack({ stack }: StackContext) {
     environment: {
       RIOT_KEY: config.riot_key,
       SET_AWS_REGION: config.aws_region,
+      STAGE: app.stage,
     },
     bind: [table],
   });
 
-  const taskRule = new events.Rule(stack, "function-task-rule", {
-    schedule: events.Schedule.rate(cdk.Duration.minutes(5)),
-  }).addTarget(new targets.LambdaFunction(taskFunction));
+  if (app.stage === "prod") {
+    new events.Rule(stack, "function-task-rule", {
+      schedule: events.Schedule.rate(cdk.Duration.minutes(5)),
+    }).addTarget(new targets.LambdaFunction(taskFunction));
+  }
 
   const mainUrl = mainFunction.addFunctionUrl({
     authType: lambda.FunctionUrlAuthType.NONE,

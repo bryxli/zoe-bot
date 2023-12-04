@@ -1,10 +1,10 @@
 from dynamo import ZoeBotTable
 from league import RiotAPI
 
-from constants.env import AWS_REGION,RIOT_KEY
+from constants.env import AWS_REGION, RIOT_KEY, STAGE
 from constants.league import *
 
-db = ZoeBotTable(AWS_REGION)
+db = ZoeBotTable(AWS_REGION, STAGE)
 lol = RiotAPI(RIOT_KEY)
 guild_id = ''
 

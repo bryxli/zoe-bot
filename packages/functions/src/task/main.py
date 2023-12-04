@@ -9,8 +9,9 @@ from league import RiotAPI
 
 AWS_REGION = os.environ.get("SET_AWS_REGION")
 RIOT_KEY = os.environ.get("RIOT_KEY")
+STAGE = os.environ.get("STAGE")
 
-db = ZoeBotTable(AWS_REGION)
+db = ZoeBotTable(AWS_REGION, STAGE)
 lol = RiotAPI(RIOT_KEY)
 
 with open("template.json") as file:
@@ -61,7 +62,7 @@ def handler(event, context):
                         }
                         data = {
                             'username': 'zœ',
-                            'avatar_url': 'https://raw.githubusercontent.com/bryxli/zoe-bot/main/src/bot/task/zoe.png',
+                            'avatar_url': 'https://raw.githubusercontent.com/bryxli/zoe-bot/main/packages/functions/src/task/zoe.png',
                             "content": message_content
                         }
                         requests.post(webhook_url, headers=headers, data=json.dumps(data))
