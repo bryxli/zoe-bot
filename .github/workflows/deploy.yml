@@ -98,7 +98,7 @@ jobs:
           if [ "${{ github.actor }}" == "dependabot[bot]" ]; then
             npx sst deploy --stage dependabot
             npx sst remove --stage dependabot
-          efif [ "${{ github.event_name }}" == "push" ]; then
+          elif [ "${{ github.event_name }}" == "push" ]; then
             npx sst deploy --stage prod
           elif [ "${{ github.event_name }}" == "pull_request" ]; then
             npx sst deploy --stage dev
