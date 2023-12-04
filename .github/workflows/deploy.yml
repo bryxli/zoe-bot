@@ -16,27 +16,44 @@ permissions:
   contents: read # This is required for actions/checkout
 
 jobs:
-  deploy:
+  create-config:
     runs-on: ubuntu-latest
-    if: github.actor != 'dependabot[bot]'
     env:
       AWS_REGION: ${{secrets.AWS_REGION}}
       RIOT_KEY: ${{secrets.RIOT_KEY}}
+    steps:
+      - name: Create config.json
+        run: |
+          echo "{ \"aws_region\": \"$AWS_REGION\", \"riot_key\": \"$RIOT_KEY\" }" > configs/config.json
+  create-config-dev:
+    environment: dev
+    runs-on: ubuntu-latest
+    env:
       DISCORD_PUBLIC_KEY: ${{secrets.DISCORD_PUBLIC_KEY}}
       APPLICATION_ID: ${{secrets.APPLICATION_ID}}
       TOKEN: ${{secrets.TOKEN}}
     steps:
-      - name: Git clone the repository
-        uses: actions/checkout@v3
-      - name: Create secrets
-        run: |
-          echo "{ \"aws_region\": \"$AWS_REGION\", \"riot_key\": \"$RIOT_KEY\" }" > configs/config.json
-      - name: Set up secrets for config-dev.json
+      - name: Create config-dev.json
         run: |
           echo "{ \"discord_public_key\": \"$DISCORD_PUBLIC_KEY\", \"application_id\": \"$APPLICATION_ID\", \"token\": \"$TOKEN\" }" > configs/config-dev.json
-      - name: Set up secrets for config-prod.json
+  create-config-prod:
+    environment: prod
+    runs-on: ubuntu-latest
+    env:
+      DISCORD_PUBLIC_KEY: ${{secrets.DISCORD_PUBLIC_KEY}}
+      APPLICATION_ID: ${{secrets.APPLICATION_ID}}
+      TOKEN: ${{secrets.TOKEN}}
+    steps:
+      - name: Create config-prod.json
         run: |
           echo "{ \"discord_public_key\": \"$DISCORD_PUBLIC_KEY\", \"application_id\": \"$APPLICATION_ID\", \"token\": \"$TOKEN\" }" > configs/config-prod.json
+  deploy:
+    needs: create-config
+    runs-on: ubuntu-latest
+    if: github.actor != 'dependabot[bot]'
+    steps:
+      - name: Git clone the repository
+        uses: actions/checkout@v3
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
