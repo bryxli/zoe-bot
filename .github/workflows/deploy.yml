@@ -22,6 +22,10 @@ jobs:
     steps:
       - name: Git clone the repository
         uses: actions/checkout@v3
+      - name: Debugging Output
+        run: |
+          echo "Current directory: $(pwd)"
+          echo "Contents of configs directory: $(ls -R configs)"
       - name: Copy config.json
         run: |
           cp configs/config.json $GITHUB_WORKSPACE/config.json
