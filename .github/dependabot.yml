@@ -6,17 +6,31 @@
 version: 2
 updates:
   - package-ecosystem: "npm" # See documentation for possible values
-    directory: # Location of package manifests
-      - "/"
-      - "/packages/frontend"
+    directory: "/" # Location of package manifests
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "npm"
+    directory: "/packages/frontend"
     schedule:
       interval: "weekly"
   - package-ecosystem: "pip"
-    directory:
-      - "/packages/functions/layers/dynamo"
-      - "/packages/functions/layers/league"
-      - "/packages/functions/src/main"
-      - "/packages/functions/src/register"
-      - "/packages/functions/src/task"
+    directory: "/packages/functions/layers/dynamo"
     schedule:
       interval: "weekly"
+  - package-ecosystem: "pip"
+    directory: "/packages/functions/layers/league"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "pip"
+    directory: "/packages/functions/src/main"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "pip"
+    directory: "/packages/functions/src/register"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "pip"
+    directory: "/packages/functions/src/task"
+    schedule:
+      interval: "weekly"
+      
