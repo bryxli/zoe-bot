@@ -76,7 +76,10 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           path: configs
-
+      - name: Debugging Output
+        run: |
+          echo "Current directory: $(pwd)"
+          echo "Contents of configs directory: $(ls -R configs)"
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
