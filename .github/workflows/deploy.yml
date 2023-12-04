@@ -27,8 +27,12 @@ jobs:
       - name: Create config.json
         run: |
           echo "{ \"aws_region\": \"$AWS_REGION\", \"riot_key\": \"$RIOT_KEY\" }" > configs/config.json
+      - name: Upload config.json
+        uses: actions/upload-artifact@v2
+        with:
+          name: config
+          path: configs/config.json
   create-config-dev:
-    needs: create-config
     environment: dev
     runs-on: ubuntu-latest
     env:
@@ -36,9 +40,16 @@ jobs:
       APPLICATION_ID: ${{secrets.APPLICATION_ID}}
       TOKEN: ${{secrets.TOKEN}}
     steps:
+      - name: Create configs directory
+        run: mkdir -p configs
       - name: Create config-dev.json
         run: |
           echo "{ \"discord_public_key\": \"$DISCORD_PUBLIC_KEY\", \"application_id\": \"$APPLICATION_ID\", \"token\": \"$TOKEN\" }" > configs/config-dev.json
+      - name: Upload config-dev.json
+        uses: actions/upload-artifact@v2
+        with:
+          name: config-dev
+          path: configs/config-dev.json
   create-config-prod:
     needs: create-config
     environment: prod
@@ -48,16 +59,41 @@ jobs:
       APPLICATION_ID: ${{secrets.APPLICATION_ID}}
       TOKEN: ${{secrets.TOKEN}}
     steps:
+      - name: Create configs directory
+        run: mkdir -p configs
       - name: Create config-prod.json
         run: |
           echo "{ \"discord_public_key\": \"$DISCORD_PUBLIC_KEY\", \"application_id\": \"$APPLICATION_ID\", \"token\": \"$TOKEN\" }" > configs/config-prod.json
+      - name: Upload config-prod.json
+        uses: actions/upload-artifact@v2
+        with:
+          name: config-prod
+          path: configs/config-prod.json
   deploy:
-    needs: create-config
+    needs:
+      - create-config
+      - create-config-dev
+      - create-config-prod
     runs-on: ubuntu-latest
     if: github.actor != 'dependabot[bot]'
     steps:
       - name: Git clone the repository
         uses: actions/checkout@v3
+      - name: Download config.json
+        uses: actions/download-artifact@v2
+        with:
+          name: config
+          path: configs/config.json
+      - name: Download config-dev.json
+        uses: actions/download-artifact@v2
+        with:
+          name: config-dev
+          path: configs/config-dev.json
+      - name: Download config-prod.json
+        uses: actions/download-artifact@v2
+        with:
+          name: config-prod
+          path: configs/config-prod.json
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
