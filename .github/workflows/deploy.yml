@@ -20,6 +20,10 @@ jobs:
     runs-on: ubuntu-latest
     if: github.actor != 'dependabot[bot]'
     steps:
+      - name: debug
+        run: ls -R
+      - name: debug2
+        run: ls -R configs
       - name: Upload configs
         uses: actions/upload-artifact@v2
         with:
