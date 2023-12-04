@@ -28,7 +28,7 @@ jobs:
       - name: Upload config.json
         uses: actions/upload-artifact@v3
         with:
-          name: config.json
+          name: config
           path: config.json
   create-config-dev:
     environment: dev
@@ -44,7 +44,7 @@ jobs:
       - name: Upload config-dev.json
         uses: actions/upload-artifact@v3
         with:
-          name: config-dev.json
+          name: config-dev
           path: config-dev.json
   create-config-prod:
     environment: prod
@@ -60,7 +60,7 @@ jobs:
       - name: Upload config-prod.json
         uses: actions/upload-artifact@v3
         with:
-          name: config-prod.json
+          name: config-prod
           path: config-prod.json
   deploy:
     needs:
@@ -72,9 +72,20 @@ jobs:
     steps:
       - name: Git clone the repository
         uses: actions/checkout@v3
-      - name: Download configs
-        uses: actions/download-artifact@v3
+      - name: Download config.json
+        uses: actions/download-artifact@v2
         with:
+          name: config
+          path: configs
+      - name: Download config-dev.json
+        uses: actions/download-artifact@v2
+        with:
+          name: config-dev
+          path: configs
+      - name: Download config-prod.json
+        uses: actions/download-artifact@v2
+        with:
+          name: config-prod
           path: configs
       - name: Debugging Output
         run: |
