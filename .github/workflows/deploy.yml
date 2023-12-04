@@ -20,22 +20,17 @@ jobs:
     runs-on: ubuntu-latest
     if: github.actor != 'dependabot[bot]'
     steps:
+      - name: Upload configs
+        uses: actions/upload-artifact@v2
+        with:
+          name: configs
+          path: configs
       - name: Git clone the repository
         uses: actions/checkout@v3
-      - name: Debugging Output
-        run: |
-          echo "Current directory: $(pwd)"
-          echo "Contents of configs directory: $(ls -R configs)"
-      - name: Copy config.json
-        run: |
-          cp configs/config.json $GITHUB_WORKSPACE/config.json
-        shell: bash
-      - name: Copy config-dev.json
-        run: |
-          cp configs/config-dev.json $GITHUB_WORKSPACE/config-dev.json
-      - name: Copy config-prod.json
-        run: |
-          cp configs/config-prod.json $GITHUB_WORKSPACE/config-prod.json
+      - name: Download configs
+        uses: actions/download-artifact@v2
+        with:
+          name: configs
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
