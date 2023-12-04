@@ -95,7 +95,7 @@ jobs:
         with:
           role-to-assume: arn:aws:iam::${{secrets.AWS_ACCOUNT_ID}}:role/GitHub
           role-duration-seconds: 3600 #adjust as needed for your build time
-          aws-region: us-east-1 # TODO: update readme for auto deployment setup, AWS_ACCOUNT_ID dependabot secret
+          aws-region: us-east-1 # TODO: update readme for auto deployment setup, config.json dependabot secrets
       - name: Deploy app for Dependabot
         run: |
           npm i
