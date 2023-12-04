@@ -16,30 +16,12 @@ permissions:
   contents: read # This is required for actions/checkout
 
 jobs:
-  upload-configs:
-    runs-on: ubuntu-latest
-    if: github.actor != 'dependabot[bot]'
-    steps:
-      - name: Create Archive
-        run: |
-          tar -czf configs.tar.gz -C configs .
-      - name: Upload configs
-        uses: actions/upload-artifact@v2
-        with:
-          name: configs
-          path: configs.tar.gz
   deploy:
     runs-on: ubuntu-latest
     if: github.actor != 'dependabot[bot]'
     steps:
       - name: Git clone the repository
         uses: actions/checkout@v3
-      - name: Download configs
-        uses: actions/download-artifact@v2
-        with:
-          name: configs
-      - name: Extract Configs
-        run: tar -xzf $GITHUB_WORKSPACE/configs.tar.gz -C $GITHUB_WORKSPACE
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
