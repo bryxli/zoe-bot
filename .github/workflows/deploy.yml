@@ -7,6 +7,10 @@ on:
     branches:
       - "*"
 
+env:
+  AWS_REGION: ${{secrets.AWS_REGION}}
+  RIOT_KEY: ${{secrets.RIOT_KEY}}
+
 # Concurrency group name ensures concurrent workflow runs wait for any in-progress job to finish
 concurrency:
   group: ${{ github.workflow }}
@@ -18,9 +22,6 @@ permissions:
 jobs:
   create-config:
     runs-on: ubuntu-latest
-    env:
-      AWS_REGION: ${{secrets.AWS_REGION}}
-      RIOT_KEY: ${{secrets.RIOT_KEY}}
     steps:
       - name: Create config.json
         run: |
