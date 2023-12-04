@@ -1,6 +1,6 @@
 import { NextjsSite, StackContext } from "sst/constructs";
-import * as devConfig from "../config-dev.json";
-import * as prodConfig from "../config-prod.json";
+import * as devConfig from "../configs/config-dev.json";
+import * as prodConfig from "../configs/config-prod.json";
 
 export function WebStack({ app, stack }: StackContext) {
   const currentConfig = app.stage === "prod" ? prodConfig : devConfig;

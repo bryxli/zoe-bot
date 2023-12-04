@@ -2,7 +2,7 @@ import { SSTConfig } from "sst";
 import { InfraStack } from "./stacks/InfraStack";
 import { BotStack } from "./stacks/BotStack";
 import { WebStack } from "./stacks/WebStack";
-import * as config from "./config.json";
+import * as config from "./configs/config.json";
 
 export default {
   config(_input) {

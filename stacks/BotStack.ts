@@ -4,9 +4,9 @@ import * as lambda from "aws-cdk-lib/aws-lambda";
 import * as events from "aws-cdk-lib/aws-events";
 import * as cdk from "aws-cdk-lib";
 import * as targets from "aws-cdk-lib/aws-events-targets";
-import * as config from "../config.json";
-import * as devConfig from "../config-dev.json";
-import * as prodConfig from "../config-prod.json";
+import * as config from "../configs/config.json";
+import * as devConfig from "../configs/config-dev.json";
+import * as prodConfig from "../configs/config-prod.json";
 
 export function BotStack({ app, stack }: StackContext) {
   const currentConfig = app.stage === "prod" ? prodConfig : devConfig;
