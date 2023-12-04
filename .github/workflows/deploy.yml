@@ -51,7 +51,6 @@ jobs:
           name: config-dev
           path: configs/config-dev.json
   create-config-prod:
-    needs: create-config
     environment: prod
     runs-on: ubuntu-latest
     env:
@@ -94,6 +93,10 @@ jobs:
         with:
           name: config-prod
           path: configs/config-prod.json
+      - name: Debugging Output
+        run: |
+          echo "Current directory: $(pwd)"
+          echo "Contents of configs directory: $(ls -R configs)"
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
