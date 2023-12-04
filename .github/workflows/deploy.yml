@@ -22,16 +22,14 @@ jobs:
       AWS_REGION: ${{secrets.AWS_REGION}}
       RIOT_KEY: ${{secrets.RIOT_KEY}}
     steps:
-      - name: Create configs directory
-        run: mkdir -p configs
       - name: Create config.json
         run: |
-          echo "{ \"aws_region\": \"$AWS_REGION\", \"riot_key\": \"$RIOT_KEY\" }" > configs/config.json
+          echo "{ \"aws_region\": \"$AWS_REGION\", \"riot_key\": \"$RIOT_KEY\" }" > config.json
       - name: Upload config.json
         uses: actions/upload-artifact@v2
         with:
           name: config
-          path: configs/config.json
+          path: config.json
   create-config-dev:
     environment: dev
     runs-on: ubuntu-latest
@@ -40,16 +38,14 @@ jobs:
       APPLICATION_ID: ${{secrets.APPLICATION_ID}}
       TOKEN: ${{secrets.TOKEN}}
     steps:
-      - name: Create configs directory
-        run: mkdir -p configs
       - name: Create config-dev.json
         run: |
-          echo "{ \"discord_public_key\": \"$DISCORD_PUBLIC_KEY\", \"application_id\": \"$APPLICATION_ID\", \"token\": \"$TOKEN\" }" > configs/config-dev.json
+          echo "{ \"discord_public_key\": \"$DISCORD_PUBLIC_KEY\", \"application_id\": \"$APPLICATION_ID\", \"token\": \"$TOKEN\" }" > config-dev.json
       - name: Upload config-dev.json
         uses: actions/upload-artifact@v2
         with:
           name: config-dev
-          path: configs/config-dev.json
+          path: config-dev.json
   create-config-prod:
     environment: prod
     runs-on: ubuntu-latest
@@ -58,16 +54,14 @@ jobs:
       APPLICATION_ID: ${{secrets.APPLICATION_ID}}
       TOKEN: ${{secrets.TOKEN}}
     steps:
-      - name: Create configs directory
-        run: mkdir -p configs
       - name: Create config-prod.json
         run: |
-          echo "{ \"discord_public_key\": \"$DISCORD_PUBLIC_KEY\", \"application_id\": \"$APPLICATION_ID\", \"token\": \"$TOKEN\" }" > configs/config-prod.json
+          echo "{ \"discord_public_key\": \"$DISCORD_PUBLIC_KEY\", \"application_id\": \"$APPLICATION_ID\", \"token\": \"$TOKEN\" }" > config-prod.json
       - name: Upload config-prod.json
         uses: actions/upload-artifact@v2
         with:
           name: config-prod
-          path: configs/config-prod.json
+          path: config-prod.json
   deploy:
     needs:
       - create-config
@@ -93,10 +87,6 @@ jobs:
         with:
           name: config-prod
           path: configs
-      - name: Debugging Output
-        run: |
-          echo "Current directory: $(pwd)"
-          echo "Contents of configs directory: $(ls -R configs)"
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
