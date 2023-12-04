@@ -68,7 +68,6 @@ jobs:
       - create-config-dev
       - create-config-prod
     runs-on: ubuntu-latest
-    if: github.actor != 'dependabot[bot]'
     steps:
       - name: Git clone the repository
         uses: actions/checkout@v3
@@ -96,7 +95,9 @@ jobs:
       - name: Deploy app
         run: |
           npm i
-          if [ "${{ github.event_name }}" == "push" ]; then
+          if [ "${{ github.actor }}" == "dependabot[bot]" ]; then
+            npx sst deploy --stage dependabot
+          efif [ "${{ github.event_name }}" == "push" ]; then
             npx sst deploy --stage prod
           elif [ "${{ github.event_name }}" == "pull_request" ]; then
             npx sst deploy --stage dev
