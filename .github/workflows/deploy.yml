@@ -28,7 +28,7 @@ jobs:
       - name: Upload config.json
         uses: actions/upload-artifact@v3
         with:
-          name: config
+          name: config.json
           path: config.json
   create-config-dev:
     environment: dev
@@ -44,7 +44,7 @@ jobs:
       - name: Upload config-dev.json
         uses: actions/upload-artifact@v3
         with:
-          name: config-dev
+          name: config-dev.json
           path: config-dev.json
   create-config-prod:
     environment: prod
@@ -60,7 +60,7 @@ jobs:
       - name: Upload config-prod.json
         uses: actions/upload-artifact@v3
         with:
-          name: config-prod
+          name: config-prod.json
           path: config-prod.json
   deploy:
     needs:
