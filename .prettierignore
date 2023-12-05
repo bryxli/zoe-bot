@@ -10,3 +10,4 @@ Dockerfile
 **/python/*
 **/*.ico
 **/*.svg
+**/*.sh
