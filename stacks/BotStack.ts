@@ -48,6 +48,14 @@ export function BotStack({ app, stack }: StackContext) {
       STAGE: app.stage,
     },
     bind: [table],
+    url: {
+      authorizer: "none",
+      cors: {
+        allowOrigins: ["*"],
+        allowMethods: [lambda.HttpMethod.ALL],
+        allowHeaders: ["*"],
+      },
+    },
   });
 
   const taskFunction = new Function(stack, "function-task", {
@@ -71,17 +79,8 @@ export function BotStack({ app, stack }: StackContext) {
     }).addTarget(new targets.LambdaFunction(taskFunction));
   }
 
-  const mainUrl = mainFunction.addFunctionUrl({
-    authType: lambda.FunctionUrlAuthType.NONE,
-    cors: {
-      allowedOrigins: ["*"],
-      allowedMethods: [lambda.HttpMethod.ALL],
-      allowedHeaders: ["*"],
-    },
-  });
-
   stack.addOutputs({
-    InteractionsEndpoint: mainUrl.url,
+    InteractionsEndpoint: mainFunction.url,
   });
 
   /*
