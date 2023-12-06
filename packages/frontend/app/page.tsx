@@ -4,7 +4,10 @@ import { useContext, useEffect } from "react";
 import { Container } from "react-bootstrap";
 
 import Header from "./components/Header";
+import Information from "./components/Information";
 import { AuthContext } from "./contexts/AuthContext";
+
+import './app.css'
 
 export default function Home() {
   const authContext = useContext(AuthContext);
@@ -17,7 +20,7 @@ export default function Home() {
   return (
     <Container className="mt-3">
       <Header />
-      {/** Information */}
+      <Information />
       {/** Output */}
     </Container>
   );
