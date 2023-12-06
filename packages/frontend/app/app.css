@@ -1,34 +1,36 @@
 @font-face {
-    font-family: "font";
-    src: local("font"), url("font.ttf") format("truetype");
+  font-family: "font";
+  src:
+    local("font"),
+    url("font.ttf") format("truetype");
 }
 
 body {
-    background: url(bg.jpg);
+  background: url(bg.jpg);
 }
 
 .font {
-    font-family: "font";
-    font-size: 9em;
-    color: #8d3146;
+  font-family: "font";
+  font-size: 9em;
+  color: #8d3146;
 }
 
 .information {
-    font-size: 20px;
-    font-weight: 700;
-    color: #29050d;;
+  font-size: 120%;
+  font-weight: 700;
+  color: #29050d;
 }
 
 .authButton {
-    background-color: #b98adb;
-    color: white;
-    border: none;
+  background-color: #b98adb;
+  color: white;
+  border: none;
 }
 
 .authButton:hover {
-    background-color: #641528;
+  background-color: #cb98f0;
 }
 
 .authButton:active {
-    background-color:  #b8193e;
+  background-color: #85659c !important;
 }
