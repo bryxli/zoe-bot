@@ -10,7 +10,7 @@ export default function Header() {
   const { userInfo } = authContext;
 
   const application_id = process.env.APPLICATION_ID;
-  const redirect = "https://ddwebabika1cp.cloudfront.net"; // TODO: update readme for redirect instructions
+  const redirect = "https://ddwebabika1cp.cloudfront.net"; // Update with Cloudfront URL
   const href = `https://discord.com/api/oauth2/authorize?client_id=${application_id}&redirect_uri=${redirect}/load&response_type=token&scope=guilds%20identify`;
 
   return (
