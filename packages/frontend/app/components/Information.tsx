@@ -15,7 +15,7 @@ export default function Information() {
             <Row>/userlist - display guild userlist</Row>
             <Row className="mb-4">/speak - zoe will talk to you</Row>
             <p>
-                Click <a href="https://discord.com/api/oauth2/authorize?client_id=1014214102459093105&permissions=2048&scope=bot">here</a> to invite
+                Click <a href="https://discord.com/oauth2/authorize?client_id=1154647072138608694&permissions=536870912&scope=applications.commands%20bot">here</a> to invite
                 to server.
             </p>
         </Container>
