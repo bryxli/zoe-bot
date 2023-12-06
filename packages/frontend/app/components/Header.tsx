@@ -20,12 +20,12 @@ export default function Header() {
   };
 
   return (
-    <Container className="d-flex flex-column align-items-center justify-content-center">
-      <header>zoe, the aspect of twighlight</header>
+    <Container className="d-flex flex-column align-items-center justify-content-center mb-4">
+      <header className="font">zoe, the aspect of twighlight</header>
       {userInfo ? (
-        <Button onClick={handleLogout}>Logout</Button>
+        <Button className="authButton" onClick={handleLogout}>Logout</Button>
       ) : (
-        <Button href={href}>Login with Discord</Button>
+        <Button className="authButton" href={href}>Login with Discord</Button>
       )}
     </Container>
   );
