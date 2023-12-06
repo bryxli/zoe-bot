@@ -15,6 +15,10 @@ body {
   color: #8d3146;
 }
 
+.readable {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
 .information {
   font-size: 120%;
   font-weight: 700;
