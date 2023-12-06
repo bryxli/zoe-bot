@@ -6,6 +6,22 @@ Discord bot that traverses through the Riot Games API to find information about 
 
 If a username has spaces, make sure to enclose it in quotes. Ex: /adduser "user name"
 
+# Table of Contents
+
+- [Prerequisites](#prerequisites)
+- [Bot Deployment](#bot-deployment)
+  - [Configuration](#configuration)
+  - [Startup](#startup)
+  - [Create Discord Application](#create-discord-application)
+  - [Bot Commands](#bot-commands)
+- [Production Deployment](#production-deployment)
+  - [Create Redirect](#create-redirect)
+  - [Configure Login Button](#configure-login-button)
+- [Integrate with GitHub Actions](#integrate-with-github-actions)
+  - [Create IAM Role](#create-iam-role)
+  - [Create Secrets](#create-secrets)
+  - [Configure Deployment Region](#configure-deployment-region)
+
 ## Prerequisites
 
 Zoe is an IaC application that utilizes SST and Discord. Make sure to have the following installed and configured.
@@ -13,7 +29,7 @@ Zoe is an IaC application that utilizes SST and Discord. Make sure to have the f
 - [Node.js / npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
 - [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html)
 
-## Bot deployment
+## Bot Deployment
 
 ### Configuration
 
@@ -70,7 +86,7 @@ The bot is configured to be able to deploy to multiple stages. This changes conf
 
 4. After deploying the bot to AWS using either `npm run deploy` or `npm run deploy:prod`, paste InteractionsEndpoint into _Interactions Endpoint URL_ under General Information
 
-### Bot commands
+### Bot Commands
 
 - /help - command list
 - /setup - create guild instance
@@ -84,7 +100,7 @@ The bot is configured to be able to deploy to multiple stages. This changes conf
 
 ## Production deployment
 
-### Create redirect
+### Create Redirect
 
 1. In the Discord Application on [Discord Developer Portal](https://discord.com/developers/applications) under OAuth2, create a redirect using URL/load
 
@@ -94,20 +110,20 @@ The bot is configured to be able to deploy to multiple stages. This changes conf
 3. Enable Scopes: _bot_, _application.commands_
 4. Enable Bot Permissions: _Manage Webhooks_
 
-### Configure login button
+### Configure Login Button
 
 1. In [Header.tsx](/packages/frontend/app/components/Header.tsx), update redirect with URL
 2. Redeploy to production using `npm run deploy:prod`
 
 ## Integrate with GitHub Actions
 
-### Create IAM role
+### Create IAM Role
 
 Instructions to deploy SST apps using GitHub Actions can be found [here](https://docs.sst.dev/going-to-production#deploy-from-github-actions)
 
 - [aws-github-actions](https://github.com/bryxli/aws-github-actions)
 
-### Create secrets
+### Create Secrets
 
 1. In the repo, under Settings > Secrets and variables > Actions, create three new repository secrets
 
@@ -125,6 +141,6 @@ Instructions to deploy SST apps using GitHub Actions can be found [here](https:/
 
 4. Repeat step 3 for prod-config
 
-### Configure deployment region
+### Configure Deployment Region
 
 1. In [deploy.yml](.github/workflows/deploy.yml), update aws-region in each deploy stage if needed
