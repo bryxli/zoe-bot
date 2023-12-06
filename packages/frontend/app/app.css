@@ -28,3 +28,7 @@ body {
 .authButton:hover {
     background-color: #641528;
 }
+
+.authButton:active {
+    background-color:  #b8193e;
+}

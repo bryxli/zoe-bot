@@ -20,7 +20,7 @@ export default function Header() {
   };
 
   const handleLogin = async () => {
-    application_id !== undefined && router.push(href);
+    router.push(application_id === undefined ? "#" : href);
   }
 
   return (
