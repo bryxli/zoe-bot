@@ -126,17 +126,17 @@ Instructions to deploy SST apps using GitHub Actions can be found [here](https:/
 
 1. In the repo, under Settings > Secrets and variables > Actions, create three new repository secrets
 
-- AWS_ACCOUNT_ID
-- AWS_REGION
-- RIOT_KEY
+   - AWS_ACCOUNT_ID
+   - AWS_REGION
+   - RIOT_KEY
 
 2. Repeat step 1 for Secrets and variables > Dependabot
 
 3. Additionally, create a new environment called dev-config and create three new environment secrets
 
-- APPLICATION_ID
-- DISCORD_PUBLIC_KEY
-- TOKEN
+   - APPLICATION_ID
+   - DISCORD_PUBLIC_KEY
+   - TOKEN
 
 4. Repeat step 3 for prod-config
 
