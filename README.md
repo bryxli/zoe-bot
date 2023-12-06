@@ -50,7 +50,6 @@ Zoe is an IaC application that utilizes SST and Discord. Make sure to have the f
   "application_id": "<DISCORD APPLICATION ID>",
   "token": "<DISCORD BOT TOKEN>"
 }
-
 ```
 
 3. Set prod configuration [config-prod.json](configs/config-prod.json)
