@@ -19,14 +19,21 @@ export default function Header() {
     router.push("/");
   };
 
+  const renderLoginButton = () => (
+    application_id !== undefined && 
+      <Button className="authButton" href={href}>
+        Login with Discord
+      </Button>
+  );
+
   return (
     <Container className="d-flex flex-column align-items-center justify-content-center mb-4">
       <header className="font">zoe, the aspect of twighlight</header>
       {userInfo ? (
-        <Button className="authButton" onClick={handleLogout}>Logout</Button>
-      ) : (
-        <Button className="authButton" href={href}>Login with Discord</Button>
-      )}
+        <Button className="authButton" onClick={handleLogout}>
+          Logout
+        </Button>
+      ) : renderLoginButton()}
     </Container>
   );
 }
