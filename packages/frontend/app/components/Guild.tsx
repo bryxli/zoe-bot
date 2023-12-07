@@ -1,10 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { Card, Modal } from "react-bootstrap";
-import Image from "next/image";
-
+import { Card } from "react-bootstrap";
 import { GuildProps } from "../types";
+import GuildModal from "./GuildModal";
 
 export default function Guild({
   id,
@@ -28,21 +27,13 @@ export default function Guild({
           <Card.Title> {name} </Card.Title>
         </Card.Body>
       </Card>
-
-      <Modal show={showModal} onHide={display}>
-        <Modal.Header closeButton>
-          <Modal.Title> {name} </Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Image
-            src={`https://cdn.discordapp.com/icons/${id}/${icon}.jpg`}
-            alt="Guild Avatar"
-            width={150}
-            height={150}
-            priority={true}
-          />
-        </Modal.Body>
-      </Modal>
+      <GuildModal
+        showModal={showModal}
+        onHide={display}
+        id={id}
+        name={name}
+        icon={icon}
+      />
     </>
   );
 }

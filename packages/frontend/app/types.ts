@@ -31,3 +31,11 @@ export interface GuildProps {
   permissions_new: string;
   features: string[];
 }
+
+export interface GuildModalProps {
+  showModal: boolean;
+  onHide: () => void;
+  id: string;
+  name: string;
+  icon: string | null;
+}
