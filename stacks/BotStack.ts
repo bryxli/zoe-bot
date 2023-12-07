@@ -5,12 +5,8 @@ import * as events from "aws-cdk-lib/aws-events";
 import * as cdk from "aws-cdk-lib";
 import * as targets from "aws-cdk-lib/aws-events-targets";
 import * as config from "../configs/config.json";
-import * as devConfig from "../configs/config-dev.json";
-import * as prodConfig from "../configs/config-prod.json";
 
 export function BotStack({ app, stack }: StackContext) {
-  const currentConfig = app.stage === "prod" ? prodConfig : devConfig;
-
   const { table } = use(InfraStack);
 
   const dynamoLayer = new lambda.LayerVersion(stack, "util-dynamo-layer", {
@@ -28,8 +24,8 @@ export function BotStack({ app, stack }: StackContext) {
     timeout: "5 minutes",
     architecture: "x86_64",
     environment: {
-      TOKEN: currentConfig.token,
-      APPLICATION_ID: currentConfig.application_id,
+      TOKEN: config.token,
+      APPLICATION_ID: config.application_id,
     },
   });
 
@@ -41,10 +37,10 @@ export function BotStack({ app, stack }: StackContext) {
     timeout: "5 minutes",
     architecture: "x86_64",
     environment: {
-      DISCORD_PUBLIC_KEY: currentConfig.discord_public_key,
+      DISCORD_PUBLIC_KEY: config.discord_public_key,
       RIOT_KEY: config.riot_key,
       SET_AWS_REGION: config.aws_region,
-      TOKEN: currentConfig.token,
+      TOKEN: config.token,
       STAGE: app.stage,
     },
     bind: [table],

@@ -1,4 +1,7 @@
 {
   "aws_region": "<AWS REGION>",
-  "riot_key": "<RIOT API KEY>"
+  "riot_key": "<RIOT API KEY>",
+  "discord_public_key": "<DISCORD PUBLIC KEY>",
+  "application_id": "<DISCORD APPLICATION ID>",
+  "token": "<DISCORD BOT TOKEN>"
 }

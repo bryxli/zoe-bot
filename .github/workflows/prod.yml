@@ -1,0 +1,56 @@
+name: prod
+on:
+  push:
+    branches:
+      - main
+
+# Concurrency group name ensures concurrent workflow runs wait for any in-progress job to finish
+concurrency:
+  group: ${{ github.repository }}
+
+permissions:
+  id-token: write # This is required for requesting the JWT
+  contents: read # This is required for actions/checkout
+
+jobs:
+  create-config:
+    environment: prod
+    runs-on: ubuntu-latest
+    env:
+      AWS_REGION: ${{secrets.AWS_REGION}}
+      RIOT_KEY: ${{secrets.RIOT_KEY}}
+      DISCORD_PUBLIC_KEY: ${{secrets.DISCORD_PUBLIC_KEY}}
+      APPLICATION_ID: ${{secrets.APPLICATION_ID}}
+      TOKEN: ${{secrets.TOKEN}}
+    steps:
+      - name: Create config.json
+        run: |
+          echo "{ \"aws_region\": \"$AWS_REGION\", \"riot_key\": \"$RIOT_KEY\", \"discord_public_key\": \"$DISCORD_PUBLIC_KEY\", \"application_id\": \"$APPLICATION_ID\", \"token\": \"$TOKEN\" }" > config.json
+      - name: Upload config.json
+        uses: actions/upload-artifact@v3
+        with:
+          name: config
+          path: config.json
+
+  deploy-prod:
+    needs:
+      - create-config
+    runs-on: ubuntu-latest
+    steps:
+      - name: Git clone the repository
+        uses: actions/checkout@v3
+      - name: Download config.json
+        uses: actions/download-artifact@v3
+        with:
+          name: config
+          path: configs
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          role-to-assume: arn:aws:iam::${{secrets.AWS_ACCOUNT_ID}}:role/GitHub
+          role-duration-seconds: 3600 #adjust as needed for your build time
+          aws-region: us-east-1 # Update with AWS region
+      - name: Deploy prod app
+        run: |
+          npm i
+          npx sst deploy --stage prod
