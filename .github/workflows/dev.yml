@@ -14,10 +14,14 @@ permissions:
 
 jobs:
   create-config:
+    environment: dev
     runs-on: ubuntu-latest
     env:
       AWS_REGION: ${{secrets.AWS_REGION}}
       RIOT_KEY: ${{secrets.RIOT_KEY}}
+      DISCORD_PUBLIC_KEY: ${{secrets.DISCORD_PUBLIC_KEY}}
+      APPLICATION_ID: ${{secrets.APPLICATION_ID}}
+      TOKEN: ${{secrets.TOKEN}}
     steps:
       - name: Create config.json
         run: |
