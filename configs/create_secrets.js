@@ -57,16 +57,48 @@ const createSecret = async (repoKey, secretName, secret) => {
   );
 };
 
+const createDependabotSecret = async (repoKey, secretName, secret) => {
+  // await octokit.request('PUT /repositories/{repository_id}/environments/{environment_name}/secrets/{secret_name}', {
+  //   repository_id: 'REPOSITORY_ID',
+  //   environment_name: 'ENVIRONMENT_NAME',
+  //   secret_name: 'SECRET_NAME',
+  //   encrypted_value: 'c2VjcmV0',
+  //   key_id: '012345678912345678',
+  //   headers: {
+  //     'X-GitHub-Api-Version': '2022-11-28'
+  //   }
+  // })
+};
+
+const createEnvSecret = async (repoKey, secretName, secret) => {
+  // await octokit.request('PUT /repositories/{repository_id}/environments/{environment_name}/secrets/{secret_name}', {
+  //   repository_id: 'REPOSITORY_ID',
+  //   environment_name: 'ENVIRONMENT_NAME',
+  //   secret_name: 'SECRET_NAME',
+  //   encrypted_value: 'c2VjcmV0',
+  //   key_id: '012345678912345678',
+  //   headers: {
+  //     'X-GitHub-Api-Version': '2022-11-28'
+  //   }
+  // })
+};
+
 const createRepoSecrets = async (repoKey) => {
   await createSecret(repoKey, "AWS_ACCOUNT_ID", config.aws_account_id);
   await createSecret(repoKey, "AWS_REGION", config.aws_region);
   await createSecret(repoKey, "RIOT_KEY", config.riot_key);
 };
 
+const createDependabotRepoSecrets = async (repoKey) => {};
+
+const createEnvSecrets = async (repoKey) => {};
+
 const run = async () => {
-  publicKey = await getPublicKey();
+  const publicKey = await getPublicKey();
 
   await createRepoSecrets(publicKey);
+  await createEnvSecrets(publicKey);
+  await createDependabotRepoSecrets(publicKey);
 };
 
 run();
