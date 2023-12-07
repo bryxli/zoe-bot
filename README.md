@@ -97,7 +97,7 @@ The bot is configured to be able to deploy to multiple stages. This changes conf
 - /userlist - display guild userlist
 - /speak - zoe will talk to you
 
-## Production deployment
+## Production Deployment
 
 ### Create Redirect
 
