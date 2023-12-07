@@ -1,15 +1,12 @@
 name: deploy
 on:
-  push:
-    branches:
-      - main
   pull_request:
     branches:
       - "*"
 
 # Concurrency group name ensures concurrent workflow runs wait for any in-progress job to finish
 concurrency:
-  group: ${{ github.workflow }}
+  group: ${{ github.repository }}
 
 permissions:
   id-token: write # This is required for requesting the JWT
