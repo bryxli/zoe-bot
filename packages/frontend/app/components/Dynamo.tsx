@@ -6,7 +6,7 @@ import {
   UpdateCommand,
 } from "@aws-sdk/lib-dynamodb";
 
-const stage = process.env.STAGE;
+const stage = "prod"; // Currently UI only deploys to prod, using process.env.STAGE results in undefined being rendered
 
 const dynamo = new DynamoDBClient({});
 const client = DynamoDBDocumentClient.from(dynamo);
