@@ -95,7 +95,7 @@ jobs:
         with:
           role-to-assume: arn:aws:iam::${{secrets.AWS_ACCOUNT_ID}}:role/GitHub
           role-duration-seconds: 3600 #adjust as needed for your build time
-          aws-region: us-east-1 # TODO: update readme for auto deployment setup, config.json dependabot secrets
+          aws-region: us-east-1 # Update with AWS region
       - name: Deploy Dependabot app
         run: |
           npm i
@@ -132,7 +132,7 @@ jobs:
         with:
           role-to-assume: arn:aws:iam::${{secrets.AWS_ACCOUNT_ID}}:role/GitHub
           role-duration-seconds: 3600 #adjust as needed for your build time
-          aws-region: us-east-1 # TODO: update readme for auto deployment setup
+          aws-region: us-east-1 # Update with AWS region
       - name: Deploy dev app
         run: |
           npm i
@@ -168,7 +168,7 @@ jobs:
         with:
           role-to-assume: arn:aws:iam::${{secrets.AWS_ACCOUNT_ID}}:role/GitHub
           role-duration-seconds: 3600 #adjust as needed for your build time
-          aws-region: us-east-1 # TODO: update readme for auto deployment setup
+          aws-region: us-east-1 # Update with AWS region
       - name: Deploy prod app
         run: |
           npm i
