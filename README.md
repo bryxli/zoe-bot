@@ -28,6 +28,7 @@ Zoe is an IaC application that utilizes SST and Discord. Make sure to have the f
 
 - [Node.js / npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
 - [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html)
+- [Docker](https://docs.docker.com/engine/install)
 
 ## Bot Deployment
 
