@@ -19,6 +19,7 @@ export default function GuildModal({
         const users = await getAllUsers(id);
         setUserlist(users || []);
       } catch (e) {
+        console.log(e);
         setUserlist([]);
       }
     };
@@ -31,13 +32,15 @@ export default function GuildModal({
       <Modal.Header closeButton>
         <Modal.Title>
           {name}
-          <Image
-            src={`https://cdn.discordapp.com/icons/${id}/${icon}.jpg`}
-            alt="Guild Avatar"
-            width={30}
-            height={30}
-            priority={true}
-          />
+          {id && (
+            <Image
+              src={`https://cdn.discordapp.com/icons/${id}/${icon}.jpg`}
+              alt="Guild Avatar"
+              width={30}
+              height={30}
+              priority={true}
+            />
+          )}
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
