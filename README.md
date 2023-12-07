@@ -34,29 +34,12 @@ Zoe is an IaC application that utilizes SST and Discord. Make sure to have the f
 
 ### Configuration
 
-1. Set global configuration [config.json](configs/config.json)
+Set environment configuration [config.json](configs/config.json)
 
 ```
 {
   "aws_region": "<AWS REGION>",
-  "riot_key": "<RIOT API KEY>"
-}
-```
-
-2. Set dev configuration [config-dev.json](configs/config-dev.json)
-
-```
-{
-  "discord_public_key": "<DISCORD PUBLIC KEY>",
-  "application_id": "<DISCORD APPLICATION ID>",
-  "token": "<DISCORD BOT TOKEN>"
-}
-```
-
-3. Set prod configuration [config-prod.json](configs/config-prod.json)
-
-```
-{
+  "riot_key": "<RIOT API KEY>",
   "discord_public_key": "<DISCORD PUBLIC KEY>",
   "application_id": "<DISCORD APPLICATION ID>",
   "token": "<DISCORD BOT TOKEN>"
@@ -133,13 +116,13 @@ Instructions to deploy SST apps using GitHub Actions can be found [here](https:/
 
 2. Repeat step 1 for Secrets and variables > Dependabot
 
-3. Additionally, create a new environment called dev-config and create three new environment secrets
+3. Additionally, create a new environment called dev and create three new environment secrets
 
    - APPLICATION_ID
    - DISCORD_PUBLIC_KEY
    - TOKEN
 
-4. Repeat step 3 for prod-config
+4. Repeat step 3 for prod
 
 ### Configure Deployment Region
 
