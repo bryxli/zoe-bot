@@ -35,7 +35,7 @@ export default function Guild({
         </Modal.Header>
         <Modal.Body>
           <Image
-            src={`${icon}.jpg`}
+            src={`icons/${id}/${icon}.jpg`}
             alt="Guild Avatar"
             width={150}
             height={150}
