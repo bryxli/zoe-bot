@@ -1,6 +1,8 @@
 "use client";
 
-import { Card } from "react-bootstrap";
+import { useState } from "react";
+import { Card, Modal } from "react-bootstrap";
+import Image from "next/image";
 
 import { GuildProps } from "../types";
 
@@ -13,15 +15,34 @@ export default function Guild({
   permissions_new,
   features,
 }: GuildProps) {
-  const handleCardClick = () => {
-    console.log("TODO: Create modal");
+  const [showModal, setShowModal] = useState(false);
+
+  const display = () => {
+    setShowModal(!showModal);
   };
 
   return (
-    <Card style={{ cursor: "pointer" }} onClick={handleCardClick}>
-      <Card.Body>
-        <Card.Title> {name} </Card.Title>
-      </Card.Body>
-    </Card>
+    <>
+      <Card style={{ cursor: "pointer" }} onClick={display}>
+        <Card.Body>
+          <Card.Title> {name} </Card.Title>
+        </Card.Body>
+      </Card>
+
+      <Modal show={showModal} onHide={display}>
+        <Modal.Header closeButton>
+          <Modal.Title> {name} </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Image
+            src={`${icon}.jpg`}
+            alt="Guild Avatar"
+            width={150}
+            height={150}
+            priority={true}
+          />
+        </Modal.Body>
+      </Modal>
+    </>
   );
 }
