@@ -1,4 +1,4 @@
-name: deploy
+name: prod
 on:
   push:
     branches:
@@ -14,133 +14,27 @@ permissions:
 
 jobs:
   create-config:
+    environment: prod
     runs-on: ubuntu-latest
     env:
       AWS_REGION: ${{secrets.AWS_REGION}}
       RIOT_KEY: ${{secrets.RIOT_KEY}}
+      DISCORD_PUBLIC_KEY: ${{secrets.DISCORD_PUBLIC_KEY}}
+      APPLICATION_ID: ${{secrets.APPLICATION_ID}}
+      TOKEN: ${{secrets.TOKEN}}
     steps:
       - name: Create config.json
         run: |
-          echo "{ \"aws_region\": \"$AWS_REGION\", \"riot_key\": \"$RIOT_KEY\" }" > config.json
+          echo "{ \"aws_region\": \"$AWS_REGION\", \"riot_key\": \"$RIOT_KEY\", \"discord_public_key\": \"$DISCORD_PUBLIC_KEY\", \"application_id\": \"$APPLICATION_ID\", \"token\": \"$TOKEN\" }" > config.json
       - name: Upload config.json
         uses: actions/upload-artifact@v3
         with:
           name: config
           path: config.json
 
-  create-config-dev:
-    environment: dev-config
-    runs-on: ubuntu-latest
-    env:
-      DISCORD_PUBLIC_KEY: ${{secrets.DISCORD_PUBLIC_KEY}}
-      APPLICATION_ID: ${{secrets.APPLICATION_ID}}
-      TOKEN: ${{secrets.TOKEN}}
-    steps:
-      - name: Create config-dev.json
-        run: |
-          echo "{ \"discord_public_key\": \"$DISCORD_PUBLIC_KEY\", \"application_id\": \"$APPLICATION_ID\", \"token\": \"$TOKEN\" }" > config-dev.json
-      - name: Upload config-dev.json
-        uses: actions/upload-artifact@v3
-        with:
-          name: config-dev
-          path: config-dev.json
-
-  create-config-prod:
-    environment: prod-config
-    runs-on: ubuntu-latest
-    env:
-      DISCORD_PUBLIC_KEY: ${{secrets.DISCORD_PUBLIC_KEY}}
-      APPLICATION_ID: ${{secrets.APPLICATION_ID}}
-      TOKEN: ${{secrets.TOKEN}}
-    steps:
-      - name: Create config-prod.json
-        run: |
-          echo "{ \"discord_public_key\": \"$DISCORD_PUBLIC_KEY\", \"application_id\": \"$APPLICATION_ID\", \"token\": \"$TOKEN\" }" > config-prod.json
-      - name: Upload config-prod.json
-        uses: actions/upload-artifact@v3
-        with:
-          name: config-prod
-          path: config-prod.json
-
-  deploy-dependabot:
-    if: github.actor == 'dependabot[bot]' && github.event_name == 'pull_request'
-    needs:
-      - create-config
-      - create-config-dev
-      - create-config-prod
-    runs-on: ubuntu-latest
-    steps:
-      - name: Git clone the repository
-        uses: actions/checkout@v3
-      - name: Download config.json
-        uses: actions/download-artifact@v3
-        with:
-          name: config
-          path: configs
-      - name: Download config-dev.json
-        uses: actions/download-artifact@v3
-        with:
-          name: config-dev
-          path: configs
-      - name: Download config-prod.json
-        uses: actions/download-artifact@v3
-        with:
-          name: config-prod
-          path: configs
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v3
-        with:
-          role-to-assume: arn:aws:iam::${{secrets.AWS_ACCOUNT_ID}}:role/GitHub
-          role-duration-seconds: 3600 #adjust as needed for your build time
-          aws-region: us-east-1 # Update with AWS region
-      - name: Deploy Dependabot app
-        run: |
-          npm i
-          npx sst deploy --stage dependabot
-          npx sst remove --stage dependabot
-
-  deploy-dev:
-    if: github.actor != 'dependabot[bot]' && github.event_name == 'pull_request'
-    needs:
-      - create-config
-      - create-config-dev
-      - create-config-prod
-    runs-on: ubuntu-latest
-    steps:
-      - name: Git clone the repository
-        uses: actions/checkout@v3
-      - name: Download config.json
-        uses: actions/download-artifact@v3
-        with:
-          name: config
-          path: configs
-      - name: Download config-dev.json
-        uses: actions/download-artifact@v3
-        with:
-          name: config-dev
-          path: configs
-      - name: Download config-prod.json
-        uses: actions/download-artifact@v3
-        with:
-          name: config-prod
-          path: configs
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v3
-        with:
-          role-to-assume: arn:aws:iam::${{secrets.AWS_ACCOUNT_ID}}:role/GitHub
-          role-duration-seconds: 3600 #adjust as needed for your build time
-          aws-region: us-east-1 # Update with AWS region
-      - name: Deploy dev app
-        run: |
-          npm i
-          npx sst deploy --stage dev
-
   deploy-prod:
-    if: github.event_name == 'push'
     needs:
       - create-config
-      - create-config-dev
-      - create-config-prod
     runs-on: ubuntu-latest
     steps:
       - name: Git clone the repository
@@ -149,16 +43,6 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: config
-          path: configs
-      - name: Download config-dev.json
-        uses: actions/download-artifact@v3
-        with:
-          name: config-dev
-          path: configs
-      - name: Download config-prod.json
-        uses: actions/download-artifact@v3
-        with:
-          name: config-prod
           path: configs
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v3

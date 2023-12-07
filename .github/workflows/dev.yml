@@ -1,4 +1,4 @@
-name: deploy
+name: dev
 on:
   pull_request:
     branches:
@@ -32,7 +32,7 @@ jobs:
           name: config
           path: config.json
 
-  dependabot:
+  dependabot: # TODO: This does not really do much without a testing suite
     if: github.actor == 'dependabot[bot]'
     needs:
       - create-config
