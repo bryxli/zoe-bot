@@ -11,6 +11,7 @@ export const getAllUsers = async (guildId: string) => {
   };
 
   try {
+    console.log("test running dynamo");
     const response = await dynamo.get(params).promise();
     const userlist = response.Item?.userlist?.L || [];
     const userIds: string[] = [];
