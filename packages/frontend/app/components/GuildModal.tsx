@@ -25,6 +25,7 @@ export default function GuildModal({
 
     fetchUsers();
   }, [id]);
+
   return (
     <Modal show={showModal} onHide={onHide}>
       <Modal.Header closeButton>
