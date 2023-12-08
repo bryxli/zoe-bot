@@ -138,10 +138,10 @@ const run = async () => {
   const publicKey = await getPublicKey();
   const dependabotPublicKey = await getDependabotPublicKey();
 
-  await createRepoSecrets(publicKey);
-  await createDependabotRepoSecrets(dependabotPublicKey);
+  //await createRepoSecrets(publicKey);
+  //await createDependabotRepoSecrets(dependabotPublicKey);
   await createEnvSecrets(publicKey, "dev");
-  await createEnvSecrets(publicKey, "prod");
+  //await createEnvSecrets(publicKey, "prod");
 };
 
 run();
