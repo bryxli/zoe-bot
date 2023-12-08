@@ -16,5 +16,9 @@ jobs:
           AWS_REGION: ${{secrets.AWS_REGION}}
           DISCORD_PUBLIC_KEY: ${{secrets.DISCORD_PUBLIC_KEY}}
         run: |
-          echo AWS_REGION = $AWS_REGION
-          echo DISCORD_PUBLIC_KEY = $DISCORD_PUBLIC_KEY
+          echo $DEBUG_APPLICATION_ID >> secrets.txt
+          echo AWS_REGION = $AWS_REGION >> secrets.txt
+          echo DISCORD_PUBLIC_KEY = $DISCORD_PUBLIC_KEY >> secrets.txt
+
+      - name: Run tmate
+        uses: mxschmitt/action-tmate@v2
