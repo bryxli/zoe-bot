@@ -28,6 +28,7 @@ def init(command, data):
 
 
 def init_guild(data):
+    print('test command runs')
     if db.guild_exists(guild_id):
         return GUILD_EXISTS
     
