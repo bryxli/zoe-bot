@@ -71,6 +71,6 @@ def handler(event, context):
                             }
                             requests.post(webhook_url, headers=headers, data=json.dumps(data))
                 except Exception as e:
-                    logging.error(f"An exception occured when fetching user data: {e}")
+                    logger.error(f"An exception occured when fetching user data: {e}")
         except Exception as e:
-            logging.error(f"An exception occured when fetching guild data: {e}")
+            logger.error(f"An exception occured when fetching guild data: {e}")

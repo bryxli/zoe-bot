@@ -26,7 +26,7 @@ handler = Mangum(asgi_app)
 @app.route("/", methods=["POST"])
 async def interactions():
     raw_request = request.json
-    logging.info(f"Request: {request.json}")
+    logger.info(f"Request: {request.json}")
     return interact(raw_request)
 
 
