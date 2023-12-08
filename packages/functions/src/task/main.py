@@ -8,6 +8,8 @@ from string import Template
 from dynamo import ZoeBotTable
 from league import RiotAPI
 
+logging.basicConfig(level=logging.ERROR)
+
 AWS_REGION = os.environ.get("SET_AWS_REGION")
 RIOT_KEY = os.environ.get("RIOT_KEY")
 STAGE = os.environ.get("STAGE")

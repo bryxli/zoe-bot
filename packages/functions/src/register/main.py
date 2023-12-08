@@ -4,6 +4,8 @@ import os
 import time
 import logging
 
+logging.basicConfig(level=logging.INFO)
+
 TOKEN = os.environ.get("TOKEN")
 APPLICATION_ID = os.environ.get("APPLICATION_ID")
 
