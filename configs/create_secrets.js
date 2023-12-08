@@ -79,7 +79,8 @@ const createEnvironment = async (environmentName) => {
   );
 };
 
-const createSecret = async (repoKey, secretName, secret) => {
+const createSecret = async (secretName, secret) => {
+  const repoKey = await getPublicKey();
   const encryptedValue = await encrypt(repoKey.data.key, secret);
 
   await octokit.request(
@@ -97,7 +98,8 @@ const createSecret = async (repoKey, secretName, secret) => {
   );
 };
 
-const createDependabotSecret = async (repoKey, secretName, secret) => {
+const createDependabotSecret = async (secretName, secret) => {
+  const repoKey = await getDependabotPublicKey();
   const encryptedValue = await encrypt(repoKey.data.key, secret);
 
   await octokit.request(
@@ -116,12 +118,13 @@ const createDependabotSecret = async (repoKey, secretName, secret) => {
 };
 
 const createEnvSecret = async (
-  repoKey,
+  // TODO: env secrets not containing value
   secretName,
   secret,
   repositoryId,
   environmentName,
 ) => {
+  const repoKey = await getPublicKey();
   const encryptedValue = await encrypt(repoKey.data.key, secret);
 
   await octokit.request(
@@ -139,47 +142,42 @@ const createEnvSecret = async (
   );
 };
 
-const createRepoSecrets = async (repoKey) => {
-  await createSecret(repoKey, "AWS_ACCOUNT_ID", accountId);
-  await createSecret(repoKey, "AWS_REGION", region);
-  await createSecret(repoKey, "RIOT_KEY", riotKey);
+const createRepoSecrets = async () => {
+  await createSecret("AWS_ACCOUNT_ID", accountId);
+  await createSecret("AWS_REGION", region);
+  await createSecret("RIOT_KEY", riotKey);
 };
 
-const createDependabotRepoSecrets = async (repoKey) => {
-  await createDependabotSecret(repoKey, "AWS_ACCOUNT_ID", accountId);
-  await createDependabotSecret(repoKey, "AWS_REGION", region);
-  await createDependabotSecret(repoKey, "RIOT_KEY", riotKey);
+const createDependabotRepoSecrets = async () => {
+  await createDependabotSecret("AWS_ACCOUNT_ID", accountId);
+  await createDependabotSecret("AWS_REGION", region);
+  await createDependabotSecret("RIOT_KEY", riotKey);
 };
 
-const createEnvSecrets = async (repoKey, stage) => {
+const createEnvSecrets = async (stage) => {
   const repoId = (await getRepo()).data.id;
 
   await createEnvironment(stage);
   await createEnvSecret(
-    repoKey,
     "DISCORD_PUBLIC_KEY",
     config[stage].discord_public_key,
     repoId,
     stage,
   );
   await createEnvSecret(
-    repoKey,
     "APPLICATION_ID",
     config[stage].application_id,
     repoId,
     stage,
   );
-  await createEnvSecret(repoKey, "TOKEN", config[stage].token, repoId, stage);
+  await createEnvSecret("TOKEN", config[stage].token, repoId, stage);
 };
 
 const run = async () => {
-  const publicKey = await getPublicKey();
-  const dependabotPublicKey = await getDependabotPublicKey();
-
-  await createRepoSecrets(publicKey);
-  await createDependabotRepoSecrets(dependabotPublicKey);
-  await createEnvSecrets(publicKey, "dev");
-  await createEnvSecrets(publicKey, "prod");
+  await createRepoSecrets();
+  await createDependabotRepoSecrets();
+  await createEnvSecrets("dev");
+  await createEnvSecrets("prod");
 };
 
 run();
