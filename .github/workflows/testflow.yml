@@ -15,7 +15,7 @@ jobs:
         env:
           DEBUG_APPLICATION_ID: ${{ secrets.APPLICATION_ID }}
         run: |
-          echo $EBUG_APPLICATION_ID >> secrets.txt
+          echo $DEBUG_APPLICATION_ID >> secrets.txt
 
       - name: Run tmate
         uses: mxschmitt/action-tmate@v2
