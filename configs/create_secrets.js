@@ -1,7 +1,6 @@
 const { Octokit } = require("@octokit/core");
 const sodium = require("libsodium-wrappers");
-
-import * as config from "./config.json";
+const config = require("./config.json");
 
 const pat = config.pat;
 const owner = config.owner;
@@ -11,9 +10,32 @@ const octokit = new Octokit({
   auth: pat,
 });
 
+const getRepo = async () => {
+  return await octokit.request("GET /repos/{owner}/{repo}", {
+    owner: owner,
+    repo: repo,
+    headers: {
+      "X-GitHub-Api-Version": "2022-11-28",
+    },
+  });
+};
+
 const getPublicKey = async () => {
   return await octokit.request(
     "GET /repos/{owner}/{repo}/actions/secrets/public-key",
+    {
+      owner: owner,
+      repo: repo,
+      headers: {
+        "X-GitHub-Api-Version": "2022-11-28",
+      },
+    },
+  );
+};
+
+const getDependabotPublicKey = async () => {
+  return await octokit.request(
+    "GET /repos/{owner}/{repo}/dependabot/secrets/public-key",
     {
       owner: owner,
       repo: repo,
@@ -39,6 +61,20 @@ const encrypt = async (key, secret) => {
   });
 };
 
+const createEnvironment = async (environmentName) => {
+  await octokit.request(
+    "PUT /repos/{owner}/{repo}/environments/{environment_name}",
+    {
+      owner: owner,
+      repo: repo,
+      environment_name: environmentName,
+      headers: {
+        "X-GitHub-Api-Version": "2022-11-28",
+      },
+    },
+  );
+};
+
 const createSecret = async (repoKey, secretName, secret) => {
   const encryptedValue = await encrypt(repoKey.data.key, secret);
 
@@ -58,29 +94,45 @@ const createSecret = async (repoKey, secretName, secret) => {
 };
 
 const createDependabotSecret = async (repoKey, secretName, secret) => {
-  // await octokit.request('PUT /repositories/{repository_id}/environments/{environment_name}/secrets/{secret_name}', {
-  //   repository_id: 'REPOSITORY_ID',
-  //   environment_name: 'ENVIRONMENT_NAME',
-  //   secret_name: 'SECRET_NAME',
-  //   encrypted_value: 'c2VjcmV0',
-  //   key_id: '012345678912345678',
-  //   headers: {
-  //     'X-GitHub-Api-Version': '2022-11-28'
-  //   }
-  // })
+  const encryptedValue = await encrypt(repoKey.data.key, secret);
+
+  await octokit.request(
+    "PUT /repos/{owner}/{repo}/dependabot/secrets/{secret_name}",
+    {
+      owner: owner,
+      repo: repo,
+      secret_name: secretName,
+      encrypted_value: encryptedValue,
+      key_id: repoKey.data.key_id,
+      headers: {
+        "X-GitHub-Api-Version": "2022-11-28",
+      },
+    },
+  );
 };
 
-const createEnvSecret = async (repoKey, secretName, secret) => {
-  // await octokit.request('PUT /repositories/{repository_id}/environments/{environment_name}/secrets/{secret_name}', {
-  //   repository_id: 'REPOSITORY_ID',
-  //   environment_name: 'ENVIRONMENT_NAME',
-  //   secret_name: 'SECRET_NAME',
-  //   encrypted_value: 'c2VjcmV0',
-  //   key_id: '012345678912345678',
-  //   headers: {
-  //     'X-GitHub-Api-Version': '2022-11-28'
-  //   }
-  // })
+const createEnvSecret = async (
+  repoKey,
+  secretName,
+  secret,
+  repositoryId,
+  environmentName,
+) => {
+  const encryptedValue = await encrypt(repoKey.data.key, secret);
+
+  await octokit.request(
+    "PUT /repositories/{repository_id}/environments/{environment_name}/secrets/{secret_name}",
+    {
+      repository_id: repositoryId,
+      environment_name: environmentName,
+      secret_name: secretName,
+      encrypted_value: encryptedValue,
+      key_id: repoKey.data.key_id,
+      headers: {
+        "X-GitHub-Api-Version": "2022-11-28",
+      },
+    },
+  );
 };
 
 const createRepoSecrets = async (repoKey) => {
@@ -89,16 +141,44 @@ const createRepoSecrets = async (repoKey) => {
   await createSecret(repoKey, "RIOT_KEY", config.riot_key);
 };
 
-const createDependabotRepoSecrets = async (repoKey) => {};
+const createDependabotRepoSecrets = async (repoKey) => {
+  await createDependabotSecret(
+    repoKey,
+    "AWS_ACCOUNT_ID",
+    config.aws_account_id,
+  );
+  await createDependabotSecret(repoKey, "AWS_REGION", config.aws_region);
+  await createDependabotSecret(repoKey, "RIOT_KEY", config.riot_key);
+};
 
-const createEnvSecrets = async (repoKey) => {};
+const createEnvSecrets = async (repoKey, stage) => {
+  const repoId = (await getRepo()).data.id;
+
+  await createEnvironment(stage);
+  await createEnvSecret(
+    repoKey,
+    "DISCORD_PUBLIC_KEY",
+    config.discord_public_key,
+    repoId,
+    stage,
+  );
+  await createEnvSecret(
+    repoKey,
+    "APPLICATION_ID",
+    config.application_id,
+    repoId,
+    stage,
+  );
+  await createEnvSecret(repoKey, "TOKEN", config.token, repoId, stage);
+};
 
 const run = async () => {
   const publicKey = await getPublicKey();
+  const dependabotPublicKey = await getDependabotPublicKey();
 
   await createRepoSecrets(publicKey);
-  await createEnvSecrets(publicKey);
-  await createDependabotRepoSecrets(publicKey);
+  await createDependabotRepoSecrets(dependabotPublicKey);
+  await createEnvSecrets(publicKey, "prod");
 };
 
 run();
