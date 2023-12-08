@@ -116,6 +116,7 @@ const createDependabotSecret = async (repoKey, secretName, secret) => {
 };
 
 const createEnvSecret = async (
+  // TODO: env secrets not containing value
   repoKey,
   secretName,
   secret,

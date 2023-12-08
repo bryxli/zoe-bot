@@ -1,0 +1,21 @@
+name: testflow
+on: [push]
+
+jobs:
+  debug:
+    name: Debug
+    environment: dev
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Set up secret file
+        env:
+          DEBUG_APPLICATION_ID: ${{ secrets.APPLICATION_ID }}
+        run: |
+          echo $EBUG_APPLICATION_ID >> secrets.txt
+
+      - name: Run tmate
+        uses: mxschmitt/action-tmate@v2
