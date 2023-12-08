@@ -29,6 +29,15 @@ async def interactions():
 
 @verify_key_decorator(DISCORD_PUBLIC_KEY)
 def interact(raw_request):
+    AWS_REGION = os.environ.get("SET_AWS_REGION")
+    DISCORD_PUBLIC_KEY = os.environ.get("DISCORD_PUBLIC_KEY")
+    RIOT_KEY = os.environ.get("RIOT_KEY")
+    TOKEN = os.environ.get("TOKEN")
+    STAGE = os.environ.get("STAGE")
+
+    print(AWS_REGION, DISCORD_PUBLIC_KEY, RIOT_KEY, TOKEN, STAGE)
+    print("testing secrets")
+
     if raw_request["type"] == 1:
         response_data = {"type": 1} 
     else:
