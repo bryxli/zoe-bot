@@ -4,7 +4,7 @@ import os
 import time
 import logging
 
-logging.getLogger().setLevel(logging.INFO)
+logger = logging.getLogger("function-register").setLevel(logging.INFO)
 
 TOKEN = os.environ.get("TOKEN")
 APPLICATION_ID = os.environ.get("APPLICATION_ID")

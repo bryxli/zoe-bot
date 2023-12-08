@@ -13,7 +13,7 @@ from constants.main import *
 import commands.server_commands
 import commands.league_commands
 
-logging.getLogger().setLevel(logging.INFO)
+logger = logging.getLogger("function-main").setLevel(logging.INFO)
 
 with open("template.json") as file:
     template = json.load(file)
