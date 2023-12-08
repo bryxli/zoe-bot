@@ -6,4 +6,3 @@ __pycache__
 .open-next
 .DS_Store
 .env*.local
-config.json

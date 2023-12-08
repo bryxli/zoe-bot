@@ -20,7 +20,8 @@ If a username has spaces, make sure to enclose it in quotes. Ex: /adduser "user 
 - [Integrate with GitHub Actions](#integrate-with-github-actions)
   - [Create IAM Role](#create-iam-role)
   - [Create Secrets](#create-secrets)
-  - [Configure Deployment Region](#configure-deployment-region)
+    - [Automated Setup](#automated-setup)
+    - [Manual Setup](#manual-setup)
 
 ## Prerequisites
 
@@ -108,6 +109,35 @@ Instructions to deploy SST apps using GitHub Actions can be found [here](https:/
 
 ### Create Secrets
 
+#### Automated Setup
+
+1. Set environment configuration [config.actions.json](configs/config.actions.json)
+
+```
+{
+  "pat": "<GITHUB TOKEN>",
+  "owner": "<GITHUB REPO OWNER>",
+  "repo": "<GITHUB REPO>",
+  "aws_account_id": "<AWS ACCOUNT ID>",
+  "aws_region": "<AWS REGION>",
+  "riot_key": "<RIOT API KEY>",
+  "dev": {
+    "discord_public_key": "<DISCORD PUBLIC KEY>",
+    "application_id": "<DISCORD APPLICATION ID>",
+    "token": "<DISCORD BOT TOKEN>"
+  },
+  "prod": {
+    "discord_public_key": "<DISCORD PUBLIC KEY>",
+    "application_id": "<DISCORD APPLICATION ID>",
+    "token": "<DISCORD BOT TOKEN>"
+  }
+}
+```
+
+2. In [configs](configs), create secrets used by GitHub Actions using `npm run start`
+
+#### Manual Setup
+
 1. In the repo, under Settings > Secrets and variables > Actions, create three new repository secrets
 
    - AWS_ACCOUNT_ID
@@ -123,7 +153,3 @@ Instructions to deploy SST apps using GitHub Actions can be found [here](https:/
    - TOKEN
 
 4. Repeat step 3 for prod
-
-### Configure Deployment Region
-
-1. In [deploy.yml](.github/workflows/deploy.yml), update aws-region in each deploy stage if needed
