@@ -1,6 +1,7 @@
 import os
 import json
 import random
+import logging
 from flask import Flask, jsonify, request
 from mangum import Mangum
 from asgiref.wsgi import WsgiToAsgi
@@ -12,6 +13,9 @@ from constants.main import *
 import commands.server_commands
 import commands.league_commands
 
+logger = logging.getLogger("function-main")
+logger.setLevel(logging.INFO)
+
 with open("template.json") as file:
     template = json.load(file)
 
@@ -22,8 +26,8 @@ handler = Mangum(asgi_app)
 
 @app.route("/", methods=["POST"])
 async def interactions():
-    print(f"👉 Request: {request.json}")
     raw_request = request.json
+    logger.info(f"Request: {request.json}")
     return interact(raw_request)
 
 
