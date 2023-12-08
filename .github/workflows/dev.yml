@@ -50,7 +50,7 @@ jobs:
         with:
           role-to-assume: arn:aws:iam::${{secrets.AWS_ACCOUNT_ID}}:role/GitHub
           role-duration-seconds: 3600 #adjust as needed for your build time
-          aws-region: us-east-1 # Update with AWS region
+          aws-region: ${{secrets.AWS_REGION}}
       - name: Deploy Dependabot app
         run: |
           npm i
@@ -75,7 +75,7 @@ jobs:
         with:
           role-to-assume: arn:aws:iam::${{secrets.AWS_ACCOUNT_ID}}:role/GitHub
           role-duration-seconds: 3600 #adjust as needed for your build time
-          aws-region: us-east-1 # Update with AWS region
+          aws-region: ${{secrets.AWS_REGION}}
       - name: Deploy dev app
         run: |
           npm i
