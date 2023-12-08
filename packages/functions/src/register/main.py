@@ -2,6 +2,7 @@ import requests
 import yaml
 import os
 import time
+import logging
 
 TOKEN = os.environ.get("TOKEN")
 APPLICATION_ID = os.environ.get("APPLICATION_ID")
@@ -24,13 +25,13 @@ def upload_command(command):
     command_name = command["name"]
         
     if response.status_code == 201 or response.status_code == 200:
-        print(f"Command {command_name} created: {response.status_code}")
+        logging.info(f"Command {command_name} created: {response.status_code}")
     elif response.status_code == 429:
         failed.append(command)
-        print(f"Command {command_name} failed: {response.status_code} Pausing for 5 seconds...")
+        logging.warning(f"Command {command_name} failed: {response.status_code} Pausing for 5 seconds...")
         time.sleep(5)
     else:
-        print(f"Failed to create command {command_name}: {response.status_code}")
+        logging.error(f"Failed to create command {command_name}: {response.status_code}")
 
 
 def handler(event, context):
