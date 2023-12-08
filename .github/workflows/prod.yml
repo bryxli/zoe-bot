@@ -32,7 +32,7 @@ jobs:
           name: config
           path: config.json
 
-  deploy-prod:
+  deploy:
     needs:
       - create-config
     runs-on: ubuntu-latest
