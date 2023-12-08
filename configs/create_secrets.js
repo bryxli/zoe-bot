@@ -51,7 +51,6 @@ const getDependabotPublicKey = async () => {
 };
 
 const getEnvPublicKey = async (repoId, environmentName) => {
-  // TODO: request failing
   return await octokit.request(
     "GET /repositories/{repository_id}/environments/{environment_name}/secrets/public-key",
     {

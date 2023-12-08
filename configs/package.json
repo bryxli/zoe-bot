@@ -3,8 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node create_secrets.js",
-    "start:rest": "node create_secrets_rest.js"
+    "start": "node create_secrets.js"
   },
   "dependencies": {
     "@octokit/core": "^5.0.2",
