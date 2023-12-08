@@ -1,10 +1,14 @@
 const { Octokit } = require("@octokit/core");
 const sodium = require("libsodium-wrappers");
-const config = require("./config.json");
+const config = require("./config.actions.json");
 
 const pat = config.pat;
 const owner = config.owner;
 const repo = config.repo;
+
+const accountId = config.aws_account_id;
+const region = config.aws_region;
+const riotKey = config.riot_key;
 
 const octokit = new Octokit({
   auth: pat,
@@ -136,19 +140,15 @@ const createEnvSecret = async (
 };
 
 const createRepoSecrets = async (repoKey) => {
-  await createSecret(repoKey, "AWS_ACCOUNT_ID", config.aws_account_id);
-  await createSecret(repoKey, "AWS_REGION", config.aws_region);
-  await createSecret(repoKey, "RIOT_KEY", config.riot_key);
+  await createSecret(repoKey, "AWS_ACCOUNT_ID", accountId);
+  await createSecret(repoKey, "AWS_REGION", region);
+  await createSecret(repoKey, "RIOT_KEY", riotKey);
 };
 
 const createDependabotRepoSecrets = async (repoKey) => {
-  await createDependabotSecret(
-    repoKey,
-    "AWS_ACCOUNT_ID",
-    config.aws_account_id,
-  );
-  await createDependabotSecret(repoKey, "AWS_REGION", config.aws_region);
-  await createDependabotSecret(repoKey, "RIOT_KEY", config.riot_key);
+  await createDependabotSecret(repoKey, "AWS_ACCOUNT_ID", accountId);
+  await createDependabotSecret(repoKey, "AWS_REGION", region);
+  await createDependabotSecret(repoKey, "RIOT_KEY", riotKey);
 };
 
 const createEnvSecrets = async (repoKey, stage) => {
@@ -158,18 +158,18 @@ const createEnvSecrets = async (repoKey, stage) => {
   await createEnvSecret(
     repoKey,
     "DISCORD_PUBLIC_KEY",
-    config.discord_public_key,
+    config[stage].discord_public_key,
     repoId,
     stage,
   );
   await createEnvSecret(
     repoKey,
     "APPLICATION_ID",
-    config.application_id,
+    config[stage].application_id,
     repoId,
     stage,
   );
-  await createEnvSecret(repoKey, "TOKEN", config.token, repoId, stage);
+  await createEnvSecret(repoKey, "TOKEN", config[stage].token, repoId, stage);
 };
 
 const run = async () => {
@@ -178,6 +178,7 @@ const run = async () => {
 
   await createRepoSecrets(publicKey);
   await createDependabotRepoSecrets(dependabotPublicKey);
+  await createEnvSecrets(publicKey, "dev");
   await createEnvSecrets(publicKey, "prod");
 };
 
