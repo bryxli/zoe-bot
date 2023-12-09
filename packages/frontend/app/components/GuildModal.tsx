@@ -15,16 +15,24 @@ export default function GuildModal({
 
   useEffect(() => {
     const fetchUsers = async () => {
-      await fetch("/api/dynamo/userlist", {
+      const users = await fetch("/api/dynamo/userlist", {
         method: "POST",
         body: JSON.stringify({
           guildId: id,
         }),
-      })
-        .then((result) => result.json())
-        .then((response) => {
-          setUserlist(response);
-        });
+      }).then((result) => result.json());
+
+      const summonerNames = await Promise.all(
+        users.map(async (userId: string) => {
+          return await fetch("/api/league/accountid", {
+            method: "POST",
+            body: JSON.stringify({
+              accountId: userId,
+            }),
+          }).then((result) => result.json().then((response) => response.name));
+        }),
+      );
+      setUserlist(summonerNames);
     };
 
     fetchUsers();
