@@ -13,6 +13,11 @@ export default function Home() {
   const { signOut } = authContext;
 
   useEffect(() => {
+    const startup = async () => {
+      await fetch("/api/startup");
+    };
+
+    startup();
     signOut();
   }, [signOut]);
 
