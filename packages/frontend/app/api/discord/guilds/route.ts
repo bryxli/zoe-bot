@@ -2,10 +2,11 @@ import { NextRequest, NextResponse } from "next/server";
 
 export const dynamic = "force-dynamic"; // defaults to force-static
 export async function POST(request: NextRequest) {
-  /*
-  fetch("https://discord.com/api/users/@me/guilds", {
+  const body = await request.json();
+
+  const res = await fetch("https://discord.com/api/users/@me/guilds", {
     headers: {
-      authorization: `${tokenType} ${accessToken}`,
+      authorization: `${body.tokenType} ${body.accessToken}`,
     },
   })
     .then((result) =>
@@ -13,11 +14,9 @@ export async function POST(request: NextRequest) {
     )
     .then((response) => {
       if (response != 429) {
-        processGuilds(response);
-        router.push("/dashboard");
+        return response;
       }
     })
-    .catch(console.error);
-  */
-  return NextResponse.json(["test", "test2"]);
+    .catch();
+  return NextResponse.json(res);
 }

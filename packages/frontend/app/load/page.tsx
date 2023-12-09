@@ -21,7 +21,7 @@ export default function Load() {
     ];
 
     const fetchData = async () => {
-      if (userInfo) {
+      if (!userInfo) {
         await fetch("/api/discord/user", {
           method: "POST",
           body: JSON.stringify({
