@@ -12,16 +12,14 @@ export default function GuildModal({
   icon,
 }: GuildModalProps) {
   const [userlist, setUserlist] = useState<string[]>([]);
+
   useEffect(() => {
     const fetchUsers = async () => {
-      /* TODO: call api
-      try {
-        const users = await getAllUsers(id);
-        setUserlist(users || []);
-      } catch (e) {
-        setUserlist([]);
-      }
-      */
+      await fetch("/api/dynamo")
+        .then((result) => result.json())
+        .then((response) => {
+          setUserlist(response);
+        });
     };
 
     fetchUsers();
