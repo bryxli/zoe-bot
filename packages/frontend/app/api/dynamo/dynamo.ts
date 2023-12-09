@@ -1,17 +1,13 @@
 // this is the general structure of what this route would look like
 
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
-import {
-  DynamoDBDocument,
-  GetCommand,
-  PutCommand,
-  UpdateCommand,
-} from "@aws-sdk/lib-dynamodb";
+import { DynamoDBDocument } from "@aws-sdk/lib-dynamodb";
 
 const stage = "prod"; // Currently UI only deploys to prod, using process.env.STAGE results in undefined being rendered
+const region = "us-east-1"; // process.env.AWS_REGION
 
 const client = new DynamoDBClient({
-  region: "us-east-1",
+  region: region,
 });
 const documentClient = DynamoDBDocument.from(client);
 
