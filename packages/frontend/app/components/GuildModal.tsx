@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Modal } from "react-bootstrap";
+import { Container, Modal, Row } from "react-bootstrap";
 import Image from "next/image";
 
 import { GuildModalProps } from "../types";
@@ -47,7 +47,13 @@ export default function GuildModal({
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        {userlist.length > 0 ? <>{userlist}</> : <>userlist is empty</>}
+        <Container>
+          {userlist.length > 0
+            ? userlist.map((user) => {
+                return <Row key={user}>{user}</Row>;
+              })
+            : "userlist is empty"}
+        </Container>
       </Modal.Body>
     </Modal>
   );

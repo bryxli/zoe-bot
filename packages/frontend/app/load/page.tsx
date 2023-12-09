@@ -43,8 +43,10 @@ export default function Load() {
         })
           .then((result) => result.json())
           .then((response) => {
-            processGuilds(response);
-            router.push("/dashboard");
+            if (response !== "429") {
+              processGuilds(response);
+              router.push("/dashboard");
+            }
           });
       }
     };
