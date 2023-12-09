@@ -33,6 +33,6 @@ export const getAllUsers = async (guildId: string) => {
 
     return userIds;
   } catch (e) {
-    console.error;
+    return [];
   }
 };
