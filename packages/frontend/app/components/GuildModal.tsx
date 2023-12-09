@@ -15,7 +15,12 @@ export default function GuildModal({
 
   useEffect(() => {
     const fetchUsers = async () => {
-      await fetch("/api/dynamo")
+      await fetch("/api/dynamo/userlist", {
+        method: "POST",
+        body: JSON.stringify({
+          guildId: id,
+        }),
+      })
         .then((result) => result.json())
         .then((response) => {
           setUserlist(response);
