@@ -20,9 +20,7 @@ export const getAllUsers = async (guildId: string) => {
   });
 
   try {
-    console.log(`${stage}-zoe-bot-db`);
     const response = await client.send(command);
-    console.log(response);
 
     const userlist = response.Item?.userlist?.L || [];
     const userIds: string[] = [];

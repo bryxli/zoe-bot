@@ -13,10 +13,7 @@ export async function POST(request: NextRequest) {
       result.status === 429 ? Promise.resolve("429") : result.json(),
     )
     .then((response) => {
-      if (response != 429) {
-        return response;
-      }
-    })
-    .catch();
+      return response;
+    });
   return NextResponse.json(res);
 }
