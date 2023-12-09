@@ -3,7 +3,6 @@ import { Modal } from "react-bootstrap";
 import Image from "next/image";
 
 import { GuildModalProps } from "../types";
-import { getAllUsers } from "./Dynamo";
 
 export default function GuildModal({
   showModal,
@@ -15,12 +14,14 @@ export default function GuildModal({
   const [userlist, setUserlist] = useState<string[]>([]);
   useEffect(() => {
     const fetchUsers = async () => {
+      /* TODO: call api
       try {
         const users = await getAllUsers(id);
         setUserlist(users || []);
       } catch (e) {
         setUserlist([]);
       }
+      */
     };
 
     fetchUsers();

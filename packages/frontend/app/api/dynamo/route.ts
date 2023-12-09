@@ -1,3 +1,5 @@
+// this is the general structure of what this route would look like
+
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import {
   DynamoDBDocumentClient,

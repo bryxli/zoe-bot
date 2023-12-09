@@ -20,37 +20,38 @@ export default function Load() {
       fragment.get("token_type"),
     ];
 
-    !accessToken && router.push("/");
-
-    !userInfo &&
-      fetch("https://discord.com/api/users/@me", {
-        headers: {
-          authorization: `${tokenType} ${accessToken}`,
-        },
-      })
-        .then((result) => result.json())
-        .then((response) => {
-          const { username, avatar, id } = response;
-          signIn({ username, avatar, id });
+    const fetchData = async () => {
+      if (!userInfo) {
+        await fetch("/api/discord/user", {
+          method: "POST",
+          body: JSON.stringify({
+            tokenType: tokenType,
+            accessToken: accessToken,
+          }),
         })
-        .catch(console.error);
-
-    userInfo &&
-      fetch("https://discord.com/api/users/@me/guilds", {
-        headers: {
-          authorization: `${tokenType} ${accessToken}`,
-        },
-      })
-        .then((result) =>
-          result.status === 429 ? Promise.resolve("429") : result.json(),
-        )
-        .then((response) => {
-          if (response != 429) {
+          .then((result) => result.json())
+          .then((response) => {
+            signIn(response);
+          });
+      } else {
+        await fetch("/api/discord/guilds", {
+          method: "POST",
+          body: JSON.stringify({
+            tokenType: tokenType,
+            accessToken: accessToken,
+          }),
+        })
+          .then((result) => result.json())
+          .then((response) => {
             processGuilds(response);
             router.push("/dashboard");
-          }
-        })
-        .catch(console.error);
+          });
+      }
+    };
+
+    !accessToken && router.push("/");
+
+    fetchData();
   }, [processGuilds, router, signIn, userInfo]);
 
   return <></>;
