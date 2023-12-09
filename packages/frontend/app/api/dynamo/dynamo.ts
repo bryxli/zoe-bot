@@ -2,7 +2,7 @@
 
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import {
-  DynamoDBDocumentClient,
+  DynamoDBDocument,
   GetCommand,
   PutCommand,
   UpdateCommand,
@@ -10,19 +10,18 @@ import {
 
 const stage = "prod"; // Currently UI only deploys to prod, using process.env.STAGE results in undefined being rendered
 
-const dynamo = new DynamoDBClient({});
-const client = DynamoDBDocumentClient.from(dynamo);
+const client = new DynamoDBClient({
+  region: "us-east-1",
+});
+const documentClient = DynamoDBDocument.from(client);
 
 export const getAllUsers = async (guildId: string) => {
-  const command = new GetCommand({
-    TableName: `${stage}-zoe-bot-db`,
-    Key: { guild_id: guildId },
-  });
-
   try {
-    const response = await client.send(command);
-
-    const userlist = response.Item?.userlist?.L || [];
+    const res = await documentClient.get({
+      TableName: `${stage}-zoe-bot-db`,
+      Key: { guild_id: guildId },
+    });
+    const userlist = res.Item?.userlist?.L || [];
     const userIds: string[] = [];
     userlist.forEach((user: any) => {
       const accountIds = Object.keys(user.M || {});
@@ -31,6 +30,7 @@ export const getAllUsers = async (guildId: string) => {
 
     return userIds;
   } catch (e) {
+    console.log(e);
     return [];
   }
 };
