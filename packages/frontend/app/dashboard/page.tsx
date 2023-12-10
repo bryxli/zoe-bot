@@ -30,8 +30,7 @@ export default function Dashboard() {
         <Row>
           {adminGuilds.map((guild) => (
             <Col key={guild.id}>
-              {" "}
-              <Guild {...guild} />{" "}
+              <Guild {...guild} />
             </Col>
           ))}
         </Row>
