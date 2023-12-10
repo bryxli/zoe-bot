@@ -11,13 +11,14 @@ export default function UserList({ userlist }: UserlistProps) {
       </Card.Header>
       <Card.Body>
         {userlist.length > 0 ? (
-          userlist.map((user) => {
-            return (
-              <Row className="mx-auto" key={user}>
-                <Summoner name={user} />
-              </Row>
-            );
-          })
+          userlist.map(
+            (user) =>
+              user !== "" && (
+                <Row className="mx-auto" key={user}>
+                  <Summoner name={user} />
+                </Row>
+              ),
+          )
         ) : (
           <Row className="mx-auto">userlist is empty</Row>
         )}
