@@ -5,8 +5,8 @@ import Image from "next/image";
 import { GuildModalProps } from "../../types";
 
 import UserList from "./UserList";
-import GuildCommands from "./GuildCommands";
-import GuildInfo from "./GuildInfo";
+import GuildCommands from "./Commands";
+import GuildInfo from "./Information";
 
 export default function GuildModal({
   showModal,

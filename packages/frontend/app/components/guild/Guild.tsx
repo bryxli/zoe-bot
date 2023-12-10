@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Card } from "react-bootstrap";
 import { GuildProps } from "../../types";
-import GuildModal from "./GuildModal";
+import GuildModal from "./Modal";
 
 export default function Guild({
   id,
