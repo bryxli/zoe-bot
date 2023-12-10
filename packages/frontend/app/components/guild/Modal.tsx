@@ -71,7 +71,7 @@ export default function GuildModal({
             <Col xs={8}>
               <GuildCommands />
               <br></br>
-              <GuildInfo />
+              <GuildInfo {...guild} />
             </Col>
             <Col xs={4}>
               <UserList userlist={userlist} />
