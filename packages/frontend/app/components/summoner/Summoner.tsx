@@ -3,7 +3,7 @@ import { Card } from "react-bootstrap";
 
 import { SummonerProps } from "../../types";
 
-import SummonerModal from "./SummonerModal";
+import SummonerModal from "./Modal";
 
 export default function Summoner({ name }: SummonerProps) {
   const [showModal, setShowModal] = useState(false);
