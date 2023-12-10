@@ -53,9 +53,8 @@ export const getAcknowledgement = async (guildId: string) => {
 
 // # of registered players
 
-export const getAllUsers = async (guildId: string) => {
-  const item = await getGuild(guildId);
-  const userlist = item.userlist || [];
+export const getAllUsers = async (guild: Record<string, any>) => {
+  const userlist = guild.userlist || [];
   let userIds: string[] = [];
   userlist.forEach((user: any) => {
     const accountId = Object.keys(user)[0];
