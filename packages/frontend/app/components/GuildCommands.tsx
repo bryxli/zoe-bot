@@ -21,6 +21,7 @@ export default function GuildCommands() {
   const acknowledge = () => {
     console.log("acknowledge");
   };
+
   return (
     <Card>
       <Card.Header>
