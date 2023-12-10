@@ -14,6 +14,24 @@ export const getAll = async () => {
   return res.Items ?? [];
 };
 
+// adduser
+
+// deluser
+
+// region
+
+export const destroyGuild = async (guildId: string) => {
+  // TODO: implement into commands component, check acknowledgment first
+  try {
+    await documentClient.delete({
+      TableName: `${stage}-zoe-bot-db`,
+      Key: { guild_id: guildId },
+    });
+  } catch (e) {}
+};
+
+// acknowledge
+
 export const getGuild = async (guildId: string) => {
   const res = await documentClient.get({
     TableName: `${stage}-zoe-bot-db`,
@@ -23,7 +41,18 @@ export const getGuild = async (guildId: string) => {
   return res.Item ?? {};
 };
 
-// refactor this to use output of getguild
+export const getAcknowledgement = async (guildId: string) => {
+  const item = await getGuild(guildId);
+
+  return item.acknowledgment ?? false;
+};
+
+// current webhook location
+
+// current region location
+
+// # of registered players
+
 export const getAllUsers = async (guildId: string) => {
   const item = await getGuild(guildId);
   const userlist = item.userlist || [];
