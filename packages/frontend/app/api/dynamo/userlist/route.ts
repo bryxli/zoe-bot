@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getAllUsers } from "../dynamo";
+import { getAllUsers, getGuild } from "../dynamo";
 
 export const dynamic = "force-dynamic"; // defaults to force-static
 
