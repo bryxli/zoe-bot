@@ -8,15 +8,7 @@ export default function UserList(guild: DynamoGuildProps) {
   const [userlist, setUserlist] = useState<string[]>([]);
 
   useEffect(() => {
-    const fetchUsers = async () => {
-      // TODO: dont need to call api, can just use guild prop (this might be what is causing latency here)
-      const users = await fetch("/api/dynamo/userlist", {
-        method: "POST",
-        body: JSON.stringify({
-          guild: guild,
-        }),
-      }).then((result) => result.json());
-
+    const fetchSummonerNames = async (users: string[]) => {
       const summonerNames = await Promise.all(
         users.map(async (userId: string) => {
           return await fetch("/api/league/accountid", {
@@ -30,7 +22,14 @@ export default function UserList(guild: DynamoGuildProps) {
       setUserlist(summonerNames);
     };
 
-    fetchUsers();
+    const dynamoUserList = guild.userlist || [];
+    let userIds: string[] = [];
+
+    dynamoUserList.forEach((user: any) => {
+      userIds.push(Object.keys(user)[0]);
+    });
+
+    fetchSummonerNames(userIds);
   }, [guild]);
 
   return (
@@ -39,7 +38,7 @@ export default function UserList(guild: DynamoGuildProps) {
         <Card.Title>userlist</Card.Title>
       </Card.Header>
       <Card.Body>
-        {userlist.length > 0 ? (
+        {userlist.length > 0 &&
           userlist.map(
             (user) =>
               user !== "" && (
@@ -47,10 +46,7 @@ export default function UserList(guild: DynamoGuildProps) {
                   <Summoner name={user} />
                 </Row>
               ),
-          )
-        ) : (
-          <Row className="mx-auto">userlist is empty</Row>
-        )}
+          )}
       </Card.Body>
       <Card.Footer className="bg-transparent">
         {userlist.length} players registered
