@@ -14,7 +14,7 @@ export default function User({ username, avatar, id }: UserProps) {
           priority={true}
         />
       )}
-      <p>
+      <p className="information">
         You have successfully signed in as <b>{username}</b>
       </p>
     </>

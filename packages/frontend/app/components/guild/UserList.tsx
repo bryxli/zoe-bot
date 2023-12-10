@@ -1,6 +1,7 @@
 import { Card, Row } from "react-bootstrap";
 
-import { UserlistProps } from "../types";
+import { UserlistProps } from "../../types";
+import Summoner from "../summoner/Summoner";
 
 export default function UserList({ userlist }: UserlistProps) {
   return (
@@ -13,8 +14,7 @@ export default function UserList({ userlist }: UserlistProps) {
           userlist.map((user) => {
             return (
               <Row className="mx-auto" key={user}>
-                {user}{" "}
-                {/* TODO: rather than return user string, create a new summoner component with more details */}
+                <Summoner name={user} />
               </Row>
             );
           })

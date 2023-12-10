@@ -5,6 +5,8 @@ import { Inter } from "next/font/google";
 import { AuthProvider } from "./contexts/AuthContext";
 import { GuildProvider } from "./contexts/GuildContext";
 
+import "./app.css";
+
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {

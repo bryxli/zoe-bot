@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Col, Container, Modal, Row } from "react-bootstrap";
 import Image from "next/image";
 
-import { GuildModalProps } from "../types";
+import { GuildModalProps } from "../../types";
 
 import UserList from "./UserList";
 import GuildCommands from "./GuildCommands";
@@ -68,12 +68,9 @@ export default function GuildModal({
         <Container fluid>
           <Row>
             <Col xs={8}>
-              <Row>
-                <GuildCommands />
-              </Row>
-              <Row className="mt-4">
-                <GuildInfo />
-              </Row>
+              <GuildCommands />
+              <br></br>
+              <GuildInfo />
             </Col>
             <Col xs={4}>
               <UserList userlist={userlist} />

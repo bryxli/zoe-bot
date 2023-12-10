@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Card } from "react-bootstrap";
-import { GuildProps } from "../types";
+import { GuildProps } from "../../types";
 import GuildModal from "./GuildModal";
 
 export default function Guild({
@@ -22,8 +22,8 @@ export default function Guild({
 
   return (
     <>
-      <Card style={{ cursor: "pointer" }} onClick={display}>
-        <Card.Body>
+      <Card className="h-100" style={{ cursor: "pointer" }} onClick={display}>
+        <Card.Body className="d-flex align-items-center justify-content-center text-center">
           <Card.Title> {name} </Card.Title>
         </Card.Body>
       </Card>
