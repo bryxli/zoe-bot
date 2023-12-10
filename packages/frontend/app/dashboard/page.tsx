@@ -23,21 +23,25 @@ export default function Dashboard() {
   }, [router, userInfo]);
 
   return (
-    <Container className="mt-3">
+    <>
       <Header />
-      {userInfo && <User {...userInfo} />}
-      {adminGuilds && adminGuilds.length > 0 && (
-        <Row>
-          {adminGuilds.map((guild) => (
-            <Col key={guild.id}>
-              <Guild {...guild} />
-            </Col>
-          ))}
-        </Row>
-      )}
+      <Container className="d-flex flex-column align-items-center justify-content-center readable pt-2 pb-2">
+        {userInfo && <User {...userInfo} />}
+        {adminGuilds && adminGuilds.length > 0 && (
+          <Row>
+            {adminGuilds.map((guild) => (
+              <Col key={guild.id}>
+                <Guild {...guild} />
+              </Col>
+            ))}
+          </Row>
+        )}
+        {/*
       <Row className="mt-3">
         <SearchBox />
       </Row>
-    </Container>
+      */}
+      </Container>
+    </>
   );
 }

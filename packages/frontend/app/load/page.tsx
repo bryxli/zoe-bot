@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 
 import { AuthContext } from "../contexts/AuthContext";
 import { GuildContext } from "../contexts/GuildContext";
+import Header from "../components/Header";
 
 export default function Load() {
   const router = useRouter();
@@ -56,5 +57,9 @@ export default function Load() {
     fetchData();
   }, [processGuilds, router, signIn, userInfo]);
 
-  return <></>;
+  return (
+    <>
+      <Header />
+    </>
+  );
 }
