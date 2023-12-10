@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Card } from "react-bootstrap";
-import { GuildProps } from "../../types";
+import { DynamoGuildProps, GuildProps } from "../../types";
 import GuildModal from "./Modal";
 
 export default function Guild({
@@ -15,7 +15,14 @@ export default function Guild({
   features,
 }: GuildProps) {
   const [showModal, setShowModal] = useState(false);
-  const [guild, setGuild] = useState({});
+  const [guild, setGuild] = useState<DynamoGuildProps>({
+    acknowledgment: false,
+    guild_id: "",
+    region: "",
+    userlist: [],
+    webhook_id: "",
+    webhook_url: "",
+  });
 
   useEffect(() => {
     const fetchGuild = async () => {

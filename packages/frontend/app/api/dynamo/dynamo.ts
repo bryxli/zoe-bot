@@ -1,6 +1,8 @@
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import { DynamoDBDocument } from "@aws-sdk/lib-dynamodb";
 
+import { DynamoGuildProps } from "../../types";
+
 const stage = "prod"; // Currently UI only deploys to prod, using process.env.STAGE results in undefined being rendered
 
 const client = new DynamoDBClient();
@@ -41,19 +43,13 @@ export const getGuild = async (guildId: string) => {
   return res.Item ?? {};
 };
 
-export const getAcknowledgement = async (guildId: string) => {
-  const item = await getGuild(guildId);
-
-  return item.acknowledgment ?? false;
-};
-
 // current webhook location
 
 // current region location
 
 // # of registered players
 
-export const getAllUsers = async (guild: Record<string, any>) => {
+export const getAllUsers = async (guild: DynamoGuildProps) => {
   const userlist = guild.userlist || [];
   let userIds: string[] = [];
   userlist.forEach((user: any) => {
