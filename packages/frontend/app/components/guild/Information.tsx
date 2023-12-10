@@ -6,7 +6,7 @@ export default function GuildInfo(guild: DynamoGuildProps) {
   const [acknowledged, setAcknowledged] = useState(false);
 
   useEffect(() => {
-    setAcknowledged(guild.acknowledgment);
+    setAcknowledged(guild.acknowledgment || false);
   }, [guild]);
 
   return (
@@ -17,7 +17,8 @@ export default function GuildInfo(guild: DynamoGuildProps) {
       <Card.Body>
         <Row className="mx-auto">setup status</Row>
         <Row className="mx-auto">
-          acknowledgement status: {acknowledged && acknowledged.toString()}
+          acknowledgement status:{" "}
+          {acknowledged !== undefined && acknowledged.toString()}
         </Row>
         <Row className="mx-auto">current webhook location</Row>
         <Row className="mx-auto">current region location</Row>
