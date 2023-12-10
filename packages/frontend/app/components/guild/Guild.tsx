@@ -1,5 +1,3 @@
-"use client";
-
 import { useEffect, useState } from "react";
 import { Card } from "react-bootstrap";
 import { DynamoGuildProps, GuildProps } from "../../types";
