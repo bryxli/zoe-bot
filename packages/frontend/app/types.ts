@@ -58,5 +58,5 @@ export interface SummonerProps {
 export interface SummonerModalProps {
   showModal: boolean;
   onHide: () => void;
-  name: string;
+  summoner: SummonerProps;
 }

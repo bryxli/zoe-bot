@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { Card, Row } from "react-bootstrap";
 
-import { DynamoGuildProps } from "../../types";
+import { DynamoGuildProps, SummonerProps } from "../../types";
 import Summoner from "../summoner/Summoner";
 
 export default function UserList(guild: DynamoGuildProps) {
   const [userlist, setUserlist] = useState<string[]>([]);
-  const [summoners, setSummoners] = useState<any[]>();
+  const [summoners, setSummoners] = useState<SummonerProps[]>();
 
   useEffect(() => {
     const fetchSummoners = async (users: string[]) => {
@@ -26,7 +26,7 @@ export default function UserList(guild: DynamoGuildProps) {
     const dynamoUserList = guild.userlist || [];
     let userIds: string[] = [];
 
-    dynamoUserList.forEach((user: any) => {
+    dynamoUserList.forEach((user) => {
       userIds.push(Object.keys(user)[0]);
     });
 
@@ -43,15 +43,13 @@ export default function UserList(guild: DynamoGuildProps) {
         <Card.Title>userlist</Card.Title>
       </Card.Header>
       <Card.Body>
-        {userlist.length > 0 &&
-          userlist.map(
-            (user) =>
-              user !== "" && (
-                <Row className="mx-auto" key={user}>
-                  <Summoner name={user} />
-                </Row>
-              ),
-          )}
+        {summoners &&
+          summoners.length > 0 &&
+          summoners.map((summoner) => (
+            <Row key={summoner.name}>
+              <Summoner {...summoner} />
+            </Row>
+          ))}
       </Card.Body>
       <Card.Footer className="bg-transparent">
         {userlist.length} players registered
