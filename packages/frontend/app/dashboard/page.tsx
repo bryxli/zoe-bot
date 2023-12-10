@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 
 import User from "../components/User";
 import SearchBox from "../components/SearchBox";
-import Guild from "../components/Guild";
+import Guild from "../components/guild/Guild";
 import Header from "../components/Header";
 import { AuthContext } from "../contexts/AuthContext";
 import { GuildContext } from "../contexts/GuildContext";

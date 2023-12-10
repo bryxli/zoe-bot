@@ -43,3 +43,8 @@ export interface GuildModalProps {
 export interface UserlistProps {
   userlist: string[];
 }
+
+export interface SummonerProps {
+  // TODO: update with real summoner props or use type from chosen library
+  name: string;
+}

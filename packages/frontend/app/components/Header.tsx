@@ -13,7 +13,7 @@ export default function Header() {
   let redirect = "https://d1pi4zyx1ge8ej.cloudfront.net/load"; // Update with Cloudfront URL
 
   if (process.env.NODE_ENV === "development") {
-    application_id = "<DISCORD APPLICATION ID>"; // TODO: maybe change this?
+    application_id = "1154647072138608694"; // TODO: maybe change this?
     redirect = "http://localhost:3000/load";
   }
 
