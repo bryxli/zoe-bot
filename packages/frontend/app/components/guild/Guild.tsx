@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Card } from "react-bootstrap";
 import { GuildProps } from "../../types";
 import GuildModal from "./Modal";
@@ -15,6 +15,22 @@ export default function Guild({
   features,
 }: GuildProps) {
   const [showModal, setShowModal] = useState(false);
+  const [guild, setGuild] = useState({});
+
+  useEffect(() => {
+    const fetchGuild = async () => {
+      const guild = await fetch("/api/dynamo/guild", {
+        method: "POST",
+        body: JSON.stringify({
+          guildId: id,
+        }),
+      }).then((result) => result.json());
+
+      setGuild(guild);
+    };
+
+    fetchGuild();
+  }, [id]);
 
   const display = () => {
     setShowModal(!showModal);
@@ -33,6 +49,7 @@ export default function Guild({
         id={id}
         name={name}
         icon={icon}
+        guild={guild}
       />
     </>
   );

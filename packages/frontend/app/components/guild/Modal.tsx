@@ -14,6 +14,7 @@ export default function GuildModal({
   id,
   name,
   icon,
+  guild,
 }: GuildModalProps) {
   const [userlist, setUserlist] = useState<string[]>([]);
 
@@ -22,7 +23,7 @@ export default function GuildModal({
       const users = await fetch("/api/dynamo/userlist", {
         method: "POST",
         body: JSON.stringify({
-          guildId: id,
+          guild: guild,
         }),
       }).then((result) => result.json());
 
@@ -40,7 +41,7 @@ export default function GuildModal({
     };
 
     fetchUsers();
-  }, [id]);
+  }, [id, guild]);
 
   return (
     <Modal show={showModal} onHide={onHide} size="lg">

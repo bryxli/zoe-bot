@@ -38,6 +38,7 @@ export interface GuildModalProps {
   id: string;
   name: string;
   icon: string | null;
+  guild: Record<string, any>;
 }
 
 export interface UserlistProps {
