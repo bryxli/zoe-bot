@@ -1,14 +1,27 @@
+import { useState } from "react";
 import { Card } from "react-bootstrap";
 
 import { SummonerProps } from "../../types";
 
+import SummonerModal from "./SummonerModal";
+
 export default function Summoner({ name }: SummonerProps) {
-  // TODO: pass in respective data
+  const [showModal, setShowModal] = useState(false);
+
+  const display = () => {
+    setShowModal(!showModal);
+  };
+
   return (
-    <Card style={{ cursor: "pointer" }}>
-      <Card.Body>
-        <Card.Title> {name} </Card.Title>
-      </Card.Body>
-    </Card>
+    <>
+      <Card
+        style={{ cursor: "pointer" }}
+        onClick={display}
+        className="text-center mt-1"
+      >
+        {name}
+      </Card>
+      <SummonerModal showModal={showModal} onHide={display} name={name} />
+    </>
   );
 }
