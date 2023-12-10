@@ -6,20 +6,21 @@ import Summoner from "../summoner/Summoner";
 
 export default function UserList(guild: DynamoGuildProps) {
   const [userlist, setUserlist] = useState<string[]>([]);
+  const [summoners, setSummoners] = useState<any[]>();
 
   useEffect(() => {
-    const fetchSummonerNames = async (users: string[]) => {
-      const summonerNames = await Promise.all(
+    const fetchSummoners = async (users: string[]) => {
+      const summoners = await Promise.all(
         users.map(async (userId: string) => {
           return await fetch("/api/league/accountid", {
             method: "POST",
             body: JSON.stringify({
               accountId: userId,
             }),
-          }).then((result) => result.json().then((response) => response.name));
+          }).then((result) => result.json());
         }),
       );
-      setUserlist(summonerNames);
+      setSummoners(summoners);
     };
 
     const dynamoUserList = guild.userlist || [];
@@ -29,8 +30,12 @@ export default function UserList(guild: DynamoGuildProps) {
       userIds.push(Object.keys(user)[0]);
     });
 
-    fetchSummonerNames(userIds);
+    fetchSummoners(userIds);
   }, [guild]);
+
+  useEffect(() => {
+    summoners && setUserlist(summoners?.map((summoner) => summoner.name));
+  }, [summoners]);
 
   return (
     <Card className="h-100">
