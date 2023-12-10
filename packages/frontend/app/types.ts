@@ -39,3 +39,7 @@ export interface GuildModalProps {
   name: string;
   icon: string | null;
 }
+
+export interface UserlistProps {
+  userlist: string[];
+}

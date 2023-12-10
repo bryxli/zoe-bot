@@ -13,7 +13,7 @@ export default function Header() {
   let redirect: string;
 
   if (process.env.NODE_ENV === "development") {
-    application_id = "1154647072138608694"; // TODO: maybe change this?
+    application_id = "<DISCORD APPLICATION ID>"; // TODO: maybe change this?
     redirect = "http://localhost:3000/load";
   } else {
     application_id = process.env.APPLICATION_ID;

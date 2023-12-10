@@ -4,6 +4,10 @@ import Image from "next/image";
 
 import { GuildModalProps } from "../types";
 
+import UserList from "./UserList";
+import GuildCommands from "./GuildCommands";
+import GuildInfo from "./GuildInfo";
+
 export default function GuildModal({
   showModal,
   onHide,
@@ -39,7 +43,7 @@ export default function GuildModal({
   }, [id]);
 
   return (
-    <Modal show={showModal} onHide={onHide} fullscreen={true}>
+    <Modal show={showModal} onHide={onHide} size="lg">
       <Modal.Header closeButton>
         <Container fluid>
           <Row>
@@ -62,17 +66,19 @@ export default function GuildModal({
       </Modal.Header>
       <Modal.Body>
         <Container fluid>
-          {userlist.length > 0 ? (
-            userlist.map((user) => {
-              return (
-                <Row className="mx-auto" ml-2 key={user}>
-                  {user}
-                </Row>
-              );
-            })
-          ) : (
-            <Row className="mx-auto">userlist is empty</Row>
-          )}
+          <Row>
+            <Col xs={8}>
+              <Row>
+                <GuildCommands />
+              </Row>
+              <Row className="mt-4">
+                <GuildInfo />
+              </Row>
+            </Col>
+            <Col xs={4}>
+              <UserList userlist={userlist} />
+            </Col>
+          </Row>
         </Container>
       </Modal.Body>
     </Modal>
