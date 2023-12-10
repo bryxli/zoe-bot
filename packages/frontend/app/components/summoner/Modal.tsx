@@ -5,7 +5,7 @@ import { SummonerModalProps } from "../../types";
 export default function SummonerModal({
   showModal,
   onHide,
-  name,
+  summoner,
 }: SummonerModalProps) {
   const deleteUser = () => {
     console.log("deluser");
@@ -17,7 +17,7 @@ export default function SummonerModal({
         <Container fluid>
           <Row>
             <Col>
-              <Modal.Title>{name}</Modal.Title>
+              <Modal.Title>{summoner.name}</Modal.Title>
             </Col>
           </Row>
         </Container>
