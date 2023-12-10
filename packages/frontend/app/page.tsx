@@ -20,7 +20,7 @@ export default function Home() {
   }, [signOut]);
 
   return (
-    <Container className="mt-3">
+    <Container>
       <Header />
       <section className="readable">
         <Information />
