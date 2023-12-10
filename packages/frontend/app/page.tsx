@@ -12,7 +12,9 @@ export default function Home() {
 
   useEffect(() => {
     const startup = async () => {
-      await fetch("/api/startup");
+      await fetch("/api/startup", {
+        method: "POST",
+      });
     };
 
     startup();
