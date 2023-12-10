@@ -28,7 +28,7 @@ export default function GuildCommands() {
         <Card.Title>server commands</Card.Title>
       </Card.Header>
       <Card.Body className="text-center">
-        <Row>
+        <Row className="mt-1">
           <Col xs={3}>
             <Card style={{ cursor: "pointer" }} onClick={addUser}>
               /adduser

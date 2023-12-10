@@ -68,12 +68,9 @@ export default function GuildModal({
         <Container fluid>
           <Row>
             <Col xs={8}>
-              <Row>
-                <GuildCommands />
-              </Row>
-              <Row className="mt-4">
-                <GuildInfo />
-              </Row>
+              <GuildCommands />
+              <br></br>
+              <GuildInfo />
             </Col>
             <Col xs={4}>
               <UserList userlist={userlist} />
