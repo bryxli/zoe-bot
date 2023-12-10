@@ -57,9 +57,5 @@ export default function Load() {
     fetchData();
   }, [processGuilds, router, signIn, userInfo]);
 
-  return (
-    <>
-      <Header />
-    </>
-  );
+  return <Header />;
 }

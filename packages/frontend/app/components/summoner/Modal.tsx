@@ -1,4 +1,4 @@
-import { Button, Card, Col, Container, Modal, Row } from "react-bootstrap";
+import { Button, Col, Container, Modal, Row } from "react-bootstrap";
 
 import { SummonerModalProps } from "../../types";
 
