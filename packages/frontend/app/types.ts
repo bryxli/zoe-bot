@@ -16,6 +16,15 @@ export interface GuildContextData {
   adminGuilds: GuildProps[];
 }
 
+export interface DynamoGuildProps {
+  acknowledgment: boolean;
+  guild_id: string;
+  region: string;
+  userlist: Record<string, string>[];
+  webhook_id: string;
+  webhook_url: string;
+}
+
 export interface UserProps {
   username: string;
   avatar: string;
@@ -38,10 +47,7 @@ export interface GuildModalProps {
   id: string;
   name: string;
   icon: string | null;
-}
-
-export interface UserlistProps {
-  userlist: string[];
+  guild: DynamoGuildProps;
 }
 
 export interface SummonerProps {

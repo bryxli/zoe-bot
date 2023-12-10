@@ -19,7 +19,7 @@ export default function Dashboard() {
   const { adminGuilds } = guildContext;
 
   useEffect(() => {
-    !userInfo && router.push("/");
+    !userInfo && router.push("/logout");
   }, [router, userInfo]);
 
   return (

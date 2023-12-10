@@ -1,10 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getAllUsers } from "../dynamo";
+import { getGuild } from "../dynamo";
 
 export const dynamic = "force-dynamic"; // defaults to force-static
 
 export async function POST(request: NextRequest) {
   const body = await request.json();
-  const userlist = await getAllUsers(body.guildId);
-  return NextResponse.json(userlist);
+  const guild = await getGuild(body.guildId);
+  guild.guild_id = guild.guild_id?.toString();
+  return NextResponse.json(guild);
 }
