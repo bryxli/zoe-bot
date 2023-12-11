@@ -9,6 +9,7 @@ export function WebStack({ app, stack }: StackContext) {
     path: "packages/frontend",
     environment: {
       APPLICATION_ID: config.application_id,
+      RIOT_API_KEY: config.riot_key,
     },
     bind: [table],
   });
