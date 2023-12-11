@@ -38,3 +38,11 @@ body {
 .authButton:active {
   background-color: #85659c !important;
 }
+
+.summoner {
+  background-color: whitesmoke;
+}
+
+.full-height {
+  height: 75vh;
+}
