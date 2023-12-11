@@ -41,7 +41,7 @@ export default function GuildModal({
         <Container fluid>
           <Row>
             <Col xs={8}>
-              <GuildCommands />
+              <GuildCommands {...guild} />
               <br></br>
               <GuildInfo {...guild} />
             </Col>

@@ -16,24 +16,6 @@ export const getAll = async () => {
   return res.Items ?? [];
 };
 
-// adduser
-
-// deluser
-
-// region
-
-export const destroyGuild = async (guildId: string) => {
-  // TODO: implement into commands component, check acknowledgment first
-  try {
-    await documentClient.delete({
-      TableName: `${stage}-zoe-bot-db`,
-      Key: { guild_id: guildId },
-    });
-  } catch (e) {}
-};
-
-// acknowledge
-
 export const getGuild = async (guildId: string): Promise<DynamoGuildProps> => {
   const res = await documentClient.get({
     TableName: `${stage}-zoe-bot-db`,
@@ -50,4 +32,38 @@ export const getGuild = async (guildId: string): Promise<DynamoGuildProps> => {
   };
 
   return res.Item ? { ...defaultProps, ...res.Item } : defaultProps;
+};
+
+// adduser
+
+// deluser
+
+// region
+
+export const destroyGuild = async (guild: DynamoGuildProps) => {
+  // TODO: implement into commands component, check acknowledgment first
+  try {
+    await documentClient.delete({
+      TableName: `${stage}-zoe-bot-db`,
+      Key: { guild_id: BigInt(guild.guild_id) },
+    });
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+export const acknowledge = async (guild: DynamoGuildProps) => {
+  try {
+    await documentClient.put({
+      TableName: `${stage}-zoe-bot-db`,
+      Item: {
+        acknowledgment: true,
+        guild_id: BigInt(guild.guild_id),
+        region: guild.region,
+        userlist: guild.userlist,
+        webhook_id: guild.webhook_id,
+        webhook_url: guild.webhook_url,
+      },
+    });
+  } catch (e) {}
 };

@@ -1,6 +1,8 @@
 import { Card, Col, Row } from "react-bootstrap";
 
-export default function GuildCommands() {
+import { DynamoGuildProps } from "@/app/types";
+
+export default function GuildCommands(guild: DynamoGuildProps) {
   // TODO: call api endpoints for respective functions
   const addUser = () => {
     console.log("adduser");
@@ -14,12 +16,21 @@ export default function GuildCommands() {
     console.log("region");
   };
 
+  const setup = () => {
+    console.log("setup");
+  };
+
   const reset = () => {
     console.log("reset");
   };
 
-  const acknowledge = () => {
-    console.log("acknowledge");
+  const acknowledge = async () => {
+    await fetch("/api/dynamo/acknowledge", {
+      method: "POST",
+      body: JSON.stringify({
+        guild: guild,
+      }),
+    }).then((result) => result.json());
   };
 
   return (
@@ -45,12 +56,17 @@ export default function GuildCommands() {
             </Card>
           </Col>
           <Col xs={3}>
-            <Card style={{ cursor: "pointer" }} onClick={reset}>
-              /reset
+            <Card style={{ cursor: "pointer" }} onClick={setup}>
+              /setup
             </Card>
           </Col>
         </Row>
         <Row className="mt-3">
+          <Col xs={3}>
+            <Card style={{ cursor: "pointer" }} onClick={reset}>
+              /reset
+            </Card>
+          </Col>
           <Col xs={4}>
             <Card style={{ cursor: "pointer" }} onClick={acknowledge}>
               /acknowledge
