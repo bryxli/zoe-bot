@@ -15,6 +15,7 @@ export default function UserList(guild: DynamoGuildProps) {
             method: "POST",
             body: JSON.stringify({
               accountId: userId,
+              region: guild.region,
             }),
           }).then((result) => result.json());
         }),
