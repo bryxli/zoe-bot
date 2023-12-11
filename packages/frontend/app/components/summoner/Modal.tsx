@@ -1,6 +1,6 @@
 import { Button, Col, Container, Modal, Row } from "react-bootstrap";
 
-import { SummonerModalProps } from "../../types";
+import { SummonerModalProps } from "@/app/types";
 
 export default function SummonerModal({
   showModal,
