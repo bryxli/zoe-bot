@@ -26,9 +26,6 @@ export const findByAccountId = async (
     accountId,
     regions[region as keyof typeof regions],
   );
-  const summoner = res.response;
 
-  return {
-    name: summoner.name,
-  };
+  return res.response;
 };

@@ -51,8 +51,13 @@ export interface GuildModalProps {
 }
 
 export interface SummonerProps {
-  // TODO: update with real summoner props or use type from chosen library
+  id: string;
+  accountId: string;
+  puuid: string;
   name: string;
+  profileIconId: number;
+  revisionDate: number;
+  summonerLevel: number;
 }
 
 export interface SummonerModalProps {
