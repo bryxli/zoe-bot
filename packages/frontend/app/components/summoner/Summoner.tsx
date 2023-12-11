@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Card } from "react-bootstrap";
 
-import { SummonerProps } from "../../types";
+import { SummonerProps } from "@/app/types";
 
 import SummonerModal from "./Modal";
 

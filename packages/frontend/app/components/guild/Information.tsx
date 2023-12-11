@@ -1,4 +1,4 @@
-import { DynamoGuildProps } from "../../types";
+import { DynamoGuildProps } from "@/app/types";
 import { useEffect, useState } from "react";
 import { Card, Row } from "react-bootstrap";
 

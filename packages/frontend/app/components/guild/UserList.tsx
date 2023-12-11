@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
 import { Card, Row } from "react-bootstrap";
 
-import { DynamoGuildProps, SummonerProps } from "../../types";
+import { DynamoGuildProps, SummonerProps } from "@/app/types";
 import Summoner from "../summoner/Summoner";
 
 export default function UserList(guild: DynamoGuildProps) {
-  const [userlist, setUserlist] = useState<string[]>([]);
   const [summoners, setSummoners] = useState<SummonerProps[]>();
 
   useEffect(() => {
@@ -33,10 +32,6 @@ export default function UserList(guild: DynamoGuildProps) {
     fetchSummoners(userIds);
   }, [guild]);
 
-  useEffect(() => {
-    summoners && setUserlist(summoners?.map((summoner) => summoner.name));
-  }, [summoners]);
-
   return (
     <Card className="h-100">
       <Card.Header>
@@ -52,7 +47,7 @@ export default function UserList(guild: DynamoGuildProps) {
           ))}
       </Card.Body>
       <Card.Footer className="bg-transparent">
-        {userlist.length} players registered
+        {summoners?.length || 0} players registered
       </Card.Footer>
     </Card>
   );

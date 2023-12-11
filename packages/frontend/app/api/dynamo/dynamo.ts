@@ -1,6 +1,8 @@
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import { DynamoDBDocument } from "@aws-sdk/lib-dynamodb";
 
+import { DynamoGuildProps } from "@/app/types";
+
 const stage = "prod"; // Currently UI only deploys to prod, using process.env.STAGE results in undefined being rendered
 
 const client = new DynamoDBClient();
@@ -32,11 +34,20 @@ export const destroyGuild = async (guildId: string) => {
 
 // acknowledge
 
-export const getGuild = async (guildId: string) => {
+export const getGuild = async (guildId: string): Promise<DynamoGuildProps> => {
   const res = await documentClient.get({
     TableName: `${stage}-zoe-bot-db`,
     Key: { guild_id: BigInt(guildId) },
   });
 
-  return res.Item ?? {};
+  const defaultProps: DynamoGuildProps = {
+    acknowledgment: false,
+    guild_id: "",
+    region: "",
+    userlist: [],
+    webhook_id: "",
+    webhook_url: "",
+  };
+
+  return res.Item ? { ...defaultProps, ...res.Item } : defaultProps;
 };
