@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { Card } from "react-bootstrap";
 
-import { SummonerProps } from "../../types";
+import { SummonerProps } from "@/app/types";
 
 import SummonerModal from "./Modal";
 
-export default function Summoner({ name }: SummonerProps) {
+export default function Summoner(summoner: SummonerProps) {
   const [showModal, setShowModal] = useState(false);
 
   const display = () => {
@@ -19,9 +19,13 @@ export default function Summoner({ name }: SummonerProps) {
         onClick={display}
         className="text-center mt-1"
       >
-        {name}
+        {summoner.name}
       </Card>
-      <SummonerModal showModal={showModal} onHide={display} name={name} />
+      <SummonerModal
+        showModal={showModal}
+        onHide={display}
+        summoner={summoner}
+      />
     </>
   );
 }

@@ -1,7 +1,7 @@
 import { Col, Container, Modal, Row } from "react-bootstrap";
 import Image from "next/image";
 
-import { GuildModalProps } from "../../types";
+import { GuildModalProps } from "@/app/types";
 
 import UserList from "./UserList";
 import GuildCommands from "./Commands";

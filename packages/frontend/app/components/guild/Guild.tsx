@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Card } from "react-bootstrap";
-import { DynamoGuildProps, GuildProps } from "../../types";
+import { DynamoGuildProps, GuildProps } from "@/app/types";
 import GuildModal from "./Modal";
 
 export default function Guild({

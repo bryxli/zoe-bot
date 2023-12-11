@@ -1,35 +1,36 @@
 import { useEffect, useState } from "react";
 import { Card, Row } from "react-bootstrap";
 
-import { DynamoGuildProps } from "../../types";
+import { DynamoGuildProps, SummonerProps } from "@/app/types";
 import Summoner from "../summoner/Summoner";
 
 export default function UserList(guild: DynamoGuildProps) {
-  const [userlist, setUserlist] = useState<string[]>([]);
+  const [summoners, setSummoners] = useState<SummonerProps[]>();
 
   useEffect(() => {
-    const fetchSummonerNames = async (users: string[]) => {
-      const summonerNames = await Promise.all(
+    const fetchSummoners = async (users: string[]) => {
+      const summoners = await Promise.all(
         users.map(async (userId: string) => {
           return await fetch("/api/league/accountid", {
             method: "POST",
             body: JSON.stringify({
               accountId: userId,
+              region: guild.region,
             }),
-          }).then((result) => result.json().then((response) => response.name));
+          }).then((result) => result.json());
         }),
       );
-      setUserlist(summonerNames);
+      setSummoners(summoners);
     };
 
     const dynamoUserList = guild.userlist || [];
     let userIds: string[] = [];
 
-    dynamoUserList.forEach((user: any) => {
+    dynamoUserList.forEach((user) => {
       userIds.push(Object.keys(user)[0]);
     });
 
-    fetchSummonerNames(userIds);
+    fetchSummoners(userIds);
   }, [guild]);
 
   return (
@@ -38,18 +39,16 @@ export default function UserList(guild: DynamoGuildProps) {
         <Card.Title>userlist</Card.Title>
       </Card.Header>
       <Card.Body>
-        {userlist.length > 0 &&
-          userlist.map(
-            (user) =>
-              user !== "" && (
-                <Row className="mx-auto" key={user}>
-                  <Summoner name={user} />
-                </Row>
-              ),
-          )}
+        {summoners &&
+          summoners.length > 0 &&
+          summoners.map((summoner) => (
+            <Row key={summoner.name}>
+              <Summoner {...summoner} />
+            </Row>
+          ))}
       </Card.Body>
       <Card.Footer className="bg-transparent">
-        {userlist.length} players registered
+        {summoners?.length || 0} players registered
       </Card.Footer>
     </Card>
   );
