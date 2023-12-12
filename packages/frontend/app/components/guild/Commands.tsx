@@ -1,8 +1,9 @@
 import { Card, Col, Row } from "react-bootstrap";
 
-import { DynamoGuildProps } from "@/app/types";
+import { GuildCommandsProps } from "@/app/types";
 
-export default function GuildCommands(guild: DynamoGuildProps) {
+export default function GuildCommands({ guild, setGuild }: GuildCommandsProps) {
+  // TODO: enable/disable based on if guild is setup
   // TODO: call api endpoints for respective functions
   const addUser = () => {
     console.log("adduser");
@@ -25,12 +26,14 @@ export default function GuildCommands(guild: DynamoGuildProps) {
   };
 
   const acknowledge = async () => {
-    await fetch("/api/dynamo/acknowledge", {
+    const updatedGuild = await fetch("/api/dynamo/acknowledge", {
       method: "POST",
       body: JSON.stringify({
         guild: guild,
       }),
     }).then((result) => result.json());
+
+    setGuild(updatedGuild);
   };
 
   return (

@@ -16,15 +16,6 @@ export interface GuildContextData {
   adminGuilds: GuildProps[];
 }
 
-export interface DynamoGuildProps {
-  acknowledgment: boolean;
-  guild_id: string;
-  region: string;
-  userlist: Record<string, string>[];
-  webhook_id: string;
-  webhook_url: string;
-}
-
 export interface UserProps {
   username: string;
   avatar: string;
@@ -48,6 +39,21 @@ export interface GuildModalProps {
   name: string;
   icon: string | null;
   guild: DynamoGuildProps;
+  setGuild: (guild: DynamoGuildProps) => void;
+}
+
+export interface DynamoGuildProps {
+  acknowledgment: boolean;
+  guild_id: string;
+  region: string;
+  userlist: Record<string, string>[];
+  webhook_id: string;
+  webhook_url: string;
+}
+
+export interface GuildCommandsProps {
+  guild: DynamoGuildProps;
+  setGuild: (guild: DynamoGuildProps) => void;
 }
 
 export interface SummonerProps {

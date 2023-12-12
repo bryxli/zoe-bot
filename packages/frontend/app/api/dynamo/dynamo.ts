@@ -65,5 +65,9 @@ export const acknowledge = async (guild: DynamoGuildProps) => {
         webhook_url: guild.webhook_url,
       },
     });
+
+    guild.acknowledgment = true;
+
+    return guild;
   } catch (e) {}
 };
