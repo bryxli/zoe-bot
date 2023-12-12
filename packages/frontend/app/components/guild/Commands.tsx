@@ -26,14 +26,16 @@ export default function GuildCommands({ guild, setGuild }: GuildCommandsProps) {
   };
 
   const acknowledge = async () => {
-    const updatedGuild = await fetch("/api/dynamo/acknowledge", {
-      method: "POST",
-      body: JSON.stringify({
-        guild: guild,
-      }),
-    }).then((result) => result.json());
+    if (!guild.acknowledgment) {
+      const updatedGuild = await fetch("/api/dynamo/acknowledge", {
+        method: "POST",
+        body: JSON.stringify({
+          guild: guild,
+        }),
+      }).then((result) => result.json());
 
-    setGuild(updatedGuild);
+      setGuild(updatedGuild);
+    }
   };
 
   return (
