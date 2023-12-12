@@ -6,7 +6,7 @@ export const dynamic = "force-dynamic"; // defaults to force-static
 
 export async function POST(request: NextRequest) {
   const res = await request.json();
-  await acknowledge(res.guild);
+  const guild = await acknowledge(res.guild);
 
-  return NextResponse.json("");
+  return NextResponse.json(guild);
 }

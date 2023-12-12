@@ -47,6 +47,7 @@ export default function Guild(props: GuildProps) {
         name={props.name}
         icon={props.icon}
         guild={guild}
+        setGuild={setGuild}
       />
     </>
   );

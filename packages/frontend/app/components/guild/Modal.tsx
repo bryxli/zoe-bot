@@ -14,6 +14,7 @@ export default function GuildModal({
   name,
   icon,
   guild,
+  setGuild,
 }: GuildModalProps) {
   return (
     <Modal show={showModal} onHide={onHide} size="lg">
@@ -41,7 +42,7 @@ export default function GuildModal({
         <Container fluid>
           <Row>
             <Col xs={8}>
-              <GuildCommands {...guild} />
+              <GuildCommands guild={guild} setGuild={setGuild} />
               <br></br>
               <GuildInfo {...guild} />
             </Col>
