@@ -21,8 +21,17 @@ export default function GuildCommands({ guild, setGuild }: GuildCommandsProps) {
     console.log("setup");
   };
 
-  const reset = () => {
-    console.log("reset");
+  const reset = async () => {
+    if (guild.acknowledgment) {
+      const updatedGuild = await fetch("/api/dynamo/reset", {
+        method: "POST",
+        body: JSON.stringify({
+          guild: guild,
+        }),
+      }).then((result) => result.json());
+
+      setGuild(updatedGuild);
+    }
   };
 
   const acknowledge = async () => {
@@ -85,7 +94,7 @@ export default function GuildCommands({ guild, setGuild }: GuildCommandsProps) {
             )}
           </Col>
           <Col xs={3}>
-            {guild.webhook_id === "" ? (
+            {guild.webhook_id === "" || !guild.acknowledgment ? (
               <Card
                 style={{ backgroundColor: "#FE69B2", pointerEvents: "none" }}
               >
@@ -100,7 +109,7 @@ export default function GuildCommands({ guild, setGuild }: GuildCommandsProps) {
         </Row>
         <Row className="mt-3">
           <Col xs={3}>
-            {guild.webhook_id === "" ? (
+            {guild.webhook_id === "" || !guild.acknowledgment ? (
               <Card
                 style={{ backgroundColor: "#FE69B2", pointerEvents: "none" }}
               >
@@ -113,7 +122,7 @@ export default function GuildCommands({ guild, setGuild }: GuildCommandsProps) {
             )}
           </Col>
           <Col xs={4}>
-            {guild.webhook_id === "" ? (
+            {guild.webhook_id === "" || guild.acknowledgment ? (
               <Card
                 style={{ backgroundColor: "#FE69B2", pointerEvents: "none" }}
               >
