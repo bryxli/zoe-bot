@@ -45,7 +45,9 @@ export default function GuildCommands({ guild, setGuild }: GuildCommandsProps) {
         <Row className="mt-1">
           <Col xs={3}>
             {guild.webhook_id !== "" ? (
-              <Card style={{ cursor: "pointer", backgroundColor: "#FE69B2" }}>
+              <Card
+                style={{ backgroundColor: "#FE69B2", pointerEvents: "none" }}
+              >
                 /setup
               </Card>
             ) : (
@@ -56,7 +58,9 @@ export default function GuildCommands({ guild, setGuild }: GuildCommandsProps) {
           </Col>
           <Col xs={3}>
             {guild.webhook_id === "" ? (
-              <Card style={{ cursor: "pointer", backgroundColor: "#FE69B2" }}>
+              <Card
+                style={{ backgroundColor: "#FE69B2", pointerEvents: "none" }}
+              >
                 /addUser
               </Card>
             ) : (
@@ -67,7 +71,9 @@ export default function GuildCommands({ guild, setGuild }: GuildCommandsProps) {
           </Col>
           <Col xs={3}>
             {guild.webhook_id === "" ? (
-              <Card style={{ cursor: "pointer", backgroundColor: "#FE69B2" }}>
+              <Card
+                style={{ backgroundColor: "#FE69B2", pointerEvents: "none" }}
+              >
                 /deluser
               </Card>
             ) : (
@@ -78,7 +84,9 @@ export default function GuildCommands({ guild, setGuild }: GuildCommandsProps) {
           </Col>
           <Col xs={3}>
             {guild.webhook_id === "" ? (
-              <Card style={{ cursor: "pointer", backgroundColor: "#FE69B2" }}>
+              <Card
+                style={{ backgroundColor: "#FE69B2", pointerEvents: "none" }}
+              >
                 /region
               </Card>
             ) : (
@@ -91,7 +99,9 @@ export default function GuildCommands({ guild, setGuild }: GuildCommandsProps) {
         <Row className="mt-3">
           <Col xs={3}>
             {guild.webhook_id === "" ? (
-              <Card style={{ cursor: "pointer", backgroundColor: "#FE69B2" }}>
+              <Card
+                style={{ backgroundColor: "#FE69B2", pointerEvents: "none" }}
+              >
                 /reset
               </Card>
             ) : (
@@ -102,7 +112,9 @@ export default function GuildCommands({ guild, setGuild }: GuildCommandsProps) {
           </Col>
           <Col xs={4}>
             {guild.webhook_id === "" ? (
-              <Card style={{ cursor: "pointer", backgroundColor: "#FE69B2" }}>
+              <Card
+                style={{ backgroundColor: "#FE69B2", pointerEvents: "none" }}
+              >
                 /acknowledge
               </Card>
             ) : (
