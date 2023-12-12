@@ -44,36 +44,72 @@ export default function GuildCommands({ guild, setGuild }: GuildCommandsProps) {
       <Card.Body className="text-center">
         <Row className="mt-1">
           <Col xs={3}>
-            <Card style={{ cursor: "pointer" }} onClick={addUser}>
-              /adduser
-            </Card>
+            {guild.webhook_id !== "" ? (
+              <Card style={{ cursor: "pointer", backgroundColor: "#FE69B2" }}>
+                /setup
+              </Card>
+            ) : (
+              <Card style={{ cursor: "pointer" }} onClick={setup}>
+                /setup
+              </Card>
+            )}
           </Col>
           <Col xs={3}>
-            <Card style={{ cursor: "pointer" }} onClick={delUser}>
-              /deluser
-            </Card>
+            {guild.webhook_id === "" ? (
+              <Card style={{ cursor: "pointer", backgroundColor: "#FE69B2" }}>
+                /addUser
+              </Card>
+            ) : (
+              <Card style={{ cursor: "pointer" }} onClick={addUser}>
+                /addUser
+              </Card>
+            )}
           </Col>
           <Col xs={3}>
-            <Card style={{ cursor: "pointer" }} onClick={region}>
-              /region
-            </Card>
+            {guild.webhook_id === "" ? (
+              <Card style={{ cursor: "pointer", backgroundColor: "#FE69B2" }}>
+                /deluser
+              </Card>
+            ) : (
+              <Card style={{ cursor: "pointer" }} onClick={delUser}>
+                /deluser
+              </Card>
+            )}
           </Col>
           <Col xs={3}>
-            <Card style={{ cursor: "pointer" }} onClick={setup}>
-              /setup
-            </Card>
+            {guild.webhook_id === "" ? (
+              <Card style={{ cursor: "pointer", backgroundColor: "#FE69B2" }}>
+                /region
+              </Card>
+            ) : (
+              <Card style={{ cursor: "pointer" }} onClick={region}>
+                /region
+              </Card>
+            )}
           </Col>
         </Row>
         <Row className="mt-3">
           <Col xs={3}>
-            <Card style={{ cursor: "pointer" }} onClick={reset}>
-              /reset
-            </Card>
+            {guild.webhook_id === "" ? (
+              <Card style={{ cursor: "pointer", backgroundColor: "#FE69B2" }}>
+                /reset
+              </Card>
+            ) : (
+              <Card style={{ cursor: "pointer" }} onClick={reset}>
+                /reset
+              </Card>
+            )}
           </Col>
           <Col xs={4}>
-            <Card style={{ cursor: "pointer" }} onClick={acknowledge}>
-              /acknowledge
-            </Card>
+            {guild.webhook_id === "" ? (
+              <Card style={{ cursor: "pointer", backgroundColor: "#FE69B2" }}>
+                /acknowledge
+              </Card>
+            ) : (
+              <Card style={{ cursor: "pointer" }} onClick={acknowledge}>
+                /acknowledge
+              </Card>
+            )}
           </Col>
         </Row>
       </Card.Body>
