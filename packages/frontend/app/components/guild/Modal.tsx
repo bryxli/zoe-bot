@@ -6,6 +6,7 @@ import { GuildModalProps } from "@/app/types";
 import UserList from "./UserList";
 import GuildCommands from "./Commands";
 import GuildInfo from "./Information";
+import Output from "./Output";
 
 export default function GuildModal({
   showModal,
@@ -40,7 +41,7 @@ export default function GuildModal({
         </Container>
       </Modal.Header>
       <Modal.Body>
-        <Container fluid>
+        <Container fluid className="full-height">
           <Row>
             <Col xs={8}>
               <GuildCommands guild={guild} setGuild={setGuild} />
@@ -49,6 +50,12 @@ export default function GuildModal({
             </Col>
             <Col xs={4}>
               <UserList summoners={summoners} setGuild={setGuild} />
+            </Col>
+          </Row>
+          <br></br>
+          <Row style={{ height: "45%" }}>
+            <Col>
+              <Output />
             </Col>
           </Row>
         </Container>
