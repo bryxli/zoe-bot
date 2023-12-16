@@ -45,4 +45,5 @@ body {
 
 .full-height {
   height: 75vh;
+  overflow: auto;
 }
