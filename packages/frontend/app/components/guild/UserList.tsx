@@ -1,17 +1,9 @@
-import { useEffect, useState } from "react";
 import { Card, Row } from "react-bootstrap";
 
-import { SummonerProps } from "@/app/types";
+import { UserListProps } from "@/app/types";
 import Summoner from "../summoner/Summoner";
 
-export default function UserList(props: SummonerProps[]) {
-  const [summoners, setSummoners] = useState<SummonerProps[]>([]);
-
-  useEffect(() => {
-    const summoners = Object.values(props);
-    setSummoners(summoners);
-  }, [props]);
-
+export default function UserList({ summoners, setGuild }: UserListProps) {
   return (
     <Card className="h-100">
       <Card.Header>
