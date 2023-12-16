@@ -40,6 +40,7 @@ export interface GuildModalProps {
   icon: string | null;
   guild: DynamoGuildProps;
   setGuild: (guild: DynamoGuildProps) => void;
+  summoners: SummonerProps[];
 }
 
 export interface DynamoGuildProps {

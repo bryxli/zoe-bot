@@ -3,7 +3,6 @@ import { Card, Col, Row } from "react-bootstrap";
 import { GuildCommandsProps } from "@/app/types";
 
 export default function GuildCommands({ guild, setGuild }: GuildCommandsProps) {
-  // TODO: enable/disable based on if guild is setup
   // TODO: call api endpoints for respective functions
   const addUser = () => {
     console.log("adduser");

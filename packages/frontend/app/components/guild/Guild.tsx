@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Card } from "react-bootstrap";
-import { DynamoGuildProps, GuildProps } from "@/app/types";
+import { DynamoGuildProps, GuildProps, SummonerProps } from "@/app/types";
 import GuildModal from "./Modal";
 
 export default function Guild(props: GuildProps) {
@@ -13,6 +13,7 @@ export default function Guild(props: GuildProps) {
     webhook_id: "",
     webhook_url: "",
   });
+  const [summoners, setSummoners] = useState<SummonerProps[]>([]);
 
   useEffect(() => {
     const fetchGuild = async () => {
@@ -28,6 +29,31 @@ export default function Guild(props: GuildProps) {
 
     fetchGuild();
   }, [props]);
+
+  useEffect(() => {
+    const fetchSummoners = async (users: string[]) => {
+      const summoners = await Promise.all(
+        users.map(async (userId: string) => {
+          return await fetch("/api/league/accountid", {
+            method: "POST",
+            body: JSON.stringify({
+              accountId: userId,
+              region: guild.region,
+            }),
+          }).then((result) => result.json());
+        }),
+      );
+      setSummoners(summoners);
+    };
+    const dynamoUserList = guild.userlist || [];
+    let userIds: string[] = [];
+
+    dynamoUserList.forEach((user) => {
+      userIds.push(Object.keys(user)[0]);
+    });
+
+    fetchSummoners(userIds);
+  }, [guild]);
 
   const display = () => {
     setShowModal(!showModal);
@@ -48,6 +74,7 @@ export default function Guild(props: GuildProps) {
         icon={props.icon}
         guild={guild}
         setGuild={setGuild}
+        summoners={summoners}
       />
     </>
   );

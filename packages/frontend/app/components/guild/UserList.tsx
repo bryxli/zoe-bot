@@ -1,37 +1,16 @@
 import { useEffect, useState } from "react";
 import { Card, Row } from "react-bootstrap";
 
-import { DynamoGuildProps, SummonerProps } from "@/app/types";
+import { SummonerProps } from "@/app/types";
 import Summoner from "../summoner/Summoner";
 
-export default function UserList(guild: DynamoGuildProps) {
-  const [summoners, setSummoners] = useState<SummonerProps[]>();
+export default function UserList(props: SummonerProps[]) {
+  const [summoners, setSummoners] = useState<SummonerProps[]>([]);
 
   useEffect(() => {
-    const fetchSummoners = async (users: string[]) => {
-      const summoners = await Promise.all(
-        users.map(async (userId: string) => {
-          return await fetch("/api/league/accountid", {
-            method: "POST",
-            body: JSON.stringify({
-              accountId: userId,
-              region: guild.region,
-            }),
-          }).then((result) => result.json());
-        }),
-      );
-      setSummoners(summoners);
-    };
-
-    const dynamoUserList = guild.userlist || [];
-    let userIds: string[] = [];
-
-    dynamoUserList.forEach((user) => {
-      userIds.push(Object.keys(user)[0]);
-    });
-
-    fetchSummoners(userIds);
-  }, [guild]);
+    const summoners = Object.values(props);
+    setSummoners(summoners);
+  }, [props]);
 
   return (
     <Card className="h-100">
