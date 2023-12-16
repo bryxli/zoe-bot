@@ -57,6 +57,11 @@ export interface GuildCommandsProps {
   setGuild: (guild: DynamoGuildProps) => void;
 }
 
+export interface UserListProps {
+  summoners: SummonerProps[];
+  setGuild: (guild: DynamoGuildProps) => void;
+}
+
 export interface SummonerProps {
   id: string;
   accountId: string;

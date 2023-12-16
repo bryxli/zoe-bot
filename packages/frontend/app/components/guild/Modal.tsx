@@ -48,7 +48,7 @@ export default function GuildModal({
               <GuildInfo {...guild} />
             </Col>
             <Col xs={4}>
-              <UserList {...summoners} />
+              <UserList summoners={summoners} setGuild={setGuild} />
             </Col>
           </Row>
         </Container>
