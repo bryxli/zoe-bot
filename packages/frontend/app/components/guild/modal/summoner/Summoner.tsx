@@ -6,7 +6,7 @@ export default function Summoner({
   summoner,
   setData,
 }: SummonerComponentProps) {
-  const display = () => {
+  const data = () => {
     setData({ command: "user", body: JSON.stringify(summoner) });
   };
 
@@ -14,7 +14,7 @@ export default function Summoner({
     <>
       <Card
         style={{ cursor: "pointer" }}
-        onClick={display}
+        onClick={data}
         className="text-center mt-1"
       >
         {summoner.name}
