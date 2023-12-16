@@ -1,15 +1,13 @@
-import { useState } from "react";
 import { Card } from "react-bootstrap";
 
-import { SummonerProps } from "@/app/types";
+import { SummonerComponentProps } from "@/app/types";
 
-import SummonerModal from "./Modal";
-
-export default function Summoner(summoner: SummonerProps) {
-  const [showModal, setShowModal] = useState(false);
-
+export default function Summoner({
+  summoner,
+  setData,
+}: SummonerComponentProps) {
   const display = () => {
-    setShowModal(!showModal);
+    setData({ command: "user", body: JSON.stringify(summoner) });
   };
 
   return (
@@ -21,11 +19,6 @@ export default function Summoner(summoner: SummonerProps) {
       >
         {summoner.name}
       </Card>
-      <SummonerModal
-        showModal={showModal}
-        onHide={display}
-        summoner={summoner}
-      />
     </>
   );
 }

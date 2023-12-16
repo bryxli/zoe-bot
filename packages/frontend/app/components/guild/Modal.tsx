@@ -47,7 +47,7 @@ export default function GuildModal({
         </Container>
       </Modal.Header>
       <Modal.Body>
-        <Container fluid className="full-height">
+        <Container className="full-height">
           <Row>
             <Col xs={8}>
               <GuildCommands

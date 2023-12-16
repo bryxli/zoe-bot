@@ -18,7 +18,7 @@ export default function UserList({
           summoners.length > 0 &&
           summoners.map((summoner) => (
             <Row key={summoner.name}>
-              <Summoner {...summoner} />
+              <Summoner summoner={summoner} setData={setData} />
             </Row>
           ))}
       </Card.Body>
