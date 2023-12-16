@@ -60,7 +60,6 @@ export interface GuildCommandsProps {
 
 export interface UserListProps {
   summoners: SummonerProps[];
-  setGuild: (guild: DynamoGuildProps) => void;
   setData: (data: DataProps) => void;
 }
 
@@ -88,4 +87,10 @@ export interface SummonerModalProps {
 export interface DataProps {
   command: string;
   body: string;
+}
+
+export interface DataComponentProps {
+  data: DataProps;
+  setGuild: (guild: DynamoGuildProps) => void;
+  setData: (data: DataProps) => void;
 }

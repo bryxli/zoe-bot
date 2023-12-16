@@ -1,13 +1,9 @@
 import { Card, Row } from "react-bootstrap";
 
 import { UserListProps } from "@/app/types";
-import Summoner from "../../summoner/Summoner";
+import Summoner from "./summoner/Summoner";
 
-export default function UserList({
-  summoners,
-  setGuild,
-  setData,
-}: UserListProps) {
+export default function UserList({ summoners, setData }: UserListProps) {
   return (
     <Card className="h-100">
       <Card.Header>

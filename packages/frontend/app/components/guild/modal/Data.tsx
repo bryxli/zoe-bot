@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { Card } from "react-bootstrap";
 
-import { DataProps } from "@/app/types";
+import { DataComponentProps } from "@/app/types";
+import User from "./data/User";
 
-export default function Data(data: DataProps) {
+export default function Data({ data, setGuild, setData }: DataComponentProps) {
   const [title, setTitle] = useState("");
 
   useEffect(() => {
@@ -16,22 +17,6 @@ export default function Data(data: DataProps) {
       : setTitle(data.command);
   }, [data]);
 
-  const addUser = () => {
-    // call adduser api endpoint
-  };
-
-  const delUser = () => {
-    // call deluser api endpoint
-  };
-
-  const region = () => {
-    // call region api endpoint
-  };
-
-  const setup = () => {
-    // call setup api endpoint
-  };
-
   return (
     <Card className="h-100">
       <Card.Header
@@ -40,7 +25,9 @@ export default function Data(data: DataProps) {
         <Card.Title>{title}</Card.Title>
       </Card.Header>
       <Card.Body>
-        {data.command === "user" && <>{data.body}</>}
+        {data.command === "user" && (
+          <User data={data} setGuild={setGuild} setData={setData} />
+        )}
         {data.command === "adduser" && <>/adduser</>}
         {data.command === "deluser" && <>/deluser</>}
         {data.command === "region" && <>/region</>}

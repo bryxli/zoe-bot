@@ -59,17 +59,13 @@ export default function GuildModal({
               <GuildInfo {...guild} />
             </Col>
             <Col xs={4}>
-              <UserList
-                summoners={summoners}
-                setGuild={setGuild}
-                setData={setData}
-              />
+              <UserList summoners={summoners} setData={setData} />
             </Col>
           </Row>
           <br></br>
           <Row style={{ height: "45%" }}>
             <Col>
-              <Data {...data} />
+              <Data data={data} setGuild={setGuild} setData={setData} />
             </Col>
           </Row>
         </Container>
