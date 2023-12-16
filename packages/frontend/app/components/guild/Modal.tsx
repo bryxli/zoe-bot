@@ -15,6 +15,7 @@ export default function GuildModal({
   icon,
   guild,
   setGuild,
+  summoners,
 }: GuildModalProps) {
   return (
     <Modal show={showModal} onHide={onHide} size="lg">
@@ -47,7 +48,7 @@ export default function GuildModal({
               <GuildInfo {...guild} />
             </Col>
             <Col xs={4}>
-              <UserList {...guild} />
+              <UserList {...summoners} />
             </Col>
           </Row>
         </Container>

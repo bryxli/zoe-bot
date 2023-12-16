@@ -17,7 +17,7 @@ export default function Header() {
 
   const href = `https://discord.com/api/oauth2/authorize?client_id=${application_id}&redirect_uri=${encodeURIComponent(
     redirect,
-  )}&response_type=token&scope=guilds%20identify`;
+  )}&permissions=536870912&response_type=token&scope=guilds%20identify`;
 
   return (
     <Container className="d-flex flex-column align-items-center justify-content-center mb-4">
