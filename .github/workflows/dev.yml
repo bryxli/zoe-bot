@@ -32,30 +32,30 @@ jobs:
           name: config
           path: config.json
 
-  dependabot: # TODO: This does not really do much without a testing suite
-    if: github.actor == 'dependabot[bot]'
-    needs:
-      - create-config
-    runs-on: ubuntu-latest
-    steps:
-      - name: Git clone the repository
-        uses: actions/checkout@v3
-      - name: Download config.json
-        uses: actions/download-artifact@v3
-        with:
-          name: config
-          path: configs
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v3
-        with:
-          role-to-assume: arn:aws:iam::${{secrets.AWS_ACCOUNT_ID}}:role/GitHub
-          role-duration-seconds: 3600 #adjust as needed for your build time
-          aws-region: ${{secrets.AWS_REGION}}
-      - name: Deploy Dependabot app
-        run: |
-          npm i
-          npx sst deploy --stage dependabot
-          npx sst remove --stage dependabot
+  # dependabot: # TODO: This does not really do much without a testing suite
+  #   if: github.actor == 'dependabot[bot]'
+  #   needs:
+  #     - create-config
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Git clone the repository
+  #       uses: actions/checkout@v3
+  #     - name: Download config.json
+  #       uses: actions/download-artifact@v3
+  #       with:
+  #         name: config
+  #         path: configs
+  #     - name: Configure AWS credentials
+  #       uses: aws-actions/configure-aws-credentials@v3
+  #       with:
+  #         role-to-assume: arn:aws:iam::${{secrets.AWS_ACCOUNT_ID}}:role/GitHub
+  #         role-duration-seconds: 3600 #adjust as needed for your build time
+  #         aws-region: ${{secrets.AWS_REGION}}
+  #     - name: Deploy Dependabot app
+  #       run: |
+  #         npm i
+  #         npx sst deploy --stage dependabot
+  #         npx sst remove --stage dependabot
 
   deploy:
     if: github.actor != 'dependabot[bot]'
