@@ -74,6 +74,11 @@ export interface SummonerProps {
   summonerLevel: number;
 }
 
+export interface SummonerComponentProps {
+  summoner: SummonerProps;
+  setData: (data: DataProps) => void;
+}
+
 export interface SummonerModalProps {
   showModal: boolean;
   onHide: () => void;
