@@ -1,13 +1,13 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Col, Container, Modal, Row } from "react-bootstrap";
 import Image from "next/image";
 
 import { DataProps, GuildModalProps } from "@/app/types";
 
-import UserList from "./UserList";
-import GuildCommands from "./Commands";
-import GuildInfo from "./Information";
-import Data from "./Data";
+import UserList from "./modal/UserList";
+import GuildCommands from "./modal/Commands";
+import GuildInfo from "./modal/Information";
+import Data from "./modal/Data";
 
 export default function GuildModal({
   showModal,
