@@ -2,22 +2,25 @@ import { Card, Col, Row } from "react-bootstrap";
 
 import { GuildCommandsProps } from "@/app/types";
 
-export default function GuildCommands({ guild, setGuild }: GuildCommandsProps) {
-  // TODO: call api endpoints for respective functions
+export default function GuildCommands({
+  guild,
+  setGuild,
+  setData,
+}: GuildCommandsProps) {
   const addUser = () => {
-    console.log("adduser");
+    setData({ command: "adduser", body: "adduser" });
   };
 
   const delUser = () => {
-    console.log("deluser");
+    setData({ command: "deluser", body: "deluser" });
   };
 
   const region = () => {
-    console.log("region");
+    setData({ command: "region", body: "region" });
   };
 
   const setup = () => {
-    console.log("setup");
+    setData({ command: "setup", body: "setup" });
   };
 
   const reset = async () => {
@@ -71,11 +74,11 @@ export default function GuildCommands({ guild, setGuild }: GuildCommandsProps) {
               <Card
                 style={{ backgroundColor: "#FE69B2", pointerEvents: "none" }}
               >
-                /addUser
+                /adduser
               </Card>
             ) : (
               <Card style={{ cursor: "pointer" }} onClick={addUser}>
-                /addUser
+                /adduser
               </Card>
             )}
           </Col>
