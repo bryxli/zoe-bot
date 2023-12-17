@@ -34,6 +34,7 @@ export default function GuildCommands({
 
       setGuild(updatedGuild);
     }
+    setData({ command: "", body: "" });
   };
 
   const acknowledge = async () => {
