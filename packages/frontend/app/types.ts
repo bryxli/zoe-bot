@@ -41,6 +41,7 @@ export interface GuildModalProps {
   guild: DynamoGuildProps;
   setGuild: (guild: DynamoGuildProps) => void;
   summoners: SummonerProps[];
+  location: string;
 }
 
 export interface DynamoGuildProps {
@@ -56,6 +57,11 @@ export interface GuildCommandsProps {
   guild: DynamoGuildProps;
   setGuild: (guild: DynamoGuildProps) => void;
   setData: (data: DataProps) => void;
+}
+
+export interface GuildInfoProps {
+  guild: DynamoGuildProps;
+  location: string;
 }
 
 export interface UserListProps {

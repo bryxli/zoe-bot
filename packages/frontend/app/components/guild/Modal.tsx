@@ -18,6 +18,7 @@ export default function GuildModal({
   guild,
   setGuild,
   summoners,
+  location,
 }: GuildModalProps) {
   const [data, setData] = useState<DataProps>({
     command: "",
@@ -63,7 +64,7 @@ export default function GuildModal({
                 setData={setData}
               />
               <br></br>
-              <GuildInfo {...guild} />
+              <GuildInfo guild={guild} location={location} />
             </Col>
             <Col xs={4}>
               <UserList summoners={summoners} setData={setData} />
