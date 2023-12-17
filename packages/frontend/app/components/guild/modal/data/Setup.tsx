@@ -5,20 +5,19 @@ import { DataComponentProps } from "@/app/types";
 export default function Setup({ data, setGuild, setData }: DataComponentProps) {
   const setup = async (event: any) => {
     event.preventDefault();
-
-    const id = event.target.id.value;
+    const channelId = event.target.id.value;
 
     const webhook = await fetch("/api/discord/webhook", {
       method: "POST",
       body: JSON.stringify({
-        id: id,
+        id: channelId,
       }),
     }).then((result) => result.json());
 
     const guild = await fetch("/api/dynamo/setup", {
       method: "POST",
       body: JSON.stringify({
-        id: id,
+        id: data.body,
         webhook: webhook,
       }),
     }).then((result) => result.json());
