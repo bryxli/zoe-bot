@@ -4,19 +4,28 @@ import { Card, Row } from "react-bootstrap";
 
 export default function GuildInfo(guild: DynamoGuildProps) {
   const [setup, setSetup] = useState(false);
-  const [webhookLocation, setWebhookLocation] = useState(
-    "guild needs to be setup",
-  );
-  const [region, setRegion] = useState("guild needs to be setup");
+  const [webhookLocation, setWebhookLocation] = useState("");
+  const [region, setRegion] = useState("");
   const [acknowledged, setAcknowledged] = useState(false);
 
   useEffect(() => {
+    const setLocation = async () => {
+      const webhook = await fetch("/api/discord/webhook/details", {
+        method: "POST",
+        body: JSON.stringify({
+          guild: guild,
+        }),
+      }).then((result) => result.json());
+
+      setWebhookLocation(webhook);
+    };
+
+    setLocation();
     setSetup(guild.guild_id !== "" && guild.guild_id !== undefined);
     setAcknowledged(guild.acknowledgment || false);
   }, [guild]);
 
   useEffect(() => {
-    // TODO: get webhook location using webhook id
     setup && setRegion(guild.region);
   }, [guild, setup]);
 
