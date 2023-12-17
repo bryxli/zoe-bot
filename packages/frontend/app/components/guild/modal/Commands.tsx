@@ -25,6 +25,14 @@ export default function GuildCommands({
 
   const reset = async () => {
     if (guild.acknowledgment) {
+      await fetch("/api/discord/webhook", {
+        // TODO: not working
+        method: "DELETE",
+        body: JSON.stringify({
+          guild: guild,
+        }),
+      });
+
       const updatedGuild = await fetch("/api/dynamo/reset", {
         method: "POST",
         body: JSON.stringify({

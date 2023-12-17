@@ -40,16 +40,48 @@ export const getGuild = async (guildId: string): Promise<DynamoGuildProps> => {
 
 // region
 
+export const createGuild = async (
+  guildId: string,
+  webhookId: string,
+  webhookUrl: string,
+): Promise<DynamoGuildProps> => {
+  try {
+    await documentClient.put({
+      TableName: `${stage}-zoe-bot-db`,
+      Item: {
+        acknowledgment: false,
+        guild_id: BigInt(guildId),
+        region: "NA",
+        userlist: [],
+        webhook_id: webhookId,
+        webhook_url: webhookUrl,
+      },
+    });
+  } catch (e) {
+    return defaultProps;
+  }
+
+  return {
+    acknowledgment: false,
+    guild_id: guildId,
+    region: "NA",
+    userlist: [],
+    webhook_id: webhookId,
+    webhook_url: webhookUrl,
+  };
+};
+
 export const destroyGuild = async (
   guild: DynamoGuildProps,
 ): Promise<DynamoGuildProps> => {
-  // TODO: implement into commands component, check acknowledgment first
   try {
     await documentClient.delete({
       TableName: `${stage}-zoe-bot-db`,
       Key: { guild_id: BigInt(guild.guild_id) },
     });
-  } catch (e) {}
+  } catch (e) {
+    return guild;
+  }
 
   return defaultProps;
 };

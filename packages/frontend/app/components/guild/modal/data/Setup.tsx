@@ -3,10 +3,28 @@ import { Button, Form } from "react-bootstrap";
 import { DataComponentProps } from "@/app/types";
 
 export default function Setup({ data, setGuild, setData }: DataComponentProps) {
-  const setup = (event: any) => {
+  const setup = async (event: any) => {
     event.preventDefault();
 
     const id = event.target.id.value;
+
+    const webhook = await fetch("/api/discord/webhook", {
+      method: "POST",
+      body: JSON.stringify({
+        id: id,
+      }),
+    }).then((result) => result.json());
+
+    const guild = await fetch("/api/dynamo/setup", {
+      method: "POST",
+      body: JSON.stringify({
+        id: id,
+        webhook: webhook,
+      }),
+    }).then((result) => result.json());
+
+    setGuild(guild);
+    setData({ command: "", body: "" });
   };
 
   return (
