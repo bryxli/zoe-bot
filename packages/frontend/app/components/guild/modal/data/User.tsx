@@ -9,7 +9,7 @@ export default function User({ data, setGuild, setData }: DataComponentProps) {
   return (
     <>
       <Row>
-        <Col>{data.body}</Col>
+        <Col>{JSON.parse(data.body).id}</Col>
       </Row>
       <Row>
         <Col>

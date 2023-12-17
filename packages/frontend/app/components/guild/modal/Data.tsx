@@ -3,6 +3,10 @@ import { Card } from "react-bootstrap";
 
 import { DataComponentProps } from "@/app/types";
 import User from "./data/User";
+import AddUser from "./data/AddUser";
+import DelUser from "./data/DelUser";
+import Region from "./data/Region";
+import Setup from "./data/Setup";
 
 export default function Data({ data, setGuild, setData }: DataComponentProps) {
   const [title, setTitle] = useState("");
@@ -28,10 +32,18 @@ export default function Data({ data, setGuild, setData }: DataComponentProps) {
         {data.command === "user" && (
           <User data={data} setGuild={setGuild} setData={setData} />
         )}
-        {data.command === "adduser" && <>/adduser</>}
-        {data.command === "deluser" && <>/deluser</>}
-        {data.command === "region" && <>/region</>}
-        {data.command === "setup" && <>/setup</>}
+        {data.command === "adduser" && (
+          <AddUser data={data} setGuild={setGuild} setData={setData} />
+        )}
+        {data.command === "deluser" && (
+          <DelUser data={data} setGuild={setGuild} setData={setData} />
+        )}
+        {data.command === "region" && (
+          <Region data={data} setGuild={setGuild} setData={setData} />
+        )}
+        {data.command === "setup" && (
+          <Setup data={data} setGuild={setGuild} setData={setData} />
+        )}
       </Card.Body>
     </Card>
   );

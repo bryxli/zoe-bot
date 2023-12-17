@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Col, Container, Modal, Row } from "react-bootstrap";
 import Image from "next/image";
 
@@ -23,6 +23,13 @@ export default function GuildModal({
     command: "",
     body: "",
   });
+
+  useEffect(() => {
+    setData({
+      command: "",
+      body: "",
+    });
+  }, [showModal]);
 
   return (
     <Modal show={showModal} onHide={onHide} size="lg">
@@ -63,7 +70,7 @@ export default function GuildModal({
             </Col>
           </Row>
           <br></br>
-          <Row style={{ height: "45%" }}>
+          <Row style={{ height: "21%" }}>
             <Col>
               <Data data={data} setGuild={setGuild} setData={setData} />
             </Col>
