@@ -1,11 +1,13 @@
+import { useEffect, useState } from "react";
 import { Col, Container, Modal, Row } from "react-bootstrap";
 import Image from "next/image";
 
-import { GuildModalProps } from "@/app/types";
+import { DataProps, GuildModalProps } from "@/app/types";
 
-import UserList from "./UserList";
-import GuildCommands from "./Commands";
-import GuildInfo from "./Information";
+import UserList from "./modal/UserList";
+import GuildCommands from "./modal/Commands";
+import GuildInfo from "./modal/Information";
+import Data from "./modal/Data";
 
 export default function GuildModal({
   showModal,
@@ -15,7 +17,20 @@ export default function GuildModal({
   icon,
   guild,
   setGuild,
+  summoners,
 }: GuildModalProps) {
+  const [data, setData] = useState<DataProps>({
+    command: "",
+    body: "",
+  });
+
+  useEffect(() => {
+    setData({
+      command: "",
+      body: "",
+    });
+  }, [showModal]);
+
   return (
     <Modal show={showModal} onHide={onHide} size="lg">
       <Modal.Header closeButton>
@@ -39,15 +54,25 @@ export default function GuildModal({
         </Container>
       </Modal.Header>
       <Modal.Body>
-        <Container fluid>
+        <Container className="full-height">
           <Row>
             <Col xs={8}>
-              <GuildCommands guild={guild} setGuild={setGuild} />
+              <GuildCommands
+                guild={guild}
+                setGuild={setGuild}
+                setData={setData}
+              />
               <br></br>
               <GuildInfo {...guild} />
             </Col>
             <Col xs={4}>
-              <UserList {...guild} />
+              <UserList summoners={summoners} setData={setData} />
+            </Col>
+          </Row>
+          <br></br>
+          <Row style={{ height: "21%" }}>
+            <Col>
+              <Data data={data} setGuild={setGuild} setData={setData} />
             </Col>
           </Row>
         </Container>

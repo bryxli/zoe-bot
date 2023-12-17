@@ -39,10 +39,7 @@ body {
   background-color: #85659c !important;
 }
 
-.summoner {
-  background-color: whitesmoke;
-}
-
 .full-height {
-  height: 75vh;
+  height: 60vh;
+  overflow: auto;
 }

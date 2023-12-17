@@ -2,38 +2,59 @@ import { Card, Col, Row } from "react-bootstrap";
 
 import { GuildCommandsProps } from "@/app/types";
 
-export default function GuildCommands({ guild, setGuild }: GuildCommandsProps) {
-  // TODO: enable/disable based on if guild is setup
-  // TODO: call api endpoints for respective functions
+export default function GuildCommands({
+  guild,
+  setGuild,
+  setData,
+}: GuildCommandsProps) {
   const addUser = () => {
-    console.log("adduser");
+    setData({ command: "adduser", body: guild.guild_id });
   };
 
   const delUser = () => {
-    console.log("deluser");
+    setData({ command: "deluser", body: guild.guild_id });
   };
 
   const region = () => {
-    console.log("region");
+    setData({ command: "region", body: guild.guild_id });
   };
 
   const setup = () => {
-    console.log("setup");
+    setData({ command: "setup", body: guild.guild_id });
   };
 
-  const reset = () => {
-    console.log("reset");
+  const reset = async () => {
+    if (guild.acknowledgment) {
+      await fetch("/api/discord/webhook", {
+        method: "DELETE",
+        body: JSON.stringify({
+          guild: guild,
+        }),
+      });
+
+      const updatedGuild = await fetch("/api/dynamo/reset", {
+        method: "POST",
+        body: JSON.stringify({
+          guild: guild,
+        }),
+      }).then((result) => result.json());
+
+      setGuild(updatedGuild);
+    }
+    setData({ command: "", body: "" });
   };
 
   const acknowledge = async () => {
-    const updatedGuild = await fetch("/api/dynamo/acknowledge", {
-      method: "POST",
-      body: JSON.stringify({
-        guild: guild,
-      }),
-    }).then((result) => result.json());
+    if (!guild.acknowledgment) {
+      const updatedGuild = await fetch("/api/dynamo/acknowledge", {
+        method: "POST",
+        body: JSON.stringify({
+          guild: guild,
+        }),
+      }).then((result) => result.json());
 
-    setGuild(updatedGuild);
+      setGuild(updatedGuild);
+    }
   };
 
   return (
@@ -61,11 +82,11 @@ export default function GuildCommands({ guild, setGuild }: GuildCommandsProps) {
               <Card
                 style={{ backgroundColor: "#FE69B2", pointerEvents: "none" }}
               >
-                /addUser
+                /adduser
               </Card>
             ) : (
               <Card style={{ cursor: "pointer" }} onClick={addUser}>
-                /addUser
+                /adduser
               </Card>
             )}
           </Col>
@@ -83,7 +104,7 @@ export default function GuildCommands({ guild, setGuild }: GuildCommandsProps) {
             )}
           </Col>
           <Col xs={3}>
-            {guild.webhook_id === "" ? (
+            {guild.webhook_id === "" || !guild.acknowledgment ? (
               <Card
                 style={{ backgroundColor: "#FE69B2", pointerEvents: "none" }}
               >
@@ -98,7 +119,7 @@ export default function GuildCommands({ guild, setGuild }: GuildCommandsProps) {
         </Row>
         <Row className="mt-3">
           <Col xs={3}>
-            {guild.webhook_id === "" ? (
+            {guild.webhook_id === "" || !guild.acknowledgment ? (
               <Card
                 style={{ backgroundColor: "#FE69B2", pointerEvents: "none" }}
               >
@@ -111,7 +132,7 @@ export default function GuildCommands({ guild, setGuild }: GuildCommandsProps) {
             )}
           </Col>
           <Col xs={4}>
-            {guild.webhook_id === "" ? (
+            {guild.webhook_id === "" || guild.acknowledgment ? (
               <Card
                 style={{ backgroundColor: "#FE69B2", pointerEvents: "none" }}
               >

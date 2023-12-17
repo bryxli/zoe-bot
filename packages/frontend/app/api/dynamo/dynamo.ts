@@ -8,6 +8,15 @@ const stage = "prod"; // Currently UI only deploys to prod, using process.env.ST
 const client = new DynamoDBClient();
 const documentClient = DynamoDBDocument.from(client);
 
+const defaultProps: DynamoGuildProps = {
+  acknowledgment: false,
+  guild_id: "",
+  region: "",
+  userlist: [],
+  webhook_id: "",
+  webhook_url: "",
+};
+
 export const getAll = async () => {
   const res = await documentClient.scan({
     TableName: `${stage}-zoe-bot-db`,
@@ -22,16 +31,16 @@ export const getGuild = async (guildId: string): Promise<DynamoGuildProps> => {
     Key: { guild_id: BigInt(guildId) },
   });
 
-  const defaultProps: DynamoGuildProps = {
-    acknowledgment: false,
-    guild_id: "",
-    region: "",
-    userlist: [],
-    webhook_id: "",
-    webhook_url: "",
-  };
-
-  return res.Item ? { ...defaultProps, ...res.Item } : defaultProps;
+  return res.Item
+    ? { ...defaultProps, ...res.Item }
+    : {
+        acknowledgment: false,
+        guild_id: guildId,
+        region: "",
+        userlist: [],
+        webhook_id: "",
+        webhook_url: "",
+      };
 };
 
 // adduser
@@ -40,19 +49,55 @@ export const getGuild = async (guildId: string): Promise<DynamoGuildProps> => {
 
 // region
 
-export const destroyGuild = async (guild: DynamoGuildProps) => {
-  // TODO: implement into commands component, check acknowledgment first
+export const createGuild = async (
+  guildId: string,
+  webhookId: string,
+  webhookUrl: string,
+): Promise<DynamoGuildProps> => {
+  try {
+    await documentClient.put({
+      TableName: `${stage}-zoe-bot-db`,
+      Item: {
+        acknowledgment: false,
+        guild_id: BigInt(guildId),
+        region: "NA",
+        userlist: [],
+        webhook_id: webhookId,
+        webhook_url: webhookUrl,
+      },
+    });
+  } catch (e) {
+    return defaultProps;
+  }
+
+  return {
+    acknowledgment: false,
+    guild_id: guildId,
+    region: "NA",
+    userlist: [],
+    webhook_id: webhookId,
+    webhook_url: webhookUrl,
+  };
+};
+
+export const destroyGuild = async (
+  guild: DynamoGuildProps,
+): Promise<DynamoGuildProps> => {
   try {
     await documentClient.delete({
       TableName: `${stage}-zoe-bot-db`,
       Key: { guild_id: BigInt(guild.guild_id) },
     });
   } catch (e) {
-    console.log(e);
+    return guild;
   }
+
+  return defaultProps;
 };
 
-export const acknowledge = async (guild: DynamoGuildProps) => {
+export const acknowledge = async (
+  guild: DynamoGuildProps,
+): Promise<DynamoGuildProps> => {
   try {
     await documentClient.put({
       TableName: `${stage}-zoe-bot-db`,
@@ -67,7 +112,7 @@ export const acknowledge = async (guild: DynamoGuildProps) => {
     });
 
     guild.acknowledgment = true;
-
-    return guild;
   } catch (e) {}
+
+  return guild;
 };

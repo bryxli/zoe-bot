@@ -40,6 +40,7 @@ export interface GuildModalProps {
   icon: string | null;
   guild: DynamoGuildProps;
   setGuild: (guild: DynamoGuildProps) => void;
+  summoners: SummonerProps[];
 }
 
 export interface DynamoGuildProps {
@@ -54,6 +55,12 @@ export interface DynamoGuildProps {
 export interface GuildCommandsProps {
   guild: DynamoGuildProps;
   setGuild: (guild: DynamoGuildProps) => void;
+  setData: (data: DataProps) => void;
+}
+
+export interface UserListProps {
+  summoners: SummonerProps[];
+  setData: (data: DataProps) => void;
 }
 
 export interface SummonerProps {
@@ -66,8 +73,24 @@ export interface SummonerProps {
   summonerLevel: number;
 }
 
+export interface SummonerComponentProps {
+  summoner: SummonerProps;
+  setData: (data: DataProps) => void;
+}
+
 export interface SummonerModalProps {
   showModal: boolean;
   onHide: () => void;
   summoner: SummonerProps;
+}
+
+export interface DataProps {
+  command: string;
+  body: string;
+}
+
+export interface DataComponentProps {
+  data: DataProps;
+  setGuild: (guild: DynamoGuildProps) => void;
+  setData: (data: DataProps) => void;
 }
