@@ -23,5 +23,5 @@ export async function POST(request: NextRequest) {
     },
   ).then((result) => result.json());
 
-  return NextResponse.json(channel.name);
+  return NextResponse.json(channel.name || "");
 }
