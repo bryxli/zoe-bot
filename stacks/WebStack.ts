@@ -10,6 +10,7 @@ export function WebStack({ app, stack }: StackContext) {
     environment: {
       APPLICATION_ID: config.application_id,
       RIOT_API_KEY: config.riot_key,
+      TOKEN: config.token,
     },
     bind: [table],
   });
