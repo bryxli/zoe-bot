@@ -22,7 +22,6 @@ export async function POST(request: NextRequest) {
 }
 
 export async function DELETE(request: NextRequest) {
-  // TODO: not working, unknown webhook
   const body = await request.json();
 
   const res = await fetch(

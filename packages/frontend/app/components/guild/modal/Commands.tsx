@@ -8,25 +8,24 @@ export default function GuildCommands({
   setData,
 }: GuildCommandsProps) {
   const addUser = () => {
-    setData({ command: "adduser", body: "adduser" });
+    setData({ command: "adduser", body: guild.guild_id });
   };
 
   const delUser = () => {
-    setData({ command: "deluser", body: "deluser" });
+    setData({ command: "deluser", body: guild.guild_id });
   };
 
   const region = () => {
-    setData({ command: "region", body: "region" });
+    setData({ command: "region", body: guild.guild_id });
   };
 
   const setup = () => {
-    setData({ command: "setup", body: "setup" });
+    setData({ command: "setup", body: guild.guild_id });
   };
 
   const reset = async () => {
     if (guild.acknowledgment) {
       await fetch("/api/discord/webhook", {
-        // TODO: not working
         method: "DELETE",
         body: JSON.stringify({
           guild: guild,

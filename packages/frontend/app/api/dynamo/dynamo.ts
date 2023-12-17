@@ -31,7 +31,16 @@ export const getGuild = async (guildId: string): Promise<DynamoGuildProps> => {
     Key: { guild_id: BigInt(guildId) },
   });
 
-  return res.Item ? { ...defaultProps, ...res.Item } : defaultProps;
+  return res.Item
+    ? { ...defaultProps, ...res.Item }
+    : {
+        acknowledgment: false,
+        guild_id: guildId,
+        region: "",
+        userlist: [],
+        webhook_id: "",
+        webhook_url: "",
+      };
 };
 
 // adduser
