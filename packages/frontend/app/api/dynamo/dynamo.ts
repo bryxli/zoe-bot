@@ -73,7 +73,7 @@ export const createGuild = async (
   return {
     acknowledgment: false,
     guild_id: guildId,
-    region: "NA",
+    region: "",
     userlist: [],
     webhook_id: webhookId,
     webhook_url: webhookUrl,
@@ -92,7 +92,14 @@ export const destroyGuild = async (
     return guild;
   }
 
-  return defaultProps;
+  return {
+    acknowledgment: false,
+    guild_id: guild.guild_id,
+    region: "",
+    userlist: [],
+    webhook_id: "",
+    webhook_url: "",
+  };
 };
 
 export const acknowledge = async (
