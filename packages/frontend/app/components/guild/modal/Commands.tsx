@@ -8,40 +8,26 @@ export default function GuildCommands({
   setData,
 }: GuildCommandsProps) {
   const addUser = () => {
-    setData({ command: "adduser", body: guild.guild_id });
+    setData({ command: "adduser", body: { guildId: guild.guild_id } });
   };
 
   const delUser = () => {
-    setData({ command: "deluser", body: guild.guild_id });
+    setData({ command: "deluser", body: { guildId: guild.guild_id } });
   };
 
   const region = () => {
-    setData({ command: "region", body: guild.guild_id });
+    setData({ command: "region", body: { guildId: guild.guild_id } });
   };
 
   const setup = () => {
-    setData({ command: "setup", body: guild.guild_id });
+    setData({ command: "setup", body: { guildId: guild.guild_id } });
   };
 
   const reset = async () => {
-    if (guild.acknowledgment) {
-      await fetch("/api/discord/webhook", {
-        method: "DELETE",
-        body: JSON.stringify({
-          guild: guild,
-        }),
-      });
-
-      const updatedGuild = await fetch("/api/dynamo/reset", {
-        method: "POST",
-        body: JSON.stringify({
-          guild: guild,
-        }),
-      }).then((result) => result.json());
-
-      setGuild(updatedGuild);
-    }
-    setData({ command: "", body: "" });
+    setData({
+      command: "reset",
+      body: { guildId: guild.guild_id, webhookId: guild.webhook_id },
+    });
   };
 
   const acknowledge = async () => {

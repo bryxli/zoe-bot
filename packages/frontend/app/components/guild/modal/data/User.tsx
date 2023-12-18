@@ -9,19 +9,17 @@ export default function User({ data, setGuild, setData }: DataComponentProps) {
   return (
     <>
       <Row>
-        <Col>{JSON.parse(data.body).id}</Col>
+        <Col>{data.body.guildId}</Col>
       </Row>
-      <Row>
-        <Col>
-          <Button
-            className="authButton"
-            style={{ position: "absolute", bottom: 10 }}
-            onClick={deleteUser}
-          >
-            delete user
-          </Button>
-        </Col>
-      </Row>
+      <br></br>
+      <br></br>
+      <Button
+        className="authButton"
+        style={{ position: "absolute", bottom: 10 }}
+        onClick={deleteUser}
+      >
+        delete user
+      </Button>
     </>
   );
 }
