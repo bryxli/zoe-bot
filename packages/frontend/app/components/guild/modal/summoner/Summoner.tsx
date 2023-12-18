@@ -7,7 +7,7 @@ export default function Summoner({
   setData,
 }: SummonerComponentProps) {
   const data = () => {
-    setData({ command: "user", body: JSON.stringify(summoner) });
+    setData({ command: "user", body: summoner });
   };
 
   return (

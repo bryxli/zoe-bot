@@ -24,15 +24,12 @@ export async function POST(request: NextRequest) {
 export async function DELETE(request: NextRequest) {
   const body = await request.json();
 
-  const res = await fetch(
-    `https://discordapp.com/api/webhooks/${body.guild.webhook_id}`,
-    {
-      method: "DELETE",
-      headers: {
-        Authorization: `Bot ${process.env.TOKEN}`,
-      },
+  const res = await fetch(`https://discordapp.com/api/webhooks/${body.id}`, {
+    method: "DELETE",
+    headers: {
+      Authorization: `Bot ${process.env.TOKEN}`,
     },
-  );
+  });
 
   return NextResponse.json(res);
 }

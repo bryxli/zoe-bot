@@ -92,7 +92,7 @@ export interface SummonerModalProps {
 
 export interface DataProps {
   command: string;
-  body: string;
+  body: Record<string, any>;
 }
 
 export interface DataComponentProps {
