@@ -1,5 +1,5 @@
 import "@testing-library/jest-dom";
-import { render, screen } from "@testing-library/react";
+import { act, render, screen } from "@testing-library/react";
 
 import { AuthProvider } from "@/contexts/AuthContext";
 import { GuildProvider } from "@/contexts/GuildContext";
@@ -11,15 +11,21 @@ describe("Guild", () => {
   });
 
   it("renders Guild", async () => {
-    fetch.mockResponse(JSON.stringify(null));
+    const mockGuild = {
+      userlist: [],
+    };
 
-    render(
-      <AuthProvider>
-        <GuildProvider>
-          <Guild />
-        </GuildProvider>
-      </AuthProvider>,
-    );
+    fetch.mockResponse(JSON.stringify(mockGuild));
+
+    await act(async () => {
+      render(
+        <AuthProvider>
+          <GuildProvider>
+            <Guild />
+          </GuildProvider>
+        </AuthProvider>,
+      );
+    });
 
     const component = screen.getByTestId("Guild");
 
