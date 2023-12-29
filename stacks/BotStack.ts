@@ -23,7 +23,7 @@ export function BotStack({ app, stack }: StackContext) {
     "function-register",
     {
       code: lambda.Code.fromAsset("packages/functions/src/register"),
-      handler: "packages/functions/src/register/main.handler",
+      handler: "main.handler",
       runtime: lambda.Runtime.PYTHON_3_9,
       memorySize: 1024,
       timeout: cdk.Duration.minutes(5),
