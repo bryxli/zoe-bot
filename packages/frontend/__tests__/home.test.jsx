@@ -6,22 +6,26 @@ import { GuildProvider } from "@/contexts/GuildContext";
 import Home from "@/page";
 
 describe("Home", () => {
+  let container;
+
   beforeEach(() => {
     fetchMock.resetMocks();
-  });
 
-  it("renders readable section", async () => {
-    const res = "api started";
-
-    fetchMock.mockResolvedValue({ status: 200, json: jest.fn(() => res) });
-
-    const { container } = render(
+    const component = render(
       <AuthProvider>
         <GuildProvider>
           <Home />
         </GuildProvider>
       </AuthProvider>,
     );
+
+    container = component.container;
+  });
+
+  it("renders readable section", async () => {
+    const res = "api started";
+
+    fetchMock.mockResolvedValue({ status: 200, json: jest.fn(() => res) });
 
     expect(container.getElementsByClassName("readable").length > 0);
   });
