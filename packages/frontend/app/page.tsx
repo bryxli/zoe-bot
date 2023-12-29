@@ -1,6 +1,6 @@
 "use client";
 
-import { useContext, useEffect } from "react";
+import { Fragment, useContext, useEffect } from "react";
 import { Container } from "react-bootstrap";
 
 import Header from "@/components/Header";
@@ -23,12 +23,14 @@ export default function Home() {
   }, [signOut]);
 
   return (
-    <Container>
-      <Header />
-      <section className="readable">
-        <Information />
-        {/** Output */}
-      </section>
-    </Container>
+    <div data-testid="Home">
+      <Container>
+        <Header />
+        <section className="readable">
+          <Information />
+          {/** Output */}
+        </section>
+      </Container>
+    </div>
   );
 }

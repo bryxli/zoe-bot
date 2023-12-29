@@ -33,51 +33,53 @@ export default function GuildModal({
   }, [showModal]);
 
   return (
-    <Modal show={showModal} onHide={onHide} size="lg">
-      <Modal.Header closeButton>
-        <Container fluid>
-          <Row>
-            <Col>
-              <Modal.Title>{name}</Modal.Title>
-            </Col>
-            {icon && (
-              <Col xs="auto">
-                <Image
-                  src={`https://cdn.discordapp.com/icons/${id}/${icon}.jpg`}
-                  alt="Guild Avatar"
-                  width={40}
-                  height={40}
-                  priority={true}
-                />
+    <div data-testid="Modal">
+      <Modal show={showModal} onHide={onHide} size="lg">
+        <Modal.Header closeButton>
+          <Container fluid>
+            <Row>
+              <Col>
+                <Modal.Title>{name}</Modal.Title>
               </Col>
-            )}
-          </Row>
-        </Container>
-      </Modal.Header>
-      <Modal.Body>
-        <Container className="full-height">
-          <Row>
-            <Col xs={8}>
-              <GuildCommands
-                guild={guild}
-                setGuild={setGuild}
-                setData={setData}
-              />
-              <br></br>
-              <GuildInfo guild={guild} location={location} />
-            </Col>
-            <Col xs={4}>
-              <UserList summoners={summoners} setData={setData} />
-            </Col>
-          </Row>
-          <br></br>
-          <Row style={{ height: "21%" }}>
-            <Col>
-              <Data data={data} setGuild={setGuild} setData={setData} />
-            </Col>
-          </Row>
-        </Container>
-      </Modal.Body>
-    </Modal>
+              {icon && (
+                <Col xs="auto">
+                  <Image
+                    src={`https://cdn.discordapp.com/icons/${id}/${icon}.jpg`}
+                    alt="Guild Avatar"
+                    width={40}
+                    height={40}
+                    priority={true}
+                  />
+                </Col>
+              )}
+            </Row>
+          </Container>
+        </Modal.Header>
+        <Modal.Body>
+          <Container className="full-height">
+            <Row>
+              <Col xs={8}>
+                <GuildCommands
+                  guild={guild}
+                  setGuild={setGuild}
+                  setData={setData}
+                />
+                <br></br>
+                <GuildInfo guild={guild} location={location} />
+              </Col>
+              <Col xs={4}>
+                <UserList summoners={summoners} setData={setData} />
+              </Col>
+            </Row>
+            <br></br>
+            <Row style={{ height: "21%" }}>
+              <Col>
+                <Data data={data} setGuild={setGuild} setData={setData} />
+              </Col>
+            </Row>
+          </Container>
+        </Modal.Body>
+      </Modal>
+    </div>
   );
 }

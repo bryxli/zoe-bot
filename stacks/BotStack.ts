@@ -4,30 +4,68 @@ import * as lambda from "aws-cdk-lib/aws-lambda";
 import * as events from "aws-cdk-lib/aws-events";
 import * as cdk from "aws-cdk-lib";
 import * as targets from "aws-cdk-lib/aws-events-targets";
+import * as triggers from "aws-cdk-lib/triggers";
 import * as config from "../configs/config.json";
 
 export function BotStack({ app, stack }: StackContext) {
   const { table } = use(InfraStack);
 
   const dynamoLayer = new lambda.LayerVersion(stack, "util-dynamo-layer", {
-    code: lambda.Code.fromAsset("packages/functions/layers/dynamo"),
+    code: lambda.Code.fromAsset("packages/functions/layers/dynamo", {
+      bundling: {
+        image: lambda.Runtime.PYTHON_3_9.bundlingImage,
+        command: [
+          "bash",
+          "-c",
+          "cp -R /asset-input/* /asset-output/ && pip install -r requirements.txt -t /asset-output/python/",
+        ],
+      },
+    }),
   });
 
   const leagueLayer = new lambda.LayerVersion(stack, "util-league-layer", {
-    code: lambda.Code.fromAsset("packages/functions/layers/league"),
+    code: lambda.Code.fromAsset("packages/functions/layers/league", {
+      bundling: {
+        image: lambda.Runtime.PYTHON_3_9.bundlingImage,
+        command: [
+          "bash",
+          "-c",
+          "cp -R /asset-input/* /asset-output/ && pip install -r requirements.txt -t /asset-output/python/",
+        ],
+      },
+    }),
   });
 
-  const registerFunction = new Function(stack, "function-register", {
-    handler: "packages/functions/src/register/main.handler",
-    runtime: "python3.9",
-    memorySize: 1024,
-    timeout: "5 minutes",
-    architecture: "x86_64",
-    environment: {
-      TOKEN: config.token,
-      APPLICATION_ID: config.application_id,
+  const functionCode = lambda.Code.fromAsset(
+    "packages/functions/src/register",
+    {
+      bundling: {
+        image: lambda.Runtime.PYTHON_3_9.bundlingImage,
+        command: [
+          "bash",
+          "-c",
+          "cp -R /asset-input/* /asset-output/ && pip install -r requirements.txt -t /asset-output/",
+        ],
+      },
     },
-  });
+  );
+
+  const registerFunction = new triggers.TriggerFunction(
+    stack,
+    "function-register",
+    {
+      code: functionCode,
+      handler: "main.handler",
+      runtime: lambda.Runtime.PYTHON_3_9,
+      memorySize: 1024,
+      timeout: cdk.Duration.minutes(5),
+      architecture: lambda.Architecture.X86_64,
+      environment: {
+        TOKEN: config.token,
+        APPLICATION_ID: config.application_id,
+      },
+    },
+  );
 
   const mainFunction = new Function(stack, "function-main", {
     handler: "packages/functions/src/main/main.handler",
@@ -78,18 +116,4 @@ export function BotStack({ app, stack }: StackContext) {
   stack.addOutputs({
     InteractionsEndpoint: mainFunction.url,
   });
-
-  /*
-  // TODO: this event is not triggering upon CloudFormation deployment
-    new events.Rule(this, "ZoeBotUploadRule", {
-      eventPattern: {
-        source: ["aws.cloudformation"],
-        detailType: [
-          "AWS CloudFormation Stack Creation Complete",
-          "AWS CloudFormation Stack Update Complete",
-        ],
-        resources: [this.stackId],
-      },
-    }).addTarget(new targets.LambdaFunction(lambdaRegister)); 
-  */
 }

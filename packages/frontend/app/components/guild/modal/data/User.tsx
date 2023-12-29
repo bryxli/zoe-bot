@@ -8,7 +8,7 @@ export default function User({ data, setGuild, setData }: DataComponentProps) {
   };
 
   return (
-    <>
+    <div data-testid="User">
       <Row>
         <Col>{data.body.id}</Col>
       </Row>
@@ -21,6 +21,6 @@ export default function User({ data, setGuild, setData }: DataComponentProps) {
       >
         delete user
       </Button>
-    </>
+    </div>
   );
 }

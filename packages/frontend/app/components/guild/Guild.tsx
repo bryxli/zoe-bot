@@ -76,7 +76,7 @@ export default function Guild(props: GuildProps) {
   };
 
   return (
-    <>
+    <div data-testid="Guild">
       <Card className="h-100" style={{ cursor: "pointer" }} onClick={display}>
         <Card.Body className="d-flex align-items-center justify-content-center text-center">
           <Card.Title> {props.name} </Card.Title>
@@ -93,6 +93,6 @@ export default function Guild(props: GuildProps) {
         summoners={summoners}
         location={webhookLocation}
       />
-    </>
+    </div>
   );
 }
