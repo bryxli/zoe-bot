@@ -1,7 +1,8 @@
 import { Card, Row } from "react-bootstrap";
 
-import { UserListProps } from "@/app/types";
-import Summoner from "./summoner/Summoner";
+import { UserListProps } from "@/types";
+
+import Summoner from "@/components/guild/modal/summoner/Summoner";
 
 export default function UserList({ summoners, setData }: UserListProps) {
   return (

@@ -1,13 +1,13 @@
 import { Card } from "react-bootstrap";
 
-import { SummonerComponentProps } from "@/app/types";
+import { SummonerComponentProps } from "@/types";
 
 export default function Summoner({
   summoner,
   setData,
 }: SummonerComponentProps) {
   const data = () => {
-    setData({ command: "user", body: JSON.stringify(summoner) });
+    setData({ command: "user", body: summoner });
   };
 
   return (

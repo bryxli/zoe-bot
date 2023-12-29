@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import { Card } from "react-bootstrap";
-import { DynamoGuildProps, GuildProps, SummonerProps } from "@/app/types";
-import GuildModal from "./Modal";
+
+import { DynamoGuildProps, GuildProps, SummonerProps } from "@/types";
+
+import GuildModal from "@/components/guild/Modal";
 
 export default function Guild(props: GuildProps) {
   const [showModal, setShowModal] = useState(false);
@@ -14,6 +16,7 @@ export default function Guild(props: GuildProps) {
     webhook_url: "",
   });
   const [summoners, setSummoners] = useState<SummonerProps[]>([]);
+  const [webhookLocation, setWebhookLocation] = useState("");
 
   useEffect(() => {
     const fetchGuild = async () => {
@@ -45,6 +48,18 @@ export default function Guild(props: GuildProps) {
       );
       setSummoners(summoners);
     };
+
+    const setLocation = async () => {
+      const webhook = await fetch("/api/discord/webhook/details", {
+        method: "POST",
+        body: JSON.stringify({
+          guild: guild,
+        }),
+      }).then((result) => result.json());
+
+      setWebhookLocation(webhook);
+    };
+
     const dynamoUserList = guild.userlist || [];
     let userIds: string[] = [];
 
@@ -53,6 +68,7 @@ export default function Guild(props: GuildProps) {
     });
 
     fetchSummoners(userIds);
+    setLocation();
   }, [guild]);
 
   const display = () => {
@@ -75,6 +91,7 @@ export default function Guild(props: GuildProps) {
         guild={guild}
         setGuild={setGuild}
         summoners={summoners}
+        location={webhookLocation}
       />
     </>
   );

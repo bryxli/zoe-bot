@@ -11,3 +11,5 @@ Dockerfile
 **/*.ico
 **/*.svg
 **/*.sh
+**/*.jpg
+**/*.ttf

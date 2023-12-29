@@ -2,7 +2,7 @@
 
 import { createContext, useState } from "react";
 
-import { AuthContextData, ProviderProps, UserProps } from "../types";
+import { AuthContextData, ProviderProps, UserProps } from "@/types";
 
 export const AuthContext = createContext({} as AuthContextData);
 

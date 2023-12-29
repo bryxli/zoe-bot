@@ -1,7 +1,7 @@
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import { DynamoDBDocument } from "@aws-sdk/lib-dynamodb";
 
-import { DynamoGuildProps } from "@/app/types";
+import { DynamoGuildProps } from "@/types";
 
 const stage = "prod"; // Currently UI only deploys to prod, using process.env.STAGE results in undefined being rendered
 
@@ -73,7 +73,7 @@ export const createGuild = async (
   return {
     acknowledgment: false,
     guild_id: guildId,
-    region: "NA",
+    region: "",
     userlist: [],
     webhook_id: webhookId,
     webhook_url: webhookUrl,
@@ -92,7 +92,14 @@ export const destroyGuild = async (
     return guild;
   }
 
-  return defaultProps;
+  return {
+    acknowledgment: false,
+    guild_id: guild.guild_id,
+    region: "",
+    userlist: [],
+    webhook_id: "",
+    webhook_url: "",
+  };
 };
 
 export const acknowledge = async (

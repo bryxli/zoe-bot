@@ -2,12 +2,12 @@ import { useEffect, useState } from "react";
 import { Col, Container, Modal, Row } from "react-bootstrap";
 import Image from "next/image";
 
-import { DataProps, GuildModalProps } from "@/app/types";
+import { DataProps, GuildModalProps } from "@/types";
 
-import UserList from "./modal/UserList";
-import GuildCommands from "./modal/Commands";
-import GuildInfo from "./modal/Information";
-import Data from "./modal/Data";
+import UserList from "@/components/guild/modal/UserList";
+import GuildCommands from "@/components/guild/modal/Commands";
+import GuildInfo from "@/components/guild/modal/Information";
+import Data from "@/components/guild/modal/Data";
 
 export default function GuildModal({
   showModal,
@@ -18,16 +18,17 @@ export default function GuildModal({
   guild,
   setGuild,
   summoners,
+  location,
 }: GuildModalProps) {
   const [data, setData] = useState<DataProps>({
     command: "",
-    body: "",
+    body: {},
   });
 
   useEffect(() => {
     setData({
       command: "",
-      body: "",
+      body: {},
     });
   }, [showModal]);
 
@@ -63,7 +64,7 @@ export default function GuildModal({
                 setData={setData}
               />
               <br></br>
-              <GuildInfo {...guild} />
+              <GuildInfo guild={guild} location={location} />
             </Col>
             <Col xs={4}>
               <UserList summoners={summoners} setData={setData} />

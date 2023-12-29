@@ -1,23 +1,21 @@
 import { useEffect, useState } from "react";
 import { Card } from "react-bootstrap";
 
-import { DataComponentProps } from "@/app/types";
-import User from "./data/User";
-import AddUser from "./data/AddUser";
-import DelUser from "./data/DelUser";
-import Region from "./data/Region";
-import Setup from "./data/Setup";
+import { DataComponentProps } from "@/types";
+
+import User from "@/components/guild/modal/data/User";
+import AddUser from "@/components/guild/modal/data/AddUser";
+import DelUser from "@/components/guild/modal/data/DelUser";
+import Region from "@/components/guild/modal/data/Region";
+import Setup from "@/components/guild/modal/data/Setup";
+import Reset from "@/components/guild/modal/data/Reset";
 
 export default function Data({ data, setGuild, setData }: DataComponentProps) {
   const [title, setTitle] = useState("");
 
   useEffect(() => {
     data.command === "user"
-      ? setTitle(
-          `${JSON.parse(data.body).name} ${
-            JSON.parse(data.body).summonerLevel
-          }`,
-        )
+      ? setTitle(`${data.body.name} ${data.body.summonerLevel}`)
       : setTitle(data.command);
   }, [data]);
 
@@ -43,6 +41,9 @@ export default function Data({ data, setGuild, setData }: DataComponentProps) {
         )}
         {data.command === "setup" && (
           <Setup data={data} setGuild={setGuild} setData={setData} />
+        )}
+        {data.command === "reset" && (
+          <Reset data={data} setGuild={setGuild} setData={setData} />
         )}
       </Card.Body>
     </Card>

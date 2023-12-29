@@ -1,6 +1,6 @@
 import { Button, Form } from "react-bootstrap";
 
-import { DataComponentProps } from "@/app/types";
+import { DataComponentProps } from "@/types";
 
 export default function Setup({ data, setGuild, setData }: DataComponentProps) {
   const setup = async (event: any) => {
@@ -17,13 +17,13 @@ export default function Setup({ data, setGuild, setData }: DataComponentProps) {
     const guild = await fetch("/api/dynamo/setup", {
       method: "POST",
       body: JSON.stringify({
-        id: data.body,
+        id: data.body.guildId,
         webhook: webhook,
       }),
     }).then((result) => result.json());
 
     setGuild(guild);
-    setData({ command: "", body: "" });
+    setData({ command: "", body: {} });
   };
 
   return (

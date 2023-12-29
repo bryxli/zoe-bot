@@ -1,5 +1,6 @@
-import { DataComponentProps } from "@/app/types";
 import { Button, Col, Row } from "react-bootstrap";
+
+import { DataComponentProps } from "@/types";
 
 export default function User({ data, setGuild, setData }: DataComponentProps) {
   const deleteUser = () => {
@@ -9,19 +10,17 @@ export default function User({ data, setGuild, setData }: DataComponentProps) {
   return (
     <>
       <Row>
-        <Col>{JSON.parse(data.body).id}</Col>
+        <Col>{data.body.id}</Col>
       </Row>
-      <Row>
-        <Col>
-          <Button
-            className="authButton"
-            style={{ position: "absolute", bottom: 10 }}
-            onClick={deleteUser}
-          >
-            delete user
-          </Button>
-        </Col>
-      </Row>
+      <br></br>
+      <br></br>
+      <Button
+        className="authButton"
+        style={{ position: "absolute", bottom: 10 }}
+        onClick={deleteUser}
+      >
+        delete user
+      </Button>
     </>
   );
 }

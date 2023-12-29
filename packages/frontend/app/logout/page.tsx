@@ -3,9 +3,9 @@
 import { useContext, useEffect } from "react";
 import { Button, Container, Row } from "react-bootstrap";
 
-import { AuthContext } from "../contexts/AuthContext";
-
 import "../app.css";
+
+import { AuthContext } from "@/contexts/AuthContext";
 
 export default function Home() {
   const authContext = useContext(AuthContext);
