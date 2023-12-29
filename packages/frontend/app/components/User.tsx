@@ -4,7 +4,7 @@ import { UserProps } from "@/types";
 
 export default function User({ username, avatar, id }: UserProps) {
   return (
-    <>
+    <div className="User">
       {id !== "" && avatar != "" && (
         <Image
           src={`https://cdn.discordapp.com/avatars/${id}/${avatar}.jpg`}
@@ -17,6 +17,6 @@ export default function User({ username, avatar, id }: UserProps) {
       <p className="information">
         You have successfully signed in as <b>{username}</b>
       </p>
-    </>
+    </div>
   );
 }
