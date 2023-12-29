@@ -10,6 +10,14 @@ const config: Config = {
   testEnvironment: "jsdom",
   moduleNameMapper: { "^@/(.*)$": "<rootDir>/app/$1" },
   setupFilesAfterEnv: ["<rootDir>/jest.setup.ts"],
+  coverageThreshold: {
+    global: {
+      branches: 90,
+      functions: 90,
+      lines: 90,
+      statements: 90,
+    },
+  },
 };
 
 export default createJestConfig(config);
