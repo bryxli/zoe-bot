@@ -1,0 +1,19 @@
+name: unit
+on:
+  pull_request:
+    branches:
+      - "*"
+
+jobs:
+  frontend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./packages/frontend
+    steps:
+      - name: Git clone the repository
+        uses: actions/checkout@v4
+      - name: Run unit tests
+        run: |
+          npm i
+          npm run test
