@@ -16,7 +16,7 @@ export default function Home() {
   }, [signOut]);
 
   return (
-    <div className="Logout">
+    <div data-testid="Logout">
       <Container className="d-flex flex-column align-items-center justify-content-center mb-4">
         <Row className="font">You have been signed out.</Row>
         <Button className="authButton" href="/">

@@ -18,7 +18,7 @@ export default function Header() {
   )}&permissions=536870912&response_type=token&scope=guilds%20identify`;
 
   return (
-    <div className="Header">
+    <div data-testid="Header">
       <Container className="d-flex flex-column align-items-center justify-content-center mb-4">
         <header className="font">zoe, the aspect of twighlight</header>
         {userInfo ? (

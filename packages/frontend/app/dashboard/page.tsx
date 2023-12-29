@@ -23,7 +23,7 @@ export default function Dashboard() {
   }, [router, userInfo]);
 
   return (
-    <div className="Dashboard">
+    <div data-testid="Dashboard">
       <Header />
       {userInfo && (
         <Container className="d-flex flex-column align-items-center justify-content-center readable pt-2 pb-2">

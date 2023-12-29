@@ -2,7 +2,7 @@ import { Container, Row } from "react-bootstrap";
 
 export default function Information() {
   return (
-    <div className="Information">
+    <div data-testid="Information">
       <Container className="d-flex flex-column align-items-center justify-content-center information">
         <Row>
           zoe traverses through the rift to find info about you. zoe will

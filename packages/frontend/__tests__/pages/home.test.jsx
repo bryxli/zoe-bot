@@ -1,5 +1,5 @@
 import "@testing-library/jest-dom";
-import { render } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 
 import { AuthProvider } from "@/contexts/AuthContext";
 import { GuildProvider } from "@/contexts/GuildContext";
@@ -11,16 +11,18 @@ describe("Home", () => {
   });
 
   it("renders Home", async () => {
-    fetch.mockResponseOnce(JSON.stringify("api started"));
+    fetch.mockResponse(JSON.stringify(null));
 
-    const container = render(
+    render(
       <AuthProvider>
         <GuildProvider>
           <Home />
         </GuildProvider>
       </AuthProvider>,
-    ).container;
+    );
 
-    expect(container.getElementsByClassName("Home").length).toBe(1);
+    const component = screen.getByTestId("Home");
+
+    expect(component).toBeInTheDocument();
   });
 });

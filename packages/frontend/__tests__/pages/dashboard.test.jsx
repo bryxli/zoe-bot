@@ -1,5 +1,5 @@
 import "@testing-library/jest-dom";
-import { render } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 
 import { AuthProvider } from "@/contexts/AuthContext";
 import { GuildProvider } from "@/contexts/GuildContext";
@@ -15,14 +15,16 @@ jest.mock("next/navigation", () => ({
 
 describe("Dashboard", () => {
   it("renders Dashboard", () => {
-    const container = render(
+    render(
       <AuthProvider>
         <GuildProvider>
           <Dashboard />
         </GuildProvider>
       </AuthProvider>,
-    ).container;
+    );
 
-    expect(container.getElementsByClassName("Dashboard").length).toBe(1);
+    const component = screen.getByTestId("Dashboard");
+
+    expect(component).toBeInTheDocument();
   });
 });

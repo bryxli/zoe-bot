@@ -23,7 +23,7 @@ export default function Home() {
   }, [signOut]);
 
   return (
-    <div className="Home">
+    <div data-testid="Home">
       <Container>
         <Header />
         <section className="readable">

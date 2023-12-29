@@ -4,7 +4,7 @@ import { UserProps } from "@/types";
 
 export default function User({ username, avatar, id }: UserProps) {
   return (
-    <div className="User">
+    <div data-testid="User">
       {id !== "" && avatar != "" && (
         <Image
           src={`https://cdn.discordapp.com/avatars/${id}/${avatar}.jpg`}

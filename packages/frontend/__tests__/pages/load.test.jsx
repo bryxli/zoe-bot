@@ -1,5 +1,5 @@
 import "@testing-library/jest-dom";
-import { render } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 
 import { AuthContext } from "@/contexts/AuthContext";
 import { GuildProvider } from "@/contexts/GuildContext";
@@ -23,18 +23,16 @@ describe("Load", () => {
 
     const signIn = jest.fn();
 
-    const signOut = jest.fn();
-
-    const userInfo = null;
-
-    const container = render(
-      <AuthContext.Provider value={{ signIn, signOut, userInfo }}>
+    render(
+      <AuthContext.Provider value={{ signIn }}>
         <GuildProvider>
           <Load />
         </GuildProvider>
       </AuthContext.Provider>,
-    ).container;
+    );
 
-    expect(container.getElementsByClassName("Load").length).toBe(1);
+    const component = screen.getByTestId("Load");
+
+    expect(component).toBeInTheDocument();
   });
 });

@@ -58,7 +58,7 @@ export default function Load() {
   }, [processGuilds, router, signIn, userInfo]);
 
   return (
-    <div className="Load">
+    <div data-testid="Load">
       <Header />
     </div>
   );
