@@ -4,6 +4,7 @@ import * as lambda from "aws-cdk-lib/aws-lambda";
 import * as events from "aws-cdk-lib/aws-events";
 import * as cdk from "aws-cdk-lib";
 import * as targets from "aws-cdk-lib/aws-events-targets";
+import * as triggers from "aws-cdk-lib/triggers";
 import * as config from "../configs/config.json";
 
 export function BotStack({ app, stack }: StackContext) {
@@ -17,17 +18,22 @@ export function BotStack({ app, stack }: StackContext) {
     code: lambda.Code.fromAsset("packages/functions/layers/league"),
   });
 
-  const registerFunction = new Function(stack, "function-register", {
-    handler: "packages/functions/src/register/main.handler",
-    runtime: "python3.9",
-    memorySize: 1024,
-    timeout: "5 minutes",
-    architecture: "x86_64",
-    environment: {
-      TOKEN: config.token,
-      APPLICATION_ID: config.application_id,
+  const registerFunction = new triggers.TriggerFunction(
+    stack,
+    "function-register",
+    {
+      code: lambda.Code.fromAsset("packages/functions/src/register"),
+      handler: "packages/functions/src/register/main.handler",
+      runtime: lambda.Runtime.PYTHON_3_9,
+      memorySize: 1024,
+      timeout: cdk.Duration.minutes(5),
+      architecture: lambda.Architecture.X86_64,
+      environment: {
+        TOKEN: config.token,
+        APPLICATION_ID: config.application_id,
+      },
     },
-  });
+  );
 
   const mainFunction = new Function(stack, "function-main", {
     handler: "packages/functions/src/main/main.handler",
@@ -78,18 +84,4 @@ export function BotStack({ app, stack }: StackContext) {
   stack.addOutputs({
     InteractionsEndpoint: mainFunction.url,
   });
-
-  /*
-  // TODO: this event is not triggering upon CloudFormation deployment
-    new events.Rule(this, "ZoeBotUploadRule", {
-      eventPattern: {
-        source: ["aws.cloudformation"],
-        detailType: [
-          "AWS CloudFormation Stack Creation Complete",
-          "AWS CloudFormation Stack Update Complete",
-        ],
-        resources: [this.stackId],
-      },
-    }).addTarget(new targets.LambdaFunction(lambdaRegister)); 
-  */
 }
