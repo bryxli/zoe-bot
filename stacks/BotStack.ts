@@ -18,11 +18,25 @@ export function BotStack({ app, stack }: StackContext) {
     code: lambda.Code.fromAsset("packages/functions/layers/league"),
   });
 
+  const functionCode = lambda.Code.fromAsset(
+    "packages/functions/src/register",
+    {
+      bundling: {
+        image: lambda.Runtime.PYTHON_3_9.bundlingImage,
+        command: [
+          "bash",
+          "-c",
+          "cp -R /asset-input/* /asset-output/ && pip install -r requirements.txt -t /asset-output/",
+        ],
+      },
+    },
+  );
+
   const registerFunction = new triggers.TriggerFunction(
     stack,
     "function-register",
     {
-      code: lambda.Code.fromAsset("packages/functions/src/register"),
+      code: functionCode,
       handler: "main.handler",
       runtime: lambda.Runtime.PYTHON_3_9,
       memorySize: 1024,
