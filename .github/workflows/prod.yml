@@ -47,6 +47,7 @@ jobs:
 
   deploy:
     needs:
+      - unit-tests
       - create-config
     runs-on: ubuntu-latest
     steps:

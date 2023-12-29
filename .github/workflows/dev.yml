@@ -48,6 +48,7 @@ jobs:
   # deploy-dependabot:
   #   if: github.actor == 'dependabot[bot]'
   #   needs:
+  #     - unit-tests
   #     - create-config
   #   runs-on: ubuntu-latest
   #   steps:
@@ -73,6 +74,7 @@ jobs:
   deploy:
     if: github.actor != 'dependabot[bot]'
     needs:
+      - unit-tests
       - create-config
     runs-on: ubuntu-latest
     steps:
