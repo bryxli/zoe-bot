@@ -14,21 +14,15 @@ jest.mock("next/navigation", () => ({
 }));
 
 describe("Dashboard", () => {
-  let container;
-
-  beforeEach(() => {
-    const component = render(
+  it("renders Dashboard", () => {
+    const container = render(
       <AuthProvider>
         <GuildProvider>
           <Dashboard />
         </GuildProvider>
       </AuthProvider>,
-    );
+    ).container;
 
-    container = component.container;
-  });
-
-  it("renders Dashboard", () => {
     expect(container.getElementsByClassName("Dashboard").length).toBe(1);
   });
 });

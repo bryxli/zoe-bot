@@ -6,24 +6,20 @@ import { GuildProvider } from "@/contexts/GuildContext";
 import Home from "@/page";
 
 describe("Home", () => {
-  let container;
-
   beforeEach(() => {
     fetch.resetMocks();
+  });
 
-    const component = render(
+  it("renders Home", async () => {
+    fetch.mockResponseOnce(JSON.stringify("api started"));
+
+    const container = render(
       <AuthProvider>
         <GuildProvider>
           <Home />
         </GuildProvider>
       </AuthProvider>,
-    );
-
-    container = component.container;
-  });
-
-  it("renders Home", async () => {
-    fetch.mockResponseOnce(JSON.stringify("api started"));
+    ).container;
 
     expect(container.getElementsByClassName("Home").length).toBe(1);
   });
