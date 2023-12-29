@@ -1,6 +1,6 @@
 import { Card } from "react-bootstrap";
 
-import { SummonerComponentProps } from "@/app/types";
+import { SummonerComponentProps } from "@/types";
 
 export default function Summoner({
   summoner,

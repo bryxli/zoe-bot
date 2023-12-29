@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
 import { Card } from "react-bootstrap";
 
-import { DataComponentProps } from "@/app/types";
-import User from "./data/User";
-import AddUser from "./data/AddUser";
-import DelUser from "./data/DelUser";
-import Region from "./data/Region";
-import Setup from "./data/Setup";
-import Reset from "./data/Reset";
+import { DataComponentProps } from "@/types";
+
+import User from "@/components/guild/modal/data/User";
+import AddUser from "@/components/guild/modal/data/AddUser";
+import DelUser from "@/components/guild/modal/data/DelUser";
+import Region from "@/components/guild/modal/data/Region";
+import Setup from "@/components/guild/modal/data/Setup";
+import Reset from "@/components/guild/modal/data/Reset";
 
 export default function Data({ data, setGuild, setData }: DataComponentProps) {
   const [title, setTitle] = useState("");

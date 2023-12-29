@@ -1,6 +1,6 @@
 import { LolApi, Constants } from "twisted";
 
-import { SummonerProps } from "@/app/types";
+import { SummonerProps } from "@/types";
 
 const api = new LolApi();
 

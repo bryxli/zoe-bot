@@ -1,9 +1,10 @@
-import "bootstrap/dist/css/bootstrap.min.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 
-import { AuthProvider } from "./contexts/AuthContext";
-import { GuildProvider } from "./contexts/GuildContext";
+import "bootstrap/dist/css/bootstrap.min.css";
+
+import { AuthProvider } from "@/contexts/AuthContext";
+import { GuildProvider } from "@/contexts/GuildContext";
 
 import "./app.css";
 

@@ -3,9 +3,9 @@
 import { useContext, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
-import { AuthContext } from "../contexts/AuthContext";
-import { GuildContext } from "../contexts/GuildContext";
-import Header from "../components/Header";
+import { AuthContext } from "@/contexts/AuthContext";
+import { GuildContext } from "@/contexts/GuildContext";
+import Header from "@/components/Header";
 
 export default function Load() {
   const router = useRouter();

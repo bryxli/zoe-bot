@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import { acknowledge } from "../dynamo";
+import { acknowledge } from "@/api/dynamo/dynamo";
 
-export const dynamic = "force-dynamic"; // defaults to force-static
+export const dynamic = "force-dynamic";
 
 export async function POST(request: NextRequest) {
   const res = await request.json();

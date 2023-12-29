@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { Button, Container } from "react-bootstrap";
 
-import { AuthContext } from "../contexts/AuthContext";
+import { AuthContext } from "@/contexts/AuthContext";
 
 export default function Header() {
   const authContext = useContext(AuthContext);
