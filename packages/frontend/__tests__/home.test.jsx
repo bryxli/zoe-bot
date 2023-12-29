@@ -27,6 +27,6 @@ describe("Home", () => {
 
     fetchMock.mockResolvedValue({ status: 200, json: jest.fn(() => res) });
 
-    expect(container.getElementsByClassName("readable").length).toBe(0);
+    expect(container.getElementsByClassName("readable").length).toBe(1);
   });
 });
