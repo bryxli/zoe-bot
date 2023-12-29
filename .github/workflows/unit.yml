@@ -13,6 +13,7 @@ jobs:
     steps:
       - name: Git clone the repository
         uses: actions/checkout@v4
-      - run: |
+      - name: Run unit tests
+        run: |
           npm i
           npm run test
