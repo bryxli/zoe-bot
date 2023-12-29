@@ -16,11 +16,13 @@ export default function Home() {
   }, [signOut]);
 
   return (
-    <Container className="d-flex flex-column align-items-center justify-content-center mb-4">
-      <Row className="font">You have been signed out.</Row>
-      <Button className="authButton" href="/">
-        Home
-      </Button>
-    </Container>
+    <div className="Logout">
+      <Container className="d-flex flex-column align-items-center justify-content-center mb-4">
+        <Row className="font">You have been signed out.</Row>
+        <Button className="authButton" href="/">
+          Home
+        </Button>
+      </Container>
+    </div>
   );
 }
