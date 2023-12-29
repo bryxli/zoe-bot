@@ -13,6 +13,19 @@ permissions:
   contents: read # This is required for actions/checkout
 
 jobs:
+  unit-tests: # TODO: eventually this will be used for python unittest, currently setup to run frontend unit tests
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./packages/frontend
+    steps:
+      - name: Git clone the repository
+        uses: actions/checkout@v4
+      - name: Run unit tests
+        run: |
+          npm i
+          npm run test
+
   create-config:
     environment: dev
     runs-on: ubuntu-latest
@@ -32,30 +45,30 @@ jobs:
           name: config
           path: config.json
 
-  # dependabot: # TODO: This does not really do much without a testing suite
-  #   if: github.actor == 'dependabot[bot]'
-  #   needs:
-  #     - create-config
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Git clone the repository
-  #       uses: actions/checkout@v4
-  #     - name: Download config.json
-  #       uses: actions/download-artifact@v3
-  #       with:
-  #         name: config
-  #         path: configs
-  #     - name: Configure AWS credentials
-  #       uses: aws-actions/configure-aws-credentials@v4
-  #       with:
-  #         role-to-assume: arn:aws:iam::${{secrets.AWS_ACCOUNT_ID}}:role/GitHub
-  #         role-duration-seconds: 3600 #adjust as needed for your build time
-  #         aws-region: ${{secrets.AWS_REGION}}
-  #     - name: Deploy Dependabot app
-  #       run: |
-  #         npm i
-  #         npx sst deploy --stage dependabot
-  #         npx sst remove --stage dependabot
+  dependabot:
+    if: github.actor == 'dependabot[bot]'
+    # needs:
+    #   - create-config
+    runs-on: ubuntu-latest
+    # steps:
+    #   - name: Git clone the repository
+    #     uses: actions/checkout@v4
+    #   - name: Download config.json
+    #     uses: actions/download-artifact@v3
+    #     with:
+    #       name: config
+    #       path: configs
+    #   - name: Configure AWS credentials
+    #     uses: aws-actions/configure-aws-credentials@v4
+    #     with:
+    #       role-to-assume: arn:aws:iam::${{secrets.AWS_ACCOUNT_ID}}:role/GitHub
+    #       role-duration-seconds: 3600 #adjust as needed for your build time
+    #       aws-region: ${{secrets.AWS_REGION}}
+    #   - name: Deploy Dependabot app
+    #     run: |
+    #       npm i
+    #       npx sst deploy --stage dependabot
+    #       npx sst remove --stage dependabot
 
   deploy:
     if: github.actor != 'dependabot[bot]'
