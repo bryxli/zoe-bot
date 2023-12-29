@@ -7,7 +7,7 @@ import { DataProps, GuildModalProps } from "@/types";
 import UserList from "@/components/guild/modal/UserList";
 import GuildCommands from "@/components/guild/modal/Commands";
 import GuildInfo from "@/components/guild/modal/Information";
-import Data from "@/components/guild/modal/UserList";
+import Data from "@/components/guild/modal/Data";
 
 export default function GuildModal({
   showModal,
@@ -22,13 +22,13 @@ export default function GuildModal({
 }: GuildModalProps) {
   const [data, setData] = useState<DataProps>({
     command: "",
-    body: "",
+    body: {},
   });
 
   useEffect(() => {
     setData({
       command: "",
-      body: "",
+      body: {},
     });
   }, [showModal]);
 

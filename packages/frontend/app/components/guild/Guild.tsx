@@ -3,7 +3,7 @@ import { Card } from "react-bootstrap";
 
 import { DynamoGuildProps, GuildProps, SummonerProps } from "@/types";
 
-import GuildModal from "@/components/guild/Guild";
+import GuildModal from "@/components/guild/Modal";
 
 export default function Guild(props: GuildProps) {
   const [showModal, setShowModal] = useState(false);
