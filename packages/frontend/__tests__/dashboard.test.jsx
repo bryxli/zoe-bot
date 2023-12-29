@@ -3,18 +3,24 @@ import { render } from "@testing-library/react";
 
 import { AuthProvider } from "@/contexts/AuthContext";
 import { GuildProvider } from "@/contexts/GuildContext";
-import Home from "@/page";
+import Dashboard from "@/dashboard/page";
 
-describe("Home", () => {
+jest.mock("next/navigation", () => ({
+  useRouter() {
+    return {
+      push: () => null,
+    };
+  },
+}));
+
+describe("Dashboard", () => {
   let container;
 
   beforeEach(() => {
-    fetch.resetMocks();
-
     const component = render(
       <AuthProvider>
         <GuildProvider>
-          <Home />
+          <Dashboard />
         </GuildProvider>
       </AuthProvider>,
     );
@@ -22,9 +28,7 @@ describe("Home", () => {
     container = component.container;
   });
 
-  it("renders Home", async () => {
-    fetch.mockResponseOnce(JSON.stringify("api started"));
-
-    expect(container.getElementsByClassName("Home").length).toBe(1);
+  it("renders Dashboard", () => {
+    expect(container.getElementsByClassName("Dashboard").length).toBe(1);
   });
 });
