@@ -8,6 +8,14 @@ import { GuildProvider } from "@/contexts/GuildContext";
 
 import "./app.css";
 
+if (process.env.NODE_ENV === "development") {
+  const config = require("@/../../configs/config.json");
+
+  process.env["APPLICATION_ID"] = config.application_id;
+  process.env["TOKEN"] = config.token;
+  process.env["RIOT_API_KEY"] = config.riot_key;
+}
+
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
