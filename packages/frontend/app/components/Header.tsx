@@ -11,7 +11,9 @@ export default function Header() {
   let redirect = "https://d1pi4zyx1ge8ej.cloudfront.net/load"; // Update with Cloudfront URL
 
   if (process.env.NODE_ENV === "development") {
-    application_id = "1154647072138608694"; // TODO: maybe change this?
+    const config = require("@/../../configs/config.json");
+
+    application_id = config.application_id;
     redirect = "http://localhost:3000/load";
   }
 

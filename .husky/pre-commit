@@ -1,4 +1,10 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
+CONFIGS=("configs/config.json" "configs/config.actions.json")
+
+for file in "${CONFIGS[@]}"; do
+    git reset "$file"
+done
+
 npx lint-staged
