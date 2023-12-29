@@ -1,6 +1,6 @@
 import { Button, Col, Form, Row } from "react-bootstrap";
 
-import { DataComponentProps } from "@/app/types";
+import { DataComponentProps } from "@/types";
 
 export default function Reset({ data, setGuild, setData }: DataComponentProps) {
   const reset = async (event: any) => {

@@ -2,7 +2,7 @@
 
 import { createContext, useEffect, useState } from "react";
 
-import { GuildContextData, GuildProps, ProviderProps } from "../types";
+import { GuildContextData, GuildProps, ProviderProps } from "@/types";
 
 export const GuildContext = createContext({} as GuildContextData);
 

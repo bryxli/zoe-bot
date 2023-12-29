@@ -1,6 +1,7 @@
-import { GuildInfoProps } from "@/app/types";
 import { useEffect, useState } from "react";
 import { Card, Row } from "react-bootstrap";
+
+import { GuildInfoProps } from "@/types";
 
 export default function GuildInfo({ guild, location }: GuildInfoProps) {
   const [setup, setSetup] = useState(false);

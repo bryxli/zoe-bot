@@ -1,6 +1,6 @@
 import { Card, Col, Row } from "react-bootstrap";
 
-import { GuildCommandsProps } from "@/app/types";
+import { GuildCommandsProps } from "@/types";
 
 export default function GuildCommands({
   guild,

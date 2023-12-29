@@ -1,6 +1,6 @@
 import { Button, Form } from "react-bootstrap";
 
-import { DataComponentProps } from "@/app/types";
+import { DataComponentProps } from "@/types";
 
 export default function Setup({ data, setGuild, setData }: DataComponentProps) {
   const setup = async (event: any) => {

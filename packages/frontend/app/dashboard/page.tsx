@@ -4,12 +4,12 @@ import { useContext, useEffect } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import { useRouter } from "next/navigation";
 
-import User from "../components/User";
-import SearchBox from "../components/SearchBox";
-import Guild from "../components/guild/Guild";
-import Header from "../components/Header";
-import { AuthContext } from "../contexts/AuthContext";
-import { GuildContext } from "../contexts/GuildContext";
+import User from "@/components/User";
+import SearchBox from "@/components/SearchBox";
+import Guild from "@/components/guild/Guild";
+import Header from "@/components/Header";
+import { AuthContext } from "@/contexts/AuthContext";
+import { GuildContext } from "@/contexts/GuildContext";
 
 export default function Dashboard() {
   const router = useRouter();
