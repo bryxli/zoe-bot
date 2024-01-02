@@ -11,7 +11,7 @@ export default function Summoner({
   };
 
   return (
-    <>
+    <div data-testid="Summoner">
       <Card
         style={{ cursor: "pointer" }}
         onClick={data}
@@ -19,6 +19,6 @@ export default function Summoner({
       >
         {summoner.name}
       </Card>
-    </>
+    </div>
   );
 }

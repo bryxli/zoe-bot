@@ -20,32 +20,34 @@ export default function Data({ data, setGuild, setData }: DataComponentProps) {
   }, [data]);
 
   return (
-    <Card className="h-100">
-      <Card.Header
-        className={data.command === "" ? "bg-transparent border-0" : ""}
-      >
-        <Card.Title>{title}</Card.Title>
-      </Card.Header>
-      <Card.Body>
-        {data.command === "user" && (
-          <User data={data} setGuild={setGuild} setData={setData} />
-        )}
-        {data.command === "adduser" && (
-          <AddUser data={data} setGuild={setGuild} setData={setData} />
-        )}
-        {data.command === "deluser" && (
-          <DelUser data={data} setGuild={setGuild} setData={setData} />
-        )}
-        {data.command === "region" && (
-          <Region data={data} setGuild={setGuild} setData={setData} />
-        )}
-        {data.command === "setup" && (
-          <Setup data={data} setGuild={setGuild} setData={setData} />
-        )}
-        {data.command === "reset" && (
-          <Reset data={data} setGuild={setGuild} setData={setData} />
-        )}
-      </Card.Body>
-    </Card>
+    <div data-testid="Data">
+      <Card className="h-100">
+        <Card.Header
+          className={data.command === "" ? "bg-transparent border-0" : ""}
+        >
+          <Card.Title>{title}</Card.Title>
+        </Card.Header>
+        <Card.Body>
+          {data.command === "user" && (
+            <User data={data} setGuild={setGuild} setData={setData} />
+          )}
+          {data.command === "adduser" && (
+            <AddUser data={data} setGuild={setGuild} setData={setData} />
+          )}
+          {data.command === "deluser" && (
+            <DelUser data={data} setGuild={setGuild} setData={setData} />
+          )}
+          {data.command === "region" && (
+            <Region data={data} setGuild={setGuild} setData={setData} />
+          )}
+          {data.command === "setup" && (
+            <Setup data={data} setGuild={setGuild} setData={setData} />
+          )}
+          {data.command === "reset" && (
+            <Reset data={data} setGuild={setGuild} setData={setData} />
+          )}
+        </Card.Body>
+      </Card>
+    </div>
   );
 }
