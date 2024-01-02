@@ -18,11 +18,11 @@ updates:
     schedule:
       interval: "weekly"
   - package-ecosystem: "pip"
-    directory: "/packages/functions/layers/dynamo"
+    directory: "/packages/functions/src/layers/dynamo"
     schedule:
       interval: "weekly"
   - package-ecosystem: "pip"
-    directory: "/packages/functions/layers/league"
+    directory: "/packages/functions/src/layers/league"
     schedule:
       interval: "weekly"
   - package-ecosystem: "pip"
@@ -37,4 +37,3 @@ updates:
     directory: "/packages/functions/src/task"
     schedule:
       interval: "weekly"
-      
