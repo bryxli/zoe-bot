@@ -25,23 +25,25 @@ export default function Reset({ data, setGuild, setData }: DataComponentProps) {
   };
 
   return (
-    <Form onSubmit={reset}>
-      <Form.Group className="mb-3">
-        <Row>
-          <Col>
-            WARNING: this will completely remove all history of this server,
-            this action is not reversable
-          </Col>
-        </Row>
-        <br></br>
-        <Button
-          type="submit"
-          className="authButton"
-          style={{ position: "absolute", bottom: 10 }}
-        >
-          /reset
-        </Button>
-      </Form.Group>
-    </Form>
+    <div data-testid="Reset">
+      <Form onSubmit={reset}>
+        <Form.Group className="mb-3">
+          <Row>
+            <Col>
+              WARNING: this will completely remove all history of this server,
+              this action is not reversable
+            </Col>
+          </Row>
+          <br></br>
+          <Button
+            type="submit"
+            className="authButton"
+            style={{ position: "absolute", bottom: 10 }}
+          >
+            /reset
+          </Button>
+        </Form.Group>
+      </Form>
+    </div>
   );
 }

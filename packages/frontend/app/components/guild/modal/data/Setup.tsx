@@ -27,18 +27,20 @@ export default function Setup({ data, setGuild, setData }: DataComponentProps) {
   };
 
   return (
-    <Form onSubmit={setup}>
-      <Form.Group className="mb-3">
-        <Form.Control name="id" placeholder="Discord Channel ID" />
-        <br></br>
-        <Button
-          type="submit"
-          className="authButton"
-          style={{ position: "absolute", bottom: 10 }}
-        >
-          /setup
-        </Button>
-      </Form.Group>
-    </Form>
+    <div data-testid="Setup">
+      <Form onSubmit={setup}>
+        <Form.Group className="mb-3">
+          <Form.Control name="id" placeholder="Discord Channel ID" />
+          <br></br>
+          <Button
+            type="submit"
+            className="authButton"
+            style={{ position: "absolute", bottom: 10 }}
+          >
+            /setup
+          </Button>
+        </Form.Group>
+      </Form>
+    </div>
   );
 }

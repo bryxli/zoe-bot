@@ -14,18 +14,20 @@ export default function AddUser({
   };
 
   return (
-    <Form onSubmit={adduser}>
-      <Form.Group className="mb-3">
-        <Form.Control name="name" placeholder="League Username" />
-        <br></br>
-        <Button
-          type="submit"
-          className="authButton"
-          style={{ position: "absolute", bottom: 10 }}
-        >
-          /adduser
-        </Button>
-      </Form.Group>
-    </Form>
+    <div data-testid="AddUser">
+      <Form onSubmit={adduser}>
+        <Form.Group className="mb-3">
+          <Form.Control name="name" placeholder="League Username" />
+          <br></br>
+          <Button
+            type="submit"
+            className="authButton"
+            style={{ position: "absolute", bottom: 10 }}
+          >
+            /adduser
+          </Button>
+        </Form.Group>
+      </Form>
+    </div>
   );
 }

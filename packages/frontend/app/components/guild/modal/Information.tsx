@@ -18,21 +18,23 @@ export default function GuildInfo({ guild, location }: GuildInfoProps) {
   }, [guild, setup]);
 
   return (
-    <Card>
-      <Card.Header>
-        <Card.Title>guild info</Card.Title>
-      </Card.Header>
-      <Card.Body>
-        <Row className="mx-auto">
-          setup status: {setup !== undefined && setup.toString()}
-        </Row>
-        <Row className="mx-auto">current webhook location: {location}</Row>
-        <Row className="mx-auto">current region location: {region}</Row>
-        <Row className="mx-auto">
-          acknowledgement status:{" "}
-          {acknowledged !== undefined && acknowledged.toString()}
-        </Row>
-      </Card.Body>
-    </Card>
+    <div data-testid="GuildInfo">
+      <Card>
+        <Card.Header>
+          <Card.Title>guild info</Card.Title>
+        </Card.Header>
+        <Card.Body>
+          <Row className="mx-auto">
+            setup status: {setup !== undefined && setup.toString()}
+          </Row>
+          <Row className="mx-auto">current webhook location: {location}</Row>
+          <Row className="mx-auto">current region location: {region}</Row>
+          <Row className="mx-auto">
+            acknowledgement status:{" "}
+            {acknowledged !== undefined && acknowledged.toString()}
+          </Row>
+        </Card.Body>
+      </Card>
+    </div>
   );
 }
