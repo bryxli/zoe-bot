@@ -20,7 +20,7 @@
   },
   "devDependencies": {
     "@tsconfig/node18": "^18.2.2",
-    "aws-cdk-lib": "2.110.1",
+    "aws-cdk-lib": "2.118.0",
     "constructs": "10.3.0",
     "husky": "^8.0.3",
     "lint-staged": "^15.2.0",
