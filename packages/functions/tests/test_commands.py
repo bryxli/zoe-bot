@@ -1,7 +1,11 @@
 import unittest
+import sys
+import os
 
-#from src.main.commands.league_commands import add_user
-#from src.main.commands.server_commands import server_commands
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+from src.main.commands.league_commands import init
+from src.main.commands.server_commands import init
 
 class TestLeagueCommands(unittest.TestCase):
     
