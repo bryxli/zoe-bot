@@ -3,6 +3,7 @@
 .npmignore
 .prettierignore
 .gitattributes
+.coverage
 **/*.txt
 **/*.py
 Dockerfile
