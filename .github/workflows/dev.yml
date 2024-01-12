@@ -13,18 +13,27 @@ permissions:
   contents: read # This is required for actions/checkout
 
 jobs:
-  unit-tests: # TODO: eventually this will be used for python unittest, currently setup to run frontend unit tests
+  unit-tests:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./packages/frontend
+        working-directory: ./packages/functions
     steps:
       - name: Git clone the repository
         uses: actions/checkout@v4
-      - name: Run unit tests
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+      - name: Install dependencies
         run: |
-          npm i
-          npm run test
+          pip install -r src/main/requirements.txt
+          pip install -r src/register/requirements.txt
+          pip install -r src/task/requirements.txt
+          pip install -r src/layers/dynamo/requirements.txt
+          pip install -r src/layers/league/requirements.txt
+      - name: Run unit tests
+        run: python3 -m unittest -v
 
   create-config:
     environment: dev

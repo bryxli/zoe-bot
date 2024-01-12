@@ -11,7 +11,7 @@ export function BotStack({ app, stack }: StackContext) {
   const { table } = use(InfraStack);
 
   const dynamoLayer = new lambda.LayerVersion(stack, "util-dynamo-layer", {
-    code: lambda.Code.fromAsset("packages/functions/layers/dynamo", {
+    code: lambda.Code.fromAsset("packages/functions/src/layers/dynamo", {
       bundling: {
         image: lambda.Runtime.PYTHON_3_9.bundlingImage,
         command: [
@@ -24,7 +24,7 @@ export function BotStack({ app, stack }: StackContext) {
   });
 
   const leagueLayer = new lambda.LayerVersion(stack, "util-league-layer", {
-    code: lambda.Code.fromAsset("packages/functions/layers/league", {
+    code: lambda.Code.fromAsset("packages/functions/src/layers/league", {
       bundling: {
         image: lambda.Runtime.PYTHON_3_9.bundlingImage,
         command: [
