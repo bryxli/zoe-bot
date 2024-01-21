@@ -4,6 +4,7 @@
 .prettierignore
 .gitattributes
 .coverage
+.coveragerc
 **/*.txt
 **/*.py
 Dockerfile
