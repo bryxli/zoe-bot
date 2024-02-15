@@ -1,0 +1,21 @@
+name: Dependencies
+on:
+  pull_request_target:
+    branches:
+      - "dependencies"
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  dependabot:
+    runs-on: ubuntu-latest
+    env:
+      PR_URL: ${{github.event.pull_request.html_url}}
+      GH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+    steps:
+      - name: Approve PR
+        run: gh pr review --approve "$PR_URL"
+      - name: Merge PR
+        run: gh pr merge --auto --merge --delete-branch "$PR_URL"
