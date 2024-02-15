@@ -57,7 +57,6 @@ jobs:
           path: config.json
 
   deploy:
-    if: github.actor != 'dependabot[bot]'
     needs:
       - unit-tests
       - create-config
