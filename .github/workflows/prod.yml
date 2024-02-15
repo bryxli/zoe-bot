@@ -9,10 +9,21 @@ concurrency:
 
 permissions:
   id-token: write
-  contents: read
+  contents: write
 
 jobs:
-  # TODO: create a job to update the 'dependencies' branch with updates from main
+  rebase-dependencies:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          ref: dependencies
+      - run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git rebase origin/main
+          git push origin dependencies --force
 
   unit-tests:
     runs-on: ubuntu-latest
