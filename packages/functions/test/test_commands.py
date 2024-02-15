@@ -1,19 +1,18 @@
 import sys
 import os
 import unittest
+from unittest.mock import MagicMock
 
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../src/main')))
 
-import dummy
-#from src.main.commands.league_commands import init
-#from src.main.commands.server_commands import init
+sys.modules['dynamo'] = MagicMock()
+sys.modules['league'] = MagicMock()
+
+from commands.league_commands import init
+from commands.server_commands import init
+
 
 class TestLeagueCommands(unittest.TestCase):
-    
-
-    def setUp(self):
-        # TODO: create data for universal mocks
-        pass
 
 
     def test_add_user(self):

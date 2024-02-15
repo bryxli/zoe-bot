@@ -9,31 +9,44 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+    target-branch: "dependencies"
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
       interval: "weekly"
+    target-branch: "dependencies"
+  - package-ecosystem: "npm"
+    directory: "/configs"
+    schedule:
+      interval: "weekly"
+    target-branch: "dependencies"
   - package-ecosystem: "npm"
     directory: "/packages/frontend"
     schedule:
       interval: "weekly"
+    target-branch: "dependencies"
   - package-ecosystem: "pip"
     directory: "/packages/functions/src/layers/dynamo"
     schedule:
       interval: "weekly"
+    target-branch: "dependencies"
   - package-ecosystem: "pip"
     directory: "/packages/functions/src/layers/league"
     schedule:
       interval: "weekly"
+    target-branch: "dependencies"
   - package-ecosystem: "pip"
     directory: "/packages/functions/src/main"
     schedule:
       interval: "weekly"
+    target-branch: "dependencies"
   - package-ecosystem: "pip"
     directory: "/packages/functions/src/register"
     schedule:
       interval: "weekly"
+    target-branch: "dependencies"
   - package-ecosystem: "pip"
     directory: "/packages/functions/src/task"
     schedule:
       interval: "weekly"
+    target-branch: "dependencies"
