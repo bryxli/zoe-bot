@@ -4,8 +4,6 @@
 
 Discord bot that traverses through the Riot Games API to find information about players of the game League of Legends.
 
-If a username has spaces, make sure to enclose it in quotes. Ex: /adduser "user name"
-
 # Table of Contents
 
 - [Prerequisites](#prerequisites)
@@ -57,8 +55,8 @@ Set environment configuration [config.json](configs/config.json)
 
 The bot is configured to be able to deploy to multiple stages. This changes configurations in the AWS stack.
 
-- `npm run deploy` - deploy dev stack, returns InteractionsEndpoint
-- `npm run deploy:prod` - deploy prod stack, returns InteractionsEndpoint, URL
+- `npm run deploy` - deploy dev stack, returns **InteractionsEndpoint**
+- `npm run deploy:prod` - deploy prod stack, returns **InteractionsEndpoint**, **URL**
 
 ### Create Discord Application
 
@@ -68,7 +66,7 @@ The bot is configured to be able to deploy to multiple stages. This changes conf
 
    Note: Replace **<client_id>** with _Application ID_
 
-4. After deploying the bot to AWS using either `npm run deploy` or `npm run deploy:prod`, paste InteractionsEndpoint into _Interactions Endpoint URL_ under General Information
+4. After deploying the bot to AWS using either `npm run deploy` or `npm run deploy:prod`, paste **InteractionsEndpoint** into _Interactions Endpoint URL_ under General Information
 
 ### Bot Commands
 
@@ -86,9 +84,9 @@ The bot is configured to be able to deploy to multiple stages. This changes conf
 
 ### Create Redirect
 
-1. In the Discord Application on [Discord Developer Portal](https://discord.com/developers/applications) under OAuth2, create a redirect using URL/load
+1. In the Discord Application on [Discord Developer Portal](https://discord.com/developers/applications) under OAuth2, create a redirect URL using **URL**/load
 
-   The URL will be something like this `https://abcdefghijklm.cloudfront.net/load`
+   The redirect URL will look like this `https://abcdefghijklm.cloudfront.net/load`
 
 2. Under Authorization Method, choose _In-app Authorization_
 3. Enable Scopes: _bot_, _application.commands_
@@ -96,7 +94,7 @@ The bot is configured to be able to deploy to multiple stages. This changes conf
 
 ### Configure Login Button
 
-1. In [Header.tsx](/packages/frontend/app/components/Header.tsx), update redirect with URL
+1. In [Header.tsx](/packages/frontend/app/components/Header.tsx#L11), update _url_ with redirect URL created in previous step
 2. Redeploy to production using `npm run deploy:prod`
 
 ## Integrate with GitHub Actions
