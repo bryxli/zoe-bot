@@ -8,13 +8,13 @@ export default function Header() {
   const { userInfo } = authContext;
 
   const application_id = process.env.APPLICATION_ID;
-  let redirect = "https://d1pi4zyx1ge8ej.cloudfront.net/load"; // Update with Cloudfront URL
+  let url = "https://d1pi4zyx1ge8ej.cloudfront.net/load"; // Update with redirect URL
 
   if (process.env.NODE_ENV === "development")
-    redirect = "http://localhost:3000/load";
+    url = "http://localhost:3000/load";
 
   const href = `https://discord.com/api/oauth2/authorize?client_id=${application_id}&redirect_uri=${encodeURIComponent(
-    redirect,
+    url,
   )}&permissions=536870912&response_type=token&scope=guilds%20identify`;
 
   return (
