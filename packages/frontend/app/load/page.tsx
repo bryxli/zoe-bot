@@ -14,15 +14,15 @@ export default function Load() {
   const { signIn, userInfo } = authContext;
   const { processGuilds } = guildContext;
 
-  const fragment = new URLSearchParams(window.location.hash.slice(1));
-  const [accessToken, tokenType] = [
-    fragment.get("access_token"),
-    fragment.get("token_type"),
-  ];
-
   const isFirstRender = useRef(true);
 
   useEffect(() => {
+    const fragment = new URLSearchParams(window.location.hash.slice(1));
+    const [accessToken, tokenType] = [
+      fragment.get("access_token"),
+      fragment.get("token_type"),
+    ];
+
     if (!isFirstRender.current) {
       const fetchData = async () => {
         if (!userInfo) {
@@ -61,7 +61,9 @@ export default function Load() {
     } else {
       isFirstRender.current = false;
     }
-  }, [userInfo]);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router, signIn, userInfo]);
 
   return (
     <div data-testid="Load">

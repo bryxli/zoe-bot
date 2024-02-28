@@ -26,7 +26,7 @@ export default function Home() {
     } else {
       isFirstRender.current = false;
     }
-  }, []);
+  }, [signOut]);
 
   return (
     <div data-testid="Home">
