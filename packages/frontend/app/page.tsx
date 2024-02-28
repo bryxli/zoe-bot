@@ -1,6 +1,6 @@
 "use client";
 
-import { Fragment, useContext, useEffect } from "react";
+import { Fragment, useContext, useEffect, useRef } from "react";
 import { Container } from "react-bootstrap";
 
 import Header from "@/components/Header";
@@ -11,6 +11,8 @@ export default function Home() {
   const authContext = useContext(AuthContext);
   const { signOut } = authContext;
 
+  const isFirstRender = useRef(true);
+
   useEffect(() => {
     const startup = async () => {
       await fetch("/api/startup", {
@@ -18,9 +20,13 @@ export default function Home() {
       });
     };
 
-    startup();
-    signOut();
-  }, [signOut]);
+    if (!isFirstRender.current) {
+      startup();
+      signOut();
+    } else {
+      isFirstRender.current = false;
+    }
+  }, []);
 
   return (
     <div data-testid="Home">
