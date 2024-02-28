@@ -20,7 +20,7 @@ export default function Dashboard() {
 
   useEffect(() => {
     !userInfo && router.push("/logout");
-  }, [router, userInfo]);
+  }, [userInfo]);
 
   return (
     <div data-testid="Dashboard">

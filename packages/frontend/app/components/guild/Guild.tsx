@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Card } from "react-bootstrap";
 
 import { DynamoGuildProps, GuildProps, SummonerProps } from "@/types";
@@ -18,6 +18,8 @@ export default function Guild(props: GuildProps) {
   const [summoners, setSummoners] = useState<SummonerProps[]>([]);
   const [webhookLocation, setWebhookLocation] = useState("");
 
+  const isFirstRender = useRef(true);
+
   useEffect(() => {
     const fetchGuild = async () => {
       const guild = await fetch("/api/dynamo/guild", {
@@ -30,7 +32,11 @@ export default function Guild(props: GuildProps) {
       setGuild(guild);
     };
 
-    fetchGuild();
+    if (!isFirstRender.current) {
+      fetchGuild();
+    } else {
+      isFirstRender.current = false;
+    }
   }, [props]);
 
   useEffect(() => {
@@ -67,8 +73,8 @@ export default function Guild(props: GuildProps) {
       userIds.push(Object.keys(user)[0]);
     });
 
-    fetchSummoners(userIds);
-    setLocation();
+    userIds.length > 0 && fetchSummoners(userIds);
+    guild.webhook_id !== "" && setLocation();
   }, [guild]);
 
   const display = () => {
