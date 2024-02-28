@@ -11,20 +11,22 @@ export default function DelUser({
     event.preventDefault();
 
     const name = event.target.name.value;
+
+    // TODO: call deluser
   };
 
   return (
     <div data-testid="DelUser">
       <Form onSubmit={deluser}>
         <Form.Group className="mb-3">
-          <Form.Control name="name" placeholder="League Username" />
+          <Form.Control name="name" placeholder="League username" />
           <br></br>
           <Button
             type="submit"
             className="authButton"
             style={{ position: "absolute", bottom: 10 }}
           >
-            /adduser
+            /deluser
           </Button>
         </Form.Group>
       </Form>

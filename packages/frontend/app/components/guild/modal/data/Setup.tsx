@@ -5,6 +5,7 @@ import { DataComponentProps } from "@/types";
 export default function Setup({ data, setGuild, setData }: DataComponentProps) {
   const setup = async (event: any) => {
     event.preventDefault();
+
     const channelId = event.target.id.value;
 
     const webhook = await fetch("/api/discord/webhook", {
@@ -30,7 +31,7 @@ export default function Setup({ data, setGuild, setData }: DataComponentProps) {
     <div data-testid="Setup">
       <Form onSubmit={setup}>
         <Form.Group className="mb-3">
-          <Form.Control name="id" placeholder="Discord Channel ID" />
+          <Form.Control name="id" placeholder="Discord channel ID" />
           <br></br>
           <Button
             type="submit"

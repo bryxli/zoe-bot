@@ -1,6 +1,6 @@
 "use client";
 
-import { useContext, useEffect, useRef } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import { AuthContext } from "@/contexts/AuthContext";
@@ -14,16 +14,16 @@ export default function Load() {
   const { signIn, userInfo } = authContext;
   const { processGuilds } = guildContext;
 
-  const fragment = new URLSearchParams(window.location.hash.slice(1));
-  const [accessToken, tokenType] = [
-    fragment.get("access_token"),
-    fragment.get("token_type"),
-  ];
-
-  const isFirstRender = useRef(true);
+  const [isFirstRender, setIsFirstRender] = useState(true);
 
   useEffect(() => {
-    if (!isFirstRender.current) {
+    const fragment = new URLSearchParams(window.location.hash.slice(1));
+    const [accessToken, tokenType] = [
+      fragment.get("access_token"),
+      fragment.get("token_type"),
+    ];
+
+    if (!isFirstRender) {
       const fetchData = async () => {
         if (!userInfo) {
           await fetch("/api/discord/user", {
@@ -59,9 +59,11 @@ export default function Load() {
 
       fetchData();
     } else {
-      isFirstRender.current = false;
+      setIsFirstRender(false);
     }
-  }, [userInfo]);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isFirstRender, router, signIn, userInfo]);
 
   return (
     <div data-testid="Load">

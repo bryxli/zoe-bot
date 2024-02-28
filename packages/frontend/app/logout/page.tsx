@@ -13,7 +13,7 @@ export default function Home() {
 
   useEffect(() => {
     signOut();
-  }, []);
+  }, [signOut]);
 
   return (
     <div data-testid="Logout">

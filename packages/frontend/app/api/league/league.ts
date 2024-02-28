@@ -22,6 +22,8 @@ export const findByAccountId = async (
   accountId: string,
   region: string,
 ): Promise<SummonerProps> => {
+  
+  // eslint-disable-next-line testing-library/no-await-sync-queries
   const res = await api.Summoner.getByAccountID(
     accountId,
     regions[region as keyof typeof regions],

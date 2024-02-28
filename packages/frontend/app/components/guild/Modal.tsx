@@ -72,11 +72,13 @@ export default function GuildModal({
               </Col>
             </Row>
             <br></br>
-            <Row style={{ height: "21%" }}>
-              <Col>
-                <Data data={data} setGuild={setGuild} setData={setData} />
-              </Col>
-            </Row>
+            {data.command !== "" && (
+              <Row>
+                <Col>
+                  <Data data={data} setGuild={setGuild} setData={setData} />
+                </Col>
+              </Row>
+            )}
           </Container>
         </Modal.Body>
       </Modal>

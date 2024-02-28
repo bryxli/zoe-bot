@@ -10,14 +10,19 @@ export default function Region({
   const region = (event: any) => {
     event.preventDefault();
 
-    const region = event.target.name.value;
+    const region = event.target.region.value;
+
+    // TODO: call region
   };
 
   return (
     <div data-testid="Region">
       <Form onSubmit={region}>
         <Form.Group className="mb-3">
-          <Form.Control name="name" placeholder="Region" />
+          <Form.Control
+            name="region"
+            placeholder="WARNING: this will delete all users; region must be valid"
+          />
           <br></br>
           <Button
             type="submit"
