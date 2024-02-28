@@ -20,13 +20,16 @@ export default function Dashboard() {
 
   useEffect(() => {
     !userInfo && router.push("/logout");
-  }, [router, userInfo]);
+  }, [userInfo]);
 
   return (
     <div data-testid="Dashboard">
       <Header />
       {userInfo && (
-        <Container className="d-flex flex-column align-items-center justify-content-center readable pt-2 pb-2">
+        <Container
+          className="d-flex flex-column align-items-center justify-content-center readable pt-2 pb-2"
+          style={{ textAlign: "center" }}
+        >
           <User {...userInfo} />
           {adminGuilds && adminGuilds.length > 0 && (
             <Row>
