@@ -82,7 +82,7 @@ export default function Guild(props: GuildProps) {
   };
 
   return (
-    <div data-testid="Guild">
+    <div data-testid="Guild" className="h-100">
       <Card className="h-100" style={{ cursor: "pointer" }} onClick={display}>
         <Card.Body className="d-flex align-items-center justify-content-center text-center">
           <Card.Title> {props.name} </Card.Title>
