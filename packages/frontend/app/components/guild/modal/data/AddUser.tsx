@@ -11,13 +11,15 @@ export default function AddUser({
     event.preventDefault();
 
     const name = event.target.name.value;
+
+    // TODO: call adduser
   };
 
   return (
     <div data-testid="AddUser">
       <Form onSubmit={adduser}>
         <Form.Group className="mb-3">
-          <Form.Control name="name" placeholder="League Username" />
+          <Form.Control name="name" placeholder="League username" />
           <br></br>
           <Button
             type="submit"

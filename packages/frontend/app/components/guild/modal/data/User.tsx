@@ -1,26 +1,37 @@
-import { Button, Col, Row } from "react-bootstrap";
+import { Button, Col, Form, Row } from "react-bootstrap";
 
 import { DataComponentProps } from "@/types";
 
 export default function User({ data, setGuild, setData }: DataComponentProps) {
-  const deleteUser = () => {
-    // TODO: call delete api, then validate and setguild + setdata
+  const deluser = (event: any) => {
+    event.preventDefault();
+
+    const nameToCheck = data.body.name;
+    const name = event.target.name.value;
+
+    if (name === nameToCheck) {
+      // TODO: call deluser
+    }
   };
 
   return (
     <div data-testid="User">
-      <Row>
-        <Col>{data.body.id}</Col>
-      </Row>
-      <br></br>
-      <br></br>
-      <Button
-        className="authButton"
-        style={{ position: "absolute", bottom: 10 }}
-        onClick={deleteUser}
-      >
-        delete user
-      </Button>
+      <Form onSubmit={deluser}>
+        <Form.Group className="mb-3">
+          <Form.Control
+            name="name"
+            placeholder="Please type in username to confirm deletion"
+          />
+          <br></br>
+          <Button
+            type="submit"
+            className="authButton"
+            style={{ position: "absolute", bottom: 10 }}
+          >
+            /deluser
+          </Button>
+        </Form.Group>
+      </Form>
     </div>
   );
 }
