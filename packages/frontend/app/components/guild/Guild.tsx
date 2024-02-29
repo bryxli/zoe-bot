@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { Card } from "react-bootstrap";
 
 import { DynamoGuildProps, GuildProps, SummonerProps } from "@/types";
@@ -18,7 +18,7 @@ export default function Guild(props: GuildProps) {
   const [summoners, setSummoners] = useState<SummonerProps[]>([]);
   const [webhookLocation, setWebhookLocation] = useState("");
 
-  const isFirstRender = useRef(true);
+  const [isFirstRender, setIsFirstRender] = useState(true);
 
   useEffect(() => {
     const fetchGuild = async () => {
@@ -32,12 +32,12 @@ export default function Guild(props: GuildProps) {
       setGuild(guild);
     };
 
-    if (!isFirstRender.current) {
+    if (!isFirstRender) {
       fetchGuild();
     } else {
-      isFirstRender.current = false;
+      setIsFirstRender(false);
     }
-  }, [props]);
+  }, [isFirstRender, props]);
 
   useEffect(() => {
     const fetchSummoners = async (users: string[]) => {
