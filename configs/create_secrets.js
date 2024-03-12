@@ -1,6 +1,6 @@
-const { Octokit } = require("@octokit/core");
-const sodium = require("libsodium-wrappers");
-const config = require("./config.actions.json");
+import { Octokit } from "@octokit/core";
+import sodium from "libsodium-wrappers";
+import config from "./config.actions.json" with { type: "json" };
 
 const pat = config.pat;
 const owner = config.owner;
@@ -155,6 +155,7 @@ const createEnvSecret = async (
 const createRepoSecrets = async () => {
   const publicKey = await getPublicKey();
 
+  await createSecret(publicKey, "ACCESS_TOKEN", pat);
   await createSecret(publicKey, "AWS_ACCOUNT_ID", accountId);
   await createSecret(publicKey, "AWS_REGION", region);
   await createSecret(publicKey, "RIOT_KEY", riotKey);
