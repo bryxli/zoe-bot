@@ -23,7 +23,7 @@ jobs:
           git config user.name github-actions
           git config user.email github-actions@github.com
           git rebase origin/main
-          git push origin dependencies --force
+          git push https://${{ github.actor }}:${{ secrets.ACCESS_TOKEN }}@github.com/${{ github.repository }} dependencies --force
 
   unit-tests:
     runs-on: ubuntu-latest
