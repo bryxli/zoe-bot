@@ -155,7 +155,6 @@ const createEnvSecret = async (
 const createRepoSecrets = async () => {
   const publicKey = await getPublicKey();
 
-  await createSecret(publicKey, "ACCESS_TOKEN", pat);
   await createSecret(publicKey, "AWS_ACCOUNT_ID", accountId);
   await createSecret(publicKey, "AWS_REGION", region);
   await createSecret(publicKey, "RIOT_KEY", riotKey);
