@@ -19,7 +19,7 @@
     "*": "prettier --write"
   },
   "devDependencies": {
-    "@tsconfig/node18": "^18.2.2",
+    "@tsconfig/node18": "^18.2.3",
     "aws-cdk-lib": "2.133.0",
     "constructs": "10.3.0",
     "husky": "^9.0.11",
