@@ -9,7 +9,7 @@ from dynamo import ZoeBotTable
 from league import RiotAPI
 
 logger = logging.getLogger("function-main")
-logger.setLevel(logging.ERROR)
+logger.setLevel(logging.INFO)
 
 AWS_REGION = os.environ.get("SET_AWS_REGION")
 RIOT_KEY = os.environ.get("RIOT_KEY")
@@ -29,11 +29,15 @@ def handler(event, context):
             guild_id = guild['guild_id']['N']
             webhook_url = guild['webhook_url']['S']
 
+            logger.info(f"Found guild: {guild_id}")
+
             for user_data in guild['userlist']['L']:
                 try:
                     account_id = list(user_data['M'].keys())[0]
 
                     summoner = lol.find_player_by_accountid(account_id, guild['region']['S'])
+
+                    logger.info(f"Found summoner: {summoner}")
 
                     match_history = summoner.match_history
                     if (match_history.count > 0):
@@ -46,7 +50,7 @@ def handler(event, context):
                         last_created_old = user_data['M'][account_id]['S']
                         last_created = str(match.creation)
                         if last_created != last_created_old:
-
+                            logger.info(f"New match found at {last_created}")
                             player = match.participants[id]
                             summoner_name = summoner.name
                             champion_name = player.champion.name
