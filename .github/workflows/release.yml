@@ -7,7 +7,7 @@ on:
       - main
 
 jobs:
-  build:
+  release:
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     permissions:
@@ -28,4 +28,3 @@ jobs:
       with:
         repo_token: "${{ secrets.GITHUB_TOKEN }}"
         prerelease: false
-        automatic_release_tag: latest
