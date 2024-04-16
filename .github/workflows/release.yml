@@ -7,6 +7,19 @@ on:
       - main
 
 jobs:
+  rebase-dependencies:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: dependencies
+      - run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git rebase origin/main
+          git push origin dependencies --force
+
   release:
     runs-on: ubuntu-latest
     if: github.event.pull_request.merged == true
