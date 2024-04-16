@@ -28,7 +28,6 @@ jobs:
         WITH_V: true
 
   release:
-    if: github.event.pull_request.merged == true
     needs: tag
     runs-on: ubuntu-latest
     steps:
