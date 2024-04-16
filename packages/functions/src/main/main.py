@@ -18,7 +18,7 @@ with open("template.json") as file:
     template = json.load(file)
 
 app = Quart(__name__)
-handler = Mangum(asgi_app)
+handler = Mangum(app)
 
 
 @app.route("/", methods=["POST"])
