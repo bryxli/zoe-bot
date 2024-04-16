@@ -52,7 +52,10 @@ def handler(event, context):
                         if last_created != last_created_old:
                             logger.info(f"New match found at {last_created}")
                             player = match.participants[id]
-                            summoner_name = summoner.name
+                            try:
+                                summoner_name = lol.find_account_by_puuid(summoner.puuid)["gameName"]
+                            except:
+                                raise Exception("Summoner name not found")
                             champion_name = player.champion.name
                             kda = str(round(player.stats.kda, 2))
                             win = player.stats.win

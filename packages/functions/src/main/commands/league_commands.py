@@ -57,7 +57,12 @@ def userlist():
     accountlist = db.get_all_users(guild_id)
     users = []
     for account in accountlist:
-        users.append(lol.find_player_by_accountid(account, db.get_guild(guild_id)['region']['S']).name)
+        try:
+            summoner_puuid = lol.find_player_by_accountid(account, db.get_guild(guild_id)['region']['S']).puuid
+            account_name = lol.find_account_by_puuid(summoner_puuid)["gameName"]
+            users.append(account_name)
+        except:
+            pass
     if len(users) == 0:
         return NO_USERS_IN_USERLIST
     return ' '.join(users)
