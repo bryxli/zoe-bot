@@ -1,10 +1,8 @@
-import os
 import json
 import random
 import logging
-from flask import Flask, jsonify, request
+from quart import Quart, jsonify, request
 from mangum import Mangum
-from asgiref.wsgi import WsgiToAsgi
 from discord_interactions import verify_key_decorator
 
 from constants.env import DISCORD_PUBLIC_KEY
@@ -19,8 +17,7 @@ logger.setLevel(logging.INFO)
 with open("template.json") as file:
     template = json.load(file)
 
-app = Flask(__name__)
-asgi_app = WsgiToAsgi(app)
+app = Quart(__name__)
 handler = Mangum(asgi_app)
 
 
@@ -55,10 +52,3 @@ def interact(raw_request):
         }
 
     return jsonify(response_data)
-
-@app.errorhandler(ValueError)
-def handle_value_error(error):
-    if "WSGI wrapper received a non-HTTP scope" in str(error):
-        pass
-    else:
-        raise error
