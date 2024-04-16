@@ -25,11 +25,10 @@ class RiotAPI:
         return None
     
     def find_account_by_puuid(self, puuid):
-        url = f"https://api.example.com/endpoint?puuid={puuid}"
+        url = f"https://americas.api.riotgames.com/riot/account/v1/accounts/by-puuid/{puuid}"
         headers = {
             "X-Riot-Token": self.api_key
         }
-        
         response = requests.get(url, headers=headers)
         if response.status_code == 200:
             return response.json()
