@@ -23,13 +23,13 @@ handler = Mangum(app)
 
 @app.route("/", methods=["POST"])
 async def interactions():
-    raw_request = request.json
+    raw_request = await request.json
     logger.info(f"Request: {request.json}")
-    return interact(raw_request)
+    return await interact(raw_request)
 
 
 @verify_key_decorator(DISCORD_PUBLIC_KEY)
-def interact(raw_request):
+async def interact(raw_request):
     if raw_request["type"] == 1:
         response_data = {"type": 1} 
     else:
