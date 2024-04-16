@@ -55,3 +55,10 @@ def interact(raw_request):
         }
 
     return jsonify(response_data)
+
+@app.errorhandler(ValueError)
+def handle_value_error(error):
+    if "WSGI wrapper received a non-HTTP scope" in str(error):
+        pass
+    else:
+        raise error
