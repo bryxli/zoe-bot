@@ -30,6 +30,7 @@ class RiotAPI:
         self.api_key = api_key
 
     def get_continent(self, region):
+        print("TEST REGION" + region)
         if region is Region.brazil:
             return Continent.americas
         if region is Region.europe_north_east:
