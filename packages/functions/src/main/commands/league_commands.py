@@ -1,3 +1,5 @@
+import logging
+
 from dynamo import ZoeBotTable
 from league import RiotAPI
 
@@ -8,6 +10,8 @@ db = ZoeBotTable(AWS_REGION, STAGE)
 lol = RiotAPI(RIOT_KEY)
 guild_id = ''
 
+logger = logging.getLogger("function-main")
+logger.setLevel(logging.ERROR)
 
 def init(command, data):
     global guild_id
@@ -23,7 +27,6 @@ def init(command, data):
 
     return output
 
-
 def add_user(data):
     if not db.guild_exists(guild_id):
         return GUILD_DOES_NOT_EXIST
@@ -36,7 +39,6 @@ def add_user(data):
         return PLAYER_EXISTS
     db.add_user(guild_id, player.account_id)
     return ADDUSER_SUCCESS
-
 
 def delete_user(data):
     if not db.guild_exists(guild_id):
@@ -52,21 +54,17 @@ def delete_user(data):
     db.delete_user(guild_id, player.account_id)
     return DELUSER_SUCCESS
 
-
 def userlist():
     if not db.guild_exists(guild_id):
         return GUILD_DOES_NOT_EXIST
-    return 'Due to Riot ID changes, getting the userlist from the bot is currently not functioning.' # TODO: query userlist by puuid
     accountlist = db.get_all_users(guild_id)
     users = []
-    for account in accountlist:
+    for puuid in accountlist:
         try:
-            summoner_puuid = lol.find_player_by_accountid(account, db.get_guild(guild_id)['region']['S']).puuid
-            account_name = lol.find_account_by_puuid(summoner_puuid)["gameName"]
+            account_name = lol.get_name_by_puuid(puuid, db.get_guild(guild_id)['region']['S'])
             users.append(account_name)
-        except:
-            pass
+        except Exception as e:
+            logger.error(e)
     if len(users) == 0:
         return NO_USERS_IN_USERLIST
     return ' '.join(users)
-    

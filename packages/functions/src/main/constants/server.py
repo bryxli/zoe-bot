@@ -12,5 +12,5 @@ GUILD_EXISTS = 'guild aready exists'
 GUILD_DOES_NOT_EXIST = 'guild not registered'
 REGION_DOES_NOT_EXIST = 'region not found'
 
-REGION_LIST = ['BR', 'EUNE', 'EUW', 'JP', 'KR', 'LAN', 'LAS', 'NA', 'OCE', 'TR', 'RU']
+REGION_LIST = ['BR', 'EUNE', 'EUW', 'JP', 'KR', 'LAN', 'LAS', 'NA', 'OCE', 'TR', 'RU', 'PH', 'SG', 'TH', 'TW', 'VN']
 ACKNOWLEDGMENT_PROMPT = 'this action can be harmful, running /reset or /region <region> will delete all registered users. acknowledge with /acknowledge'

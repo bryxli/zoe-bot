@@ -22,13 +22,11 @@ app = Flask(__name__)
 asgi_app = WsgiToAsgi(app)
 handler = Mangum(asgi_app)
 
-
 @app.route("/", methods=["POST"])
 async def interactions():
     raw_request = request.json
     logger.info(f"Request: {request.json}")
     return interact(raw_request)
-
 
 @verify_key_decorator(DISCORD_PUBLIC_KEY)
 def interact(raw_request):
@@ -39,8 +37,7 @@ def interact(raw_request):
         command_name = data["name"]
 
         if command_name == "help":
-            # message_content = HELP_RESPONSE
-            message_content = HELP_RESPONSE + '\nDue to Riot ID changes, player updates are currently not functioning.' # TODO: delete this after riot id changes
+            message_content = HELP_RESPONSE
         elif command_name == "speak":
             response = template['response']
             message_content = random.choice(response)
