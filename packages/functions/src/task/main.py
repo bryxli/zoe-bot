@@ -31,6 +31,9 @@ def process_guild(guild):
         for user_data in guild['userlist']['L']:
             puuid = list(user_data['M'].keys())[0]
             match = lol.get_match_by_puuid(puuid, guild['region']['S'])['info']
+
+            logger.info(f"Found user: {puuid}")
+
             process_user_data(user_data, guild_id, webhook_url, puuid, match)
     except Exception as e:
         logger.error(f"An exception occured when fetching guild data: {e}")
