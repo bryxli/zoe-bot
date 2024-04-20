@@ -38,7 +38,7 @@ def process_guild(guild):
 def process_user_data(user_data, guild_id, webhook_url, puuid, match):
     try:
         gameId_old = user_data['M'][puuid]['S']
-        gameId = match["gameId"]
+        gameId = str(match["gameId"])
                         
         if gameId != gameId_old:
             logger.info(f"Found match: {gameId}")

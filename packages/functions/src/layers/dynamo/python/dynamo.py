@@ -65,9 +65,9 @@ class ZoeBotTable:
         users = self.get_all_users(guild_id)
         return puuid in users
 
-    def add_user(self, guild_id, puuid, last_created=''):
+    def add_user(self, guild_id, puuid, gameId=''):
         expression_values = {
-            ':user': {'L': [{'M': {puuid: {'S': last_created}}}]}
+            ':user': {'L': [{'M': {puuid: {'S': gameId}}}]}
         }
         self.client.update_item(
             TableName=self.table_name,
