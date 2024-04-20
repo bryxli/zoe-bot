@@ -2,3 +2,4 @@ asgiref==3.8.1
 discord-interactions==0.4.0
 Flask==3.0.3
 mangum==0.17.0
+requests==2.31.0
