@@ -24,8 +24,30 @@ class RiotAPI:
             return summoner
         return None
     
-    def find_account_by_puuid(self, puuid):
-        url = f"https://americas.api.riotgames.com/riot/account/v1/accounts/by-puuid/{puuid}"
+    def get_AccountDto_by_puuid(self, puuid):
+        url = f"https://americas.api.riotgames.com/riot/account/v1/accounts/by-puuid/{puuid}" # TODO: url changes based on region
+        headers = {
+            "X-Riot-Token": self.api_key
+        }
+        response = requests.get(url, headers=headers)
+        if response.status_code == 200:
+            return response.json()
+        else:
+            return None
+        
+    def get_matchId_by_puuid(self, puuid):
+        url = f"https://americas.api.riotgames.com/lol/match/v5/matches/by-puuid/{puuid}/ids?count=1" # TODO: url changes based on region
+        headers = {
+            "X-Riot-Token": self.api_key
+        }
+        response = requests.get(url, headers=headers)
+        if response.status_code == 200:
+            return response[0]
+        else:
+            return None
+        
+    def get_MatchDto_by_matchId(self, matchId):
+        url = f"https://americas.api.riotgames.com/lol/match/v5/matches/{matchId}" # TODO: url changes based on region
         headers = {
             "X-Riot-Token": self.api_key
         }
