@@ -9,7 +9,6 @@ from constants.server import *
 db = ZoeBotTable(AWS_REGION, STAGE)
 guild_id = ''
 
-
 def init(command, data):
     global guild_id
 
@@ -25,7 +24,6 @@ def init(command, data):
         output = acknowledge()
 
     return output
-
 
 def init_guild(data):
     if db.guild_exists(guild_id):
@@ -46,7 +44,6 @@ def init_guild(data):
     db.create_guild(guild_id, webhook_id, webhook_url)
     return SETUP_SUCCESS
 
-
 def delete_guild():
     if not db.guild_exists(guild_id):
         return GUILD_DOES_NOT_EXIST
@@ -62,7 +59,6 @@ def delete_guild():
     requests.delete(delete_webhook_url, headers=headers)
 
     return DELETE_SUCCESS
-
 
 def change_region(data):
     if not db.guild_exists(guild_id):

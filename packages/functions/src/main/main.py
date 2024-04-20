@@ -22,13 +22,11 @@ app = Flask(__name__)
 asgi_app = WsgiToAsgi(app)
 handler = Mangum(asgi_app)
 
-
 @app.route("/", methods=["POST"])
 async def interactions():
     raw_request = request.json
     logger.info(f"Request: {request.json}")
     return interact(raw_request)
-
 
 @verify_key_decorator(DISCORD_PUBLIC_KEY)
 def interact(raw_request):

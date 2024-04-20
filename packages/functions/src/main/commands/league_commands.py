@@ -8,7 +8,6 @@ db = ZoeBotTable(AWS_REGION, STAGE)
 lol = RiotAPI(RIOT_KEY)
 guild_id = ''
 
-
 def init(command, data):
     global guild_id
 
@@ -23,7 +22,6 @@ def init(command, data):
 
     return output
 
-
 def add_user(data):
     if not db.guild_exists(guild_id):
         return GUILD_DOES_NOT_EXIST
@@ -36,7 +34,6 @@ def add_user(data):
         return PLAYER_EXISTS
     db.add_user(guild_id, player.account_id)
     return ADDUSER_SUCCESS
-
 
 def delete_user(data):
     if not db.guild_exists(guild_id):
@@ -51,7 +48,6 @@ def delete_user(data):
         return PLAYER_DOES_NOT_EXIST
     db.delete_user(guild_id, player.account_id)
     return DELUSER_SUCCESS
-
 
 def userlist():
     if not db.guild_exists(guild_id):
@@ -69,4 +65,3 @@ def userlist():
     if len(users) == 0:
         return NO_USERS_IN_USERLIST
     return ' '.join(users)
-    
