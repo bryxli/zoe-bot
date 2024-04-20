@@ -28,47 +28,30 @@ class Region(Enum):
 class RiotAPI:
     def __init__(self, api_key):
         self.api_key = api_key
-
-    def get_continent(self, region):
-        print("TEST REGION" + region)
-        if region is Region.brazil:
-            return Continent.americas
-        if region is Region.europe_north_east:
-            return Continent.europe
-        if region is Region.europe_west:
-            return Continent.europe
-        if region is Region.japan:
-            return Continent.asia
-        if region is Region.korea:
-            return Continent.asia
-        if region is Region.latin_america_north:
-            return Continent.americas
-        if region is Region.latin_america_south:
-            return Continent.americas
-        if region is Region.north_america:
-            return Continent.americas
-        if region is Region.oceania:
-            return Continent.sea
-        if region is Region.turkey:
-            return Continent.europe
-        if region is Region.russia:
-            return Continent.europe
-        if region is Region.philippines:
-            return Continent.sea
-        if region is Region.singapore:
-            return Continent.sea
-        if region is Region.thailand:
-            return Continent.sea
-        if region is Region.taiwan:
-            return Continent.sea
-        if region is Region.vietnam:
-            return Continent.sea
+        self.region_map = {
+            Region.brazil: Continent.americas,
+            Region.europe_north_east: Continent.europe,
+            Region.europe_west: Continent.europe,
+            Region.japan: Continent.asia,
+            Region.korea: Continent.asia,
+            Region.latin_america_north: Continent.americas,
+            Region.latin_america_south: Continent.americas,
+            Region.north_america: Continent.americas,
+            Region.oceania: Continent.sea,
+            Region.turkey: Continent.europe,
+            Region.russia: Continent.europe,
+            Region.philippines: Continent.sea,
+            Region.singapore: Continent.sea,
+            Region.thailand: Continent.sea,
+            Region.taiwan: Continent.sea,
+            Region.vietnam: Continent.sea
+        }
     
     def get_AccountDto_by_riot_id(self, riot_id, region): # TODO
         pass
 
     def get_AccountDto_by_puuid(self, puuid, region):
-        continent = self.get_continent(region)
+        continent = self.region_map[region]
         url = f"https://{continent}.api.riotgames.com/riot/account/v1/accounts/by-puuid/{puuid}"
         headers = {
             "X-Riot-Token": self.api_key
@@ -80,7 +63,8 @@ class RiotAPI:
             return None
         
     def get_matchId_by_puuid(self, puuid, region):
-        continent = self.get_continent(region)
+        continent = self.region_map[region]
+        print(region + " " + continent)
         url = f"https://{continent}.api.riotgames.com/lol/match/v5/matches/by-puuid/{puuid}/ids?count=1"
         headers = {
             "X-Riot-Token": self.api_key
@@ -92,7 +76,7 @@ class RiotAPI:
             return None
         
     def get_MatchDto_by_matchId(self, matchId, region):
-        continent = self.get_continent(region)
+        continent = self.region_map[region]
         url = f"https://{continent}.api.riotgames.com/lol/match/v5/matches/{matchId}"
         headers = {
             "X-Riot-Token": self.api_key
