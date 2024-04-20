@@ -56,7 +56,7 @@ def userlist():
     users = []
     for puuid in accountlist:
         try:
-            account_name = lol.get_name_by_puuid(puuid)["gameName"]
+            account_name = lol.get_name_by_puuid(puuid)
             users.append(account_name)
         except:
             pass
