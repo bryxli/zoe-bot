@@ -52,13 +52,11 @@ def delete_user(data):
 def userlist():
     if not db.guild_exists(guild_id):
         return GUILD_DOES_NOT_EXIST
-    return 'Due to Riot ID changes, getting the userlist from the bot is currently not functioning.' # TODO: query userlist by puuid
     accountlist = db.get_all_users(guild_id)
     users = []
-    for account in accountlist:
+    for puuid in accountlist:
         try:
-            summoner_puuid = lol.find_player_by_accountid(account, db.get_guild(guild_id)['region']['S']).puuid
-            account_name = lol.find_account_by_puuid(summoner_puuid)["gameName"]
+            account_name = lol.get_name_by_puuid(puuid)["gameName"]
             users.append(account_name)
         except:
             pass
