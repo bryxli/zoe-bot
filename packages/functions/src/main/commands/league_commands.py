@@ -61,7 +61,7 @@ def userlist():
     users = []
     for puuid in accountlist:
         try:
-            account_name = lol.get_name_by_puuid(puuid)
+            account_name = lol.get_name_by_puuid(puuid, db.get_guild(guild_id)['region']['S'])
             users.append(account_name)
         except Exception as e:
             logger.error(e)
