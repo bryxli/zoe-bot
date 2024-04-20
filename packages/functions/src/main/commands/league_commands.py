@@ -27,6 +27,7 @@ def init(command, data):
 def add_user(data):
     if not db.guild_exists(guild_id):
         return GUILD_DOES_NOT_EXIST
+    return 'Due to Riot ID changes, adding users to the bot is currently not functioning.' # TODO: add users by riot id, store user data by puuid instead of account_id
     arg = data["options"][0]["value"]   
     player = lol.find_player_by_name(arg, db.get_guild(guild_id)['region']['S'])
     if player is None:
@@ -40,6 +41,7 @@ def add_user(data):
 def delete_user(data):
     if not db.guild_exists(guild_id):
         return GUILD_DOES_NOT_EXIST
+    return 'Due to Riot ID changes, deleting users from the bot is currently not functioning.' # TODO: delete users by riot id, query user data by puuid instead of account_id
     arg = data["options"][0]["value"]   
     player = lol.find_player_by_name(arg, db.get_guild(guild_id)['region']['S'])
     if player is None:
@@ -54,6 +56,7 @@ def delete_user(data):
 def userlist():
     if not db.guild_exists(guild_id):
         return GUILD_DOES_NOT_EXIST
+    return 'Due to Riot ID changes, getting the userlist from the bot is currently not functioning.' # TODO: query userlist by puuid
     accountlist = db.get_all_users(guild_id)
     users = []
     for account in accountlist:
