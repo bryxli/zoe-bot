@@ -60,7 +60,7 @@ class RiotAPI:
         if response.status_code == 200:
             return response.json()
         else:
-            raise Exception(response.reason)
+            raise Exception(response.json())
         
     def get_matchId_by_puuid(self, puuid, region):
         continent = self.region_map[region]
@@ -73,7 +73,7 @@ class RiotAPI:
         if response.status_code == 200:
             return response[0]
         else:
-            raise Exception(response.reason)
+            raise Exception(response.json())
         
     def get_MatchDto_by_matchId(self, matchId, region):
         continent = self.region_map[region]
@@ -85,7 +85,7 @@ class RiotAPI:
         if response.status_code == 200:
             return response.json()
         else:
-            raise Exception(response.reason)
+            raise Exception(response.json())
         
     def get_puuid_by_riot_id(self, riot_id, region):
         AccountDto = self.get_AccountDto_by_riot_id(riot_id, region)
