@@ -37,40 +37,39 @@ def process_guild(guild):
 
 def process_user_data(user_data, guild_id, webhook_url, puuid, match):
     try:
-        if match is not None:
-            gameId_old = user_data['M'][puuid]['S']
-            gameId = match["gameId"]
+        gameId_old = user_data['M'][puuid]['S']
+        gameId = match["gameId"]
                         
-            if gameId != gameId_old:
-                logger.info(f"Found match: {gameId}")
+        if gameId != gameId_old:
+            logger.info(f"Found match: {gameId}")
 
-                for participant in match["participants"]:
-                    if participant["puuid"] == puuid:
+            for participant in match["participants"]:
+                if participant["puuid"] == puuid:
 
-                        summoner_name = participant["summonerName"]
-                        champion_name = participant["championName"]
-                        kda = str(round(participant["challenges"]["kda"]))
-                        win = participant["win"]
+                    summoner_name = participant["summonerName"]
+                    champion_name = participant["championName"]
+                    kda = str(round(participant["challenges"]["kda"]))
+                    win = participant["win"]
                                     
-                        if win:
-                            t = Template(random.choice(template['win']))
-                        else:
-                            t = Template(random.choice(template['lose']))
+                    if win:
+                        t = Template(random.choice(template['win']))
+                    else:
+                        t = Template(random.choice(template['lose']))
 
-                        db.update_user(guild_id, puuid, gameId)
-                        message_content = t.substitute(summoner_name=summoner_name, kda=kda, champion_name=champion_name)
+                    db.update_user(guild_id, puuid, gameId)
+                    message_content = t.substitute(summoner_name=summoner_name, kda=kda, champion_name=champion_name)
 
-                        headers = {
-                        "Content-Type": "application/json"
-                        }
-                        data = {
-                            'username': 'zœ',
-                            'avatar_url': 'https://raw.githubusercontent.com/bryxli/zoe-bot/main/packages/functions/src/task/zoe.png',
-                            "content": message_content
-                        }
-                        requests.post(webhook_url, headers=headers, data=json.dumps(data))
+                    headers = {
+                    "Content-Type": "application/json"
+                    }
+                    data = {
+                        'username': 'zœ',
+                        'avatar_url': 'https://raw.githubusercontent.com/bryxli/zoe-bot/main/packages/functions/src/task/zoe.png',
+                        "content": message_content
+                    }
+                    requests.post(webhook_url, headers=headers, data=json.dumps(data))
 
-                        break
+                    break
     except Exception as e:
         logger.error(f"An exception occured when fetching user data: {e}")
 

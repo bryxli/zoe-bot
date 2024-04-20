@@ -29,22 +29,22 @@ class RiotAPI:
     def __init__(self, api_key):
         self.api_key = api_key
         self.region_map = {
-            Region.brazil: Continent.americas,
-            Region.europe_north_east: Continent.europe,
-            Region.europe_west: Continent.europe,
-            Region.japan: Continent.asia,
-            Region.korea: Continent.asia,
-            Region.latin_america_north: Continent.americas,
-            Region.latin_america_south: Continent.americas,
-            Region.north_america: Continent.americas,
-            Region.oceania: Continent.sea,
-            Region.turkey: Continent.europe,
-            Region.russia: Continent.europe,
-            Region.philippines: Continent.sea,
-            Region.singapore: Continent.sea,
-            Region.thailand: Continent.sea,
-            Region.taiwan: Continent.sea,
-            Region.vietnam: Continent.sea
+            Region.brazil.value: Continent.americas.value,
+            Region.europe_north_east.value: Continent.europe.value,
+            Region.europe_west.value: Continent.europe.value,
+            Region.japan.value: Continent.asia.value,
+            Region.korea.value: Continent.asia.value,
+            Region.latin_america_north.value: Continent.americas.value,
+            Region.latin_america_south.value: Continent.americas.value,
+            Region.north_america.value: Continent.americas.value,
+            Region.oceania.value: Continent.sea.value,
+            Region.turkey.value: Continent.europe.value,
+            Region.russia.value: Continent.europe.value,
+            Region.philippines.value: Continent.sea.value,
+            Region.singapore.value: Continent.sea.value,
+            Region.thailand.value: Continent.sea.value,
+            Region.taiwan.value: Continent.sea.value,
+            Region.vietnam.value: Continent.sea.value
         }
     
     def get_AccountDto_by_riot_id(self, riot_id, region): # TODO
