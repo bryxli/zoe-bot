@@ -37,8 +37,7 @@ def interact(raw_request):
         command_name = data["name"]
 
         if command_name == "help":
-            # message_content = HELP_RESPONSE
-            message_content = HELP_RESPONSE + '\nDue to Riot ID changes, player updates are currently not functioning.' # TODO: delete this after riot id changes
+            message_content = HELP_RESPONSE
         elif command_name == "speak":
             response = template['response']
             message_content = random.choice(response)
