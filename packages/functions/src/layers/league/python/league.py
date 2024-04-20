@@ -64,14 +64,13 @@ class RiotAPI:
         
     def get_matchId_by_puuid(self, puuid, region):
         continent = self.region_map[region]
-        print("\nTEST REGION " + region + " TEST CONTINENT " + continent + "\n")
         url = f"https://{continent}.api.riotgames.com/lol/match/v5/matches/by-puuid/{puuid}/ids?count=1"
         headers = {
             "X-Riot-Token": self.api_key
         }
         response = requests.get(url, headers=headers)
         if response.status_code == 200:
-            return response[0]
+            return response.json()[0]
         else:
             raise Exception(response.json())
         
