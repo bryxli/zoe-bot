@@ -1,3 +1,5 @@
+import logging
+
 from dynamo import ZoeBotTable
 from league import RiotAPI
 
@@ -7,6 +9,9 @@ from constants.league import *
 db = ZoeBotTable(AWS_REGION, STAGE)
 lol = RiotAPI(RIOT_KEY)
 guild_id = ''
+
+logger = logging.getLogger("function-main")
+logger.setLevel(logging.ERROR)
 
 def init(command, data):
     global guild_id
@@ -58,8 +63,8 @@ def userlist():
         try:
             account_name = lol.get_name_by_puuid(puuid)
             users.append(account_name)
-        except:
-            pass
+        except Exception as e:
+            logger.error(e)
     if len(users) == 0:
         return NO_USERS_IN_USERLIST
     return ' '.join(users)
