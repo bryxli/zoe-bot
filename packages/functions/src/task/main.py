@@ -21,7 +21,7 @@ lol = RiotAPI(RIOT_KEY)
 with open("template.json") as file:
     template = json.load(file)
 
-def handler(event, context):
+def handler(event, context): # TODO: configure task to use new RiotAPI
     data = db.get_all()['Items']
     for guild in data:
         try:
