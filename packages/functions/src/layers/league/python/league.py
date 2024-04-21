@@ -47,8 +47,17 @@ class RiotAPI:
             Region.vietnam.value: Continent.sea.value
         }
     
-    def get_AccountDto_by_riot_id(self, riot_id, region): # TODO
-        pass
+    def get_AccountDto_by_riot_id(self, name, tag, region):
+        continent = self.region_map[region]
+        url = f"https://{continent}.api.riotgames.com/riot/account/v1/accounts/by-riot-id/{name}/{tag}"
+        headers = {
+            "X-Riot-Token": self.api_key
+        }
+        response = requests.get(url, headers=headers)
+        if response.status_code == 200:
+            return response.json()
+        else:
+            raise Exception(response.json())
 
     def get_AccountDto_by_puuid(self, puuid, region):
         continent = self.region_map[region]
@@ -86,8 +95,8 @@ class RiotAPI:
         else:
             raise Exception(response.json())
         
-    def get_puuid_by_riot_id(self, riot_id, region):
-        AccountDto = self.get_AccountDto_by_riot_id(riot_id, region)
+    def get_puuid_by_riot_id(self, name, tag, region):
+        AccountDto = self.get_AccountDto_by_riot_id(name, tag, region)
         return AccountDto["puuid"]
 
     def get_name_by_puuid(self, puuid, region):

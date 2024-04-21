@@ -85,9 +85,9 @@ class ZoeBotTable:
             UpdateExpression=f'REMOVE userlist[{index}]',
         )
 
-    def update_user(self, guild_id, puuid, last_created):
+    def update_user(self, guild_id, puuid, gameId):
         self.delete_user(guild_id, puuid)
-        self.add_user(guild_id, puuid, last_created)
+        self.add_user(guild_id, puuid, gameId)
 
     def check_acknowledgment(self, guild_id):
         return self.get_guild(guild_id)['acknowledgment']['BOOL']

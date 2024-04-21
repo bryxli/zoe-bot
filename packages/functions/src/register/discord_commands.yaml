@@ -19,18 +19,26 @@
   description: acknowledge dangerous commands
 
 - name: adduser
-  description: add user to guild, user must be a valid League of Legends username
+  description: add user to guild by riot id
   options:
-    - name: username
-      description: League of Legends username
+    - name: name
+      description: "riot id game name\t Ex: Doublelift"
+      type: 3
+      required: true
+    - name: tagline
+      description: "riot id tagline\t Ex: NA1"
       type: 3
       required: true
 
 - name: deluser
-  description: delete user from guild, user must be a valid League of Legends username and exist
+  description: delete user from guild by riot id
   options:
-    - name: username
-      description: League of Legends username
+    - name: name
+      description: riot id game name
+      type: 3
+      required: true
+    - name: tagline
+      description: riot id tagline
       type: 3
       required: true
 

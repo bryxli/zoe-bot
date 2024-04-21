@@ -66,10 +66,10 @@ def change_region(data):
     if not db.check_acknowledgment(guild_id):
         return ACKNOWLEDGMENT_PROMPT
     try:
-        arg = data["options"][0]["value"]   
+        region = data["options"][0]["value"]   
     except KeyError:
         return ' '.join(REGION_LIST)
-    current_region = arg.upper()
+    current_region = region.upper()
     if current_region not in REGION_LIST:
         return REGION_DOES_NOT_EXIST
     updates = {
