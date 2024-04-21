@@ -30,14 +30,15 @@ def init(command, data):
 def add_user(data):
     if not db.guild_exists(guild_id):
         return GUILD_DOES_NOT_EXIST
-    return 'Due to Riot ID changes, adding users to the bot is currently not functioning.' # TODO: add users by riot id, store user data by puuid instead of account_id
-    arg = data["options"][0]["value"]   
-    player = lol.find_player_by_name(arg, db.get_guild(guild_id)['region']['S'])
-    if player is None:
+
+    gameName = data["options"][0]["value"] 
+    tagLine = data["options"][1]["value"]
+    try:
+        puuid = lol.get_puuid_by_riot_id(gameName, tagLine, db.get_guild(guild_id)['region']['S'])
+    except:
         return INVALID_USERNAME
-    if db.user_exists(guild_id, player.account_id):
-        return PLAYER_EXISTS
-    db.add_user(guild_id, player.account_id)
+        
+    db.add_user(guild_id, puuid)
     return ADDUSER_SUCCESS
 
 def delete_user(data):

@@ -22,11 +22,11 @@
   description: add user to guild by riot id
   options:
     - name: name
-      description: riot id game name
+      description: "riot id game name\t Ex: Doublelift"
       type: 3
       required: true
     - name: tagline
-      description: riot id tagline
+      description: "riot id tagline\t Ex: NA1"
       type: 3
       required: true
 
