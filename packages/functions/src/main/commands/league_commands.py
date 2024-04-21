@@ -30,29 +30,28 @@ def init(command, data):
 def add_user(data):
     if not db.guild_exists(guild_id):
         return GUILD_DOES_NOT_EXIST
-
     gameName = data["options"][0]["value"] 
     tagLine = data["options"][1]["value"]
     try:
         puuid = lol.get_puuid_by_riot_id(gameName, tagLine, db.get_guild(guild_id)['region']['S'])
     except:
         return INVALID_USERNAME
-        
     db.add_user(guild_id, puuid)
     return ADDUSER_SUCCESS
 
 def delete_user(data):
     if not db.guild_exists(guild_id):
         return GUILD_DOES_NOT_EXIST
-    return 'Due to Riot ID changes, deleting users from the bot is currently not functioning.' # TODO: delete users by riot id, query user data by puuid instead of account_id
-    arg = data["options"][0]["value"]   
-    player = lol.find_player_by_name(arg, db.get_guild(guild_id)['region']['S'])
-    if player is None:
+    gameName = data["options"][0]["value"] 
+    tagLine = data["options"][1]["value"]  
+    try:
+        puuid = lol.get_puuid_by_riot_id(gameName, tagLine, db.get_guild(guild_id)['region']['S'])
+    except:
         return INVALID_USERNAME
     # TODO: db.user_exists and db.delete_user both call get_all_users, consolidate to avoid unecessary calls
-    if not db.user_exists(guild_id, player.account_id):
+    if not db.user_exists(guild_id, puuid):
         return PLAYER_DOES_NOT_EXIST
-    db.delete_user(guild_id, player.account_id)
+    db.delete_user(guild_id, puuid)
     return DELUSER_SUCCESS
 
 def userlist():
