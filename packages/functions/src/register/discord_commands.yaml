@@ -19,9 +19,9 @@
   description: acknowledge dangerous commands
 
 - name: adduser
-  description: add user to guild, user must be a valid riot id
+  description: add user to guild by riot id
   options:
-    - name: game name
+    - name: name
       description: riot id game name
       type: 3
       required: true
@@ -31,9 +31,9 @@
       required: true
 
 - name: deluser
-  description: delete user from guild, user must be a valid riot id and exist
+  description: delete user from guild by riot id
   options:
-    - name: game name
+    - name: name
       description: riot id game name
       type: 3
       required: true
