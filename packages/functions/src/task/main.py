@@ -51,7 +51,7 @@ def process_user_data(user_data, guild_id, webhook_url, puuid, match):
 
                     summoner_name = participant["summonerName"]
                     champion_name = participant["championName"]
-                    kda = str(round(participant["challenges"]["kda"]))
+                    kda = str(round(participant["challenges"]["kda"], 2))
                     win = participant["win"]
                                     
                     if win:
