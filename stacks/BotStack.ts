@@ -111,6 +111,10 @@ export function BotStack({ app, stack }: StackContext) {
     new events.Rule(stack, "function-task-rule", {
       schedule: events.Schedule.rate(cdk.Duration.minutes(5)),
     }).addTarget(new targets.LambdaFunction(taskFunction));
+
+    new events.Rule(stack, "function-main-rule", {
+      schedule: events.Schedule.rate(cdk.Duration.minutes(15)),
+    }).addTarget(new targets.LambdaFunction(mainFunction));
   }
 
   stack.addOutputs({
