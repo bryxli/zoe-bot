@@ -19,7 +19,7 @@
     "react": "^18",
     "react-bootstrap": "^2.10.1",
     "react-dom": "^18",
-    "twisted": "^1.60.0"
+    "twisted": "^1.60.1"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.4.2",
