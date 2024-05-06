@@ -17,7 +17,7 @@
     "bootstrap": "^5.3.3",
     "next": "14.2.3",
     "react": "^18",
-    "react-bootstrap": "^2.10.1",
+    "react-bootstrap": "^2.10.2",
     "react-dom": "^18",
     "twisted": "^1.60.1"
   },
