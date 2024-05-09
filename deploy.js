@@ -1,5 +1,5 @@
 import { exec } from "child_process";
-import * as config from "./configs/config.json";
+import config from "./configs/config.json" with { type: "json" };
 
 const deploy = (command, exitHandler) => {
   const output = (log) => {
