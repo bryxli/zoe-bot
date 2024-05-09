@@ -66,4 +66,4 @@ jobs:
       - name: Deploy prod app
         run: |
           npm i
-          npx sst deploy --stage prod
+          npm run deploy:prod
