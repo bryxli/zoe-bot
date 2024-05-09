@@ -78,4 +78,4 @@ jobs:
       - name: Deploy dev app
         run: |
           npm i
-          npx sst deploy --stage dev
+          npm run deploy
