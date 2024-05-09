@@ -1,5 +1,5 @@
 import { exec } from "child_process";
-import fs from 'fs/promises';
+import * as config from "/configs/config.json";
 
 const deploy = (command, exitHandler) => {
   const output = (log) => {
@@ -9,7 +9,10 @@ const deploy = (command, exitHandler) => {
       
     let match;
     while ((match = pattern.exec(log)) !== null) {
-      const obj = match[0].split(": ")
+      let obj = match[0].split(": ");
+      if (obj[0] === "InteractionsEndpoints") {
+        obj[1] = obj[1].replace("***", config.aws_region);
+      }
       output[obj[0]] = obj[1]
     }
   
