@@ -7,7 +7,7 @@ export function WebStack({ app, stack }: StackContext) {
 
   const site = new NextjsSite(stack, "frontend", {
     path: "packages/frontend",
-    environment: {
+    environment: { // TODO: create url env var from file
       APPLICATION_ID: config.application_id,
       RIOT_API_KEY: config.riot_key,
       TOKEN: config.token,

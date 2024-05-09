@@ -8,7 +8,7 @@ export default function Header() {
   const { userInfo } = authContext;
 
   const application_id = process.env.APPLICATION_ID;
-  let url = "https://d1pi4zyx1ge8ej.cloudfront.net/load"; // Update with redirect URL
+  let url = "https://d1pi4zyx1ge8ej.cloudfront.net/load"; // TODO: get url from env
 
   if (process.env.NODE_ENV === "development")
     url = "http://localhost:3000/load";
