@@ -13,7 +13,8 @@
     "deploy:prod": "node deploy-prod.js",
     "remove": "sst remove",
     "console": "sst console",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "prepare": "husky"
   },
   "lint-staged": {
     "*": "prettier --write"
