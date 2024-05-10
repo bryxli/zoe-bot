@@ -11,7 +11,7 @@ const deploy = (command, exitHandler) => {
     while ((match = pattern.exec(log)) !== null) {
       let obj = match[0].split(": ");
       if (obj[0] === "InteractionsEndpoints") {
-        obj[1] = obj[1].replace("***", config.aws_region);
+        obj[1] = obj[1].replace("***", config.aws_region); // TODO: not being replaced properly
       }
       output[obj[0]] = obj[1]
     }

@@ -1,3 +1,4 @@
+import { writeFile } from "fs/promises";
 import { deploy } from "./deploy.js"
 
 let res;
@@ -8,7 +9,7 @@ const exitHandler = (command, output) => {
   } else {
     res = output;
 
-    // TODO: write url to file
+    writeFile("deploy-prod.json", JSON.stringify(output));
 
     deploy("sst deploy WebStack --stage prod", exitHandler);
   }
