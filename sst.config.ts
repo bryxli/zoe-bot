@@ -11,8 +11,8 @@ export default {
       region: config.aws_region,
     };
   },
-  stacks(app) {
+  async stacks(app) {
     app.stack(InfraStack).stack(BotStack);
-    app.stage !== "dev" && app.stack(WebStack); // Do not deploy to dev
+    app.stage !== "dev" && await app.stack(WebStack); // Do not deploy to dev
   },
 } satisfies SSTConfig;

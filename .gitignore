@@ -6,3 +6,4 @@ __pycache__
 .open-next
 .DS_Store
 .env*.local
+deploy-prod.json
