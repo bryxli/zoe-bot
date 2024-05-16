@@ -9,6 +9,8 @@ Discord bot that traverses through the Riot Games API to find information about 
 - [Prerequisites](#prerequisites)
 - [Overview](#overview)
   - [Bot Commands](#bot-commands)
+  - [CloudFormation Stacks](#cloudformation-stacks)
+  - [Application](#applications)
 - [Initial Setup](#initial-setup)
   - [Create Discord Application](#create-discord-application)
   - [Configuration](#configuration)
