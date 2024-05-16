@@ -7,14 +7,15 @@ Discord bot that traverses through the Riot Games API to find information about 
 # Table of Contents
 
 - [Prerequisites](#prerequisites)
-- [Bot Deployment](#bot-deployment)
-  - [Configuration](#configuration)
-  - [Startup](#startup)
-  - [Create Discord Application](#create-discord-application)
+- [Overview](#overview)
   - [Bot Commands](#bot-commands)
-- [Production Deployment](#production-deployment)
-  - [Create Redirect](#create-redirect)
-  - [Configure Login Button](#configure-login-button)
+- [Initial Setup](#initial-setup)
+  - [Create Discord Application](#create-discord-application)
+  - [Configuration](#configuration)
+- [Bot Deployment](#bot-deployment)
+  - [Startup](#startup)
+  - [Production Deployment](#production-deployment)
+    - [Create Redirect](#create-redirect)
 - [Integrate with GitHub Actions](#integrate-with-github-actions)
   - [Create IAM Role](#create-iam-role)
   - [Create Secrets](#create-secrets)
@@ -23,13 +24,48 @@ Discord bot that traverses through the Riot Games API to find information about 
 
 ## Prerequisites
 
-Zoe is an IaC application that utilizes SST and Discord. Make sure to have the following installed and configured.
+Zoe is an IaC monorepo application that utilizes SST and Discord. Make sure to have the following installed and configured.
 
 - [Node.js / npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
 - [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html)
 - [Docker](https://docs.docker.com/engine/install)
 
-## Bot Deployment
+## Overview
+
+### Bot Commands
+
+- /help - command list
+- /setup - create guild instance
+- /reset - reset instance
+- /region \<region> - change guild region
+- /acknowledge - acknowledge dangerous commands
+- /adduser \<username> - add user to guild, user must be a valid League of Legends username
+- /deluser \<username> - delete user from guild, user must be a valid League of Legends username and exist
+- /userlist - display guild userlist
+- /speak - zoe will talk to you
+
+### CloudFormation Stacks
+
+- [InfraStack](stacks/InfraStack.ts) - creates DynamoDb table to store user information
+- [BotStack](stacks/BotStack.ts) - creates Lambda functions and events for Discord bot
+- [WebStack](stacks/WebStack.ts) - creates Next.js web app for frontend UI
+
+### Applications
+
+- [Functions](packages/functions) - Discord bot Lambdas
+- [Frontend](packages/frontend) - Next.js web app
+
+## Initial Setup
+
+### Create Discord Application
+
+1. Create a new [Application](https://discord.com/developers/applications)
+2. Enable _Privileged Gateway Intents_ under Bot
+3. Invite to server with `https://discord.com/oauth2/authorize?client_id=<client_id>&permissions=536870912&scope=applications.commands%20bot`
+
+   Note: Replace **<client_id>** with _Application ID_
+
+4. After deploying the bot to AWS using either `npm run deploy` or `npm run deploy:prod`, paste **InteractionsEndpoint** into _Interactions Endpoint URL_ under General Information
 
 ### Configuration
 
@@ -51,6 +87,8 @@ Set environment configuration [config.json](configs/config.json)
 - application_id - found in [Discord Developer Portal](https://discord.com/developers/applications) under General Information
 - token - found in [Discord Developer Portal](https://discord.com/developers/applications) under Bot > Reset Token
 
+## Bot Deployment
+
 ### Startup
 
 The bot is configured to be able to deploy to multiple stages. This changes configurations in the AWS stack.
@@ -58,31 +96,9 @@ The bot is configured to be able to deploy to multiple stages. This changes conf
 - `npm run deploy` - deploy dev stack, returns **InteractionsEndpoint**
 - `npm run deploy:prod` - deploy prod stack, returns **InteractionsEndpoint**, **URL**
 
-### Create Discord Application
+### Production Deployment
 
-1. Create a new [Application](https://discord.com/developers/applications)
-2. Enable _Privileged Gateway Intents_ under Bot
-3. Invite to server with `https://discord.com/oauth2/authorize?client_id=<client_id>&permissions=536870912&scope=applications.commands%20bot`
-
-   Note: Replace **<client_id>** with _Application ID_
-
-4. After deploying the bot to AWS using either `npm run deploy` or `npm run deploy:prod`, paste **InteractionsEndpoint** into _Interactions Endpoint URL_ under General Information
-
-### Bot Commands
-
-- /help - command list
-- /setup - create guild instance
-- /reset - reset instance
-- /region \<region> - change guild region
-- /acknowledge - acknowledge dangerous commands
-- /adduser \<username> - add user to guild, user must be a valid League of Legends username
-- /deluser \<username> - delete user from guild, user must be a valid League of Legends username and exist
-- /userlist - display guild userlist
-- /speak - zoe will talk to you
-
-## Production Deployment
-
-### Create Redirect
+#### Create Redirect
 
 1. In the Discord Application on [Discord Developer Portal](https://discord.com/developers/applications) under OAuth2, create a redirect URL using **URL**/load
 
@@ -91,11 +107,6 @@ The bot is configured to be able to deploy to multiple stages. This changes conf
 2. Under Authorization Method, choose _In-app Authorization_
 3. Enable Scopes: _bot_, _application.commands_
 4. Enable Bot Permissions: _Manage Webhooks_
-
-### Configure Login Button
-
-1. In [Header.tsx](/packages/frontend/app/components/Header.tsx#L11), update _url_ with redirect URL created in previous step
-2. Redeploy to production using `npm run deploy:prod`
 
 ## Integrate with GitHub Actions
 
