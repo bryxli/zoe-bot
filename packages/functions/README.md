@@ -21,7 +21,7 @@
   1. `coverage run -m unittest -v`
   2. `coverage report`
 
-- Run function in desired function directory - `python3 main.py`
+- Run function in desired function directory - `python3 main.py --local True`
 
 # Backlog
 
