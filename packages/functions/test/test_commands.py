@@ -4,7 +4,6 @@ import unittest
 from unittest.mock import MagicMock
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../src/main')))
-sys.modules['layer_import_helper'] = MagicMock()
 sys.modules['dynamo'] = MagicMock()
 sys.modules['league'] = MagicMock()
 
