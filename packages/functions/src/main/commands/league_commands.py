@@ -3,7 +3,7 @@ import logging
 from constants.env import AWS_REGION, RIOT_KEY, STAGE
 from constants.league import *
 
-from layer_import_helper import get_ZBT, get_RAPI
+from commands.layer_import_helper import get_ZBT, get_RAPI
 
 ZoeBotTable = get_ZBT()
 RiotAPI = get_RAPI()
