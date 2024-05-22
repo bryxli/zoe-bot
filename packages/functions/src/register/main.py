@@ -1,14 +1,23 @@
+import argparse
 import requests
 import yaml
 import os
 import time
 import logging
 
+parser = argparse.ArgumentParser()
+parser.add_argument("--local", type=bool, default=False)
+args = parser.parse_args()
+
 logger = logging.getLogger("function-register")
 logger.setLevel(logging.INFO)
 
-TOKEN = os.environ.get("TOKEN")
-APPLICATION_ID = os.environ.get("APPLICATION_ID")
+if args.local: # TODO
+    TOKEN = "config"
+    APPLICATION_ID = "config"
+else:
+    TOKEN = os.environ.get("TOKEN")
+    APPLICATION_ID = os.environ.get("APPLICATION_ID")
 
 URL = f"https://discord.com/api/v9/applications/{APPLICATION_ID}/commands"
 

@@ -2,7 +2,7 @@ import os
 
 from argument_parser import get_local_status
 
-if get_local_status():
+if get_local_status(): # TODO
     AWS_REGION = "config"
     DISCORD_PUBLIC_KEY = "config"
     RIOT_KEY = "config"

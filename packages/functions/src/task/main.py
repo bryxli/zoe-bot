@@ -7,27 +7,27 @@ import logging
 import sys
 from string import Template
 
-try:
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--local", type=bool, default=False)
-    args = parser.parse_args()
-    local = True
-except:
-    local = False
+parser = argparse.ArgumentParser()
+parser.add_argument("--local", type=bool, default=False)
 
-if local:
+args = parser.parse_args()
+
+if args.local: # TODO
     sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../layers/dynamo/python')))
     sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../layers/league/python')))
+    AWS_REGION = "config"
+    RIOT_KEY = "config"
+    STAGE = "config"
+else:
+    AWS_REGION = os.environ.get("SET_AWS_REGION")
+    RIOT_KEY = os.environ.get("RIOT_KEY")
+    STAGE = os.environ.get("STAGE")
 
 from dynamo import ZoeBotTable
 from league import RiotAPI
 
 logger = logging.getLogger("function-main")
 logger.setLevel(logging.INFO)
-
-AWS_REGION = os.environ.get("SET_AWS_REGION")
-RIOT_KEY = os.environ.get("RIOT_KEY")
-STAGE = os.environ.get("STAGE")
 
 db = ZoeBotTable(AWS_REGION, STAGE)
 lol = RiotAPI(RIOT_KEY)
