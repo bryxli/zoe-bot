@@ -8,8 +8,8 @@ args = parser.parse_args()
 local = args.local
 
 if local:
-    sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'layers', 'dynamo', 'python')))
-    sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'layers', 'league', 'python')))
+    sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../layers/dynamo/python')))
+    sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../layers/league/python')))
 
 from dynamo import ZoeBotTable
 from league import RiotAPI
