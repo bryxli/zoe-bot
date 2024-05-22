@@ -53,3 +53,6 @@ def handler(event, context):
         upload_command(command)
         if failed is not None:
             upload_command(failed)
+
+if __name__ == '__main__':
+    handler(None, None)

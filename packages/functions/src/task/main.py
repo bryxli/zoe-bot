@@ -99,3 +99,6 @@ def handler(event, context):
     data = db.get_all()['Items']
     for guild in data:
         process_guild(guild)
+
+if __name__ == '__main__':
+    handler(None, None)
