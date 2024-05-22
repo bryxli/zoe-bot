@@ -5,6 +5,7 @@ import random
 import requests
 import logging
 import sys
+import json
 from string import Template
 
 parser = argparse.ArgumentParser()
@@ -12,12 +13,16 @@ parser.add_argument("--local", type=bool, default=False)
 
 args = parser.parse_args()
 
-if args.local: # TODO
+if args.local:
     sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../layers/dynamo/python')))
     sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../layers/league/python')))
-    AWS_REGION = "config"
-    RIOT_KEY = "config"
-    STAGE = "config"
+
+    config_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../../configs/config.json'))
+    with open(config_path, "r") as config_file:
+        config = json.load(config_file)
+    AWS_REGION = config.get("aws_region")
+    RIOT_KEY = config.get("riot_key")
+    STAGE = "dev"
 else:
     AWS_REGION = os.environ.get("SET_AWS_REGION")
     RIOT_KEY = os.environ.get("RIOT_KEY")

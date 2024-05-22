@@ -4,6 +4,7 @@ import yaml
 import os
 import time
 import logging
+import json
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--local", type=bool, default=False)
@@ -12,9 +13,12 @@ args = parser.parse_args()
 logger = logging.getLogger("function-register")
 logger.setLevel(logging.INFO)
 
-if args.local: # TODO
-    TOKEN = "config"
-    APPLICATION_ID = "config"
+if args.local:
+    config_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../../configs/config.json'))
+    with open(config_path, "r") as config_file:
+        config = json.load(config_file)
+    TOKEN = config.get("token")
+    APPLICATION_ID = config.get("application_id")
 else:
     TOKEN = os.environ.get("TOKEN")
     APPLICATION_ID = os.environ.get("APPLICATION_ID")

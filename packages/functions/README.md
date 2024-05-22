@@ -8,14 +8,6 @@
   4. [register function](src/register)
   5. [task function](src/task)
 
-- Vars - set os env variables
-
-  1. AWS_REGION
-  2. DISCORD_PUBLIC_KEY
-  3. RIOT_KEY
-  4. TOKEN
-  5. STAGE
-
 - Test - run unit tests
 
   1. `coverage run -m unittest`
