@@ -18,7 +18,7 @@
 
 - Test - run unit tests
 
-  1. `coverage run -m unittest -v`
+  1. `coverage run -m unittest`
   2. `coverage report`
 
 - Run function in desired function directory - `python3 main.py --local True`

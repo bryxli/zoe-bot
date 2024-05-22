@@ -34,7 +34,7 @@ jobs:
           pip install coverage
       - name: Run unit tests
         run: |
-          coverage run -m unittest -v
+          coverage run -m unittest
           coverage report
 
   create-config:
