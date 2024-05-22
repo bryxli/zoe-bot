@@ -1,9 +1,20 @@
+import argparse
 import json
 import os
 import random
 import requests
 import logging
+import sys
 from string import Template
+
+parser = argparse.ArgumentParser()
+parser.add_argument("--local", type=bool, default=False)
+args = parser.parse_args()
+local = args.local
+
+if local:
+    sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'layers', 'dynamo', 'python')))
+    sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'layers', 'league', 'python')))
 
 from dynamo import ZoeBotTable
 from league import RiotAPI
