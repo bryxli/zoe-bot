@@ -17,8 +17,8 @@ class TestLeagueCommands(unittest.TestCase):
         self.assertEqual(res, 'test')
     
     def test_delete_user(self):
-            res = 'test'
-            self.assertEqual(res, 'test')
+        res = 'test'
+        self.assertEqual(res, 'test')
 
     def test_userlist(self):
         res = 'test'
