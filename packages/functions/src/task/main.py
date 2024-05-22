@@ -1,19 +1,38 @@
+import argparse
 import json
 import os
 import random
 import requests
 import logging
+import sys
+import json
 from string import Template
+
+parser = argparse.ArgumentParser()
+parser.add_argument("--local", type=bool, default=False)
+
+args = parser.parse_args()
+
+if args.local:
+    sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../layers/dynamo/python')))
+    sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../layers/league/python')))
+
+    config_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../../configs/config.json'))
+    with open(config_path, "r") as config_file:
+        config = json.load(config_file)
+    AWS_REGION = config.get("aws_region")
+    RIOT_KEY = config.get("riot_key")
+    STAGE = "dev"
+else:
+    AWS_REGION = os.environ.get("SET_AWS_REGION")
+    RIOT_KEY = os.environ.get("RIOT_KEY")
+    STAGE = os.environ.get("STAGE")
 
 from dynamo import ZoeBotTable
 from league import RiotAPI
 
 logger = logging.getLogger("function-main")
 logger.setLevel(logging.INFO)
-
-AWS_REGION = os.environ.get("SET_AWS_REGION")
-RIOT_KEY = os.environ.get("RIOT_KEY")
-STAGE = os.environ.get("STAGE")
 
 db = ZoeBotTable(AWS_REGION, STAGE)
 lol = RiotAPI(RIOT_KEY)
@@ -80,3 +99,6 @@ def handler(event, context):
     data = db.get_all()['Items']
     for guild in data:
         process_guild(guild)
+
+if __name__ == '__main__':
+    handler(None, None)

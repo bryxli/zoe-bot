@@ -1,14 +1,27 @@
+import argparse
 import requests
 import yaml
 import os
 import time
 import logging
+import json
+
+parser = argparse.ArgumentParser()
+parser.add_argument("--local", type=bool, default=False)
+args = parser.parse_args()
 
 logger = logging.getLogger("function-register")
 logger.setLevel(logging.INFO)
 
-TOKEN = os.environ.get("TOKEN")
-APPLICATION_ID = os.environ.get("APPLICATION_ID")
+if args.local:
+    config_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../../configs/config.json'))
+    with open(config_path, "r") as config_file:
+        config = json.load(config_file)
+    TOKEN = config.get("token")
+    APPLICATION_ID = config.get("application_id")
+else:
+    TOKEN = os.environ.get("TOKEN")
+    APPLICATION_ID = os.environ.get("APPLICATION_ID")
 
 URL = f"https://discord.com/api/v9/applications/{APPLICATION_ID}/commands"
 
@@ -40,3 +53,6 @@ def handler(event, context):
         upload_command(command)
         if failed is not None:
             upload_command(failed)
+
+if __name__ == '__main__':
+    handler(None, None)

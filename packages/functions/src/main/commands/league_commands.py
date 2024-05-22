@@ -1,10 +1,12 @@
 import logging
 
-from dynamo import ZoeBotTable
-from league import RiotAPI
-
 from constants.env import AWS_REGION, RIOT_KEY, STAGE
 from constants.league import *
+
+from commands.layer_import_helper import get_ZBT, get_RAPI
+
+ZoeBotTable = get_ZBT()
+RiotAPI = get_RAPI()
 
 db = ZoeBotTable(AWS_REGION, STAGE)
 lol = RiotAPI(RIOT_KEY)

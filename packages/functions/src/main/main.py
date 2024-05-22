@@ -52,3 +52,6 @@ def interact(raw_request):
         }
 
     return jsonify(response_data)
+
+if __name__ == '__main__':
+    logger.error("main function interaction is currently only supported on AWS")
