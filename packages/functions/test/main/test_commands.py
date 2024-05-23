@@ -3,14 +3,23 @@ import os
 import unittest
 from unittest.mock import MagicMock
 
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../src/main')))
-sys.modules['dynamo'] = MagicMock()
-sys.modules['league'] = MagicMock()
-
-from commands.league_commands import init
-from commands.server_commands import init
-
 class TestCommands(unittest.TestCase):
+    
+    def __init__(self, methodName='runTest') -> None:
+        super().__init__(methodName)
+
+        directory = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../src/main'))
+        sys.path.append(directory)
+        sys.modules['dynamo'] = MagicMock()
+        sys.modules['league'] = MagicMock()
+
+        from commands.league_commands import init as league_init
+        from commands.server_commands import init as server_init
+        self.league_init = league_init
+        self.server_init = server_init
+
+        sys.path.remove(directory)
+
     def test_add_user(self):
         res = 'test'
         self.assertEqual(res, 'test')

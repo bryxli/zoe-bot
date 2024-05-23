@@ -3,7 +3,7 @@ import os
 import unittest
 from unittest.mock import MagicMock, patch
 
-class TestMain(unittest.TestCase):
+class TestTask(unittest.TestCase):
     def __init__(self, methodName='runTest') -> None:
         super().__init__(methodName)
 
@@ -15,13 +15,13 @@ class TestMain(unittest.TestCase):
             mock_template.read.return_value = '{"foo": "bar"}'
             mock_open.return_value.__enter__.return_value = mock_template
             
-            import main.main as main
+            import task.main as main
             self.main = main
 
         sys.path.remove(directory)
 
-    def test_main(self):  
-        # result = self.main.interact()
+    def test_task(self):
+        # result = self.main.handler()
         
         self.assertEqual('result', 'result')
 
