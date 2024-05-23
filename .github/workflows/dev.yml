@@ -35,7 +35,7 @@ jobs:
       - name: Run unit tests
         run: |
           coverage run -m unittest
-          coverage report
+          coverage report --show-missing
 
   create-config:
     environment: dev

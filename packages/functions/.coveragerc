@@ -2,4 +2,4 @@
 omit = */test/*, */constants/*
 
 [report]
-fail_under = 20
+fail_under = 50
