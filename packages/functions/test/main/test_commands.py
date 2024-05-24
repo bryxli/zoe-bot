@@ -40,17 +40,34 @@ class TestCommands(unittest.TestCase):
         self.patcher_add_user = patch('dynamo.ZoeBotTable.add_user')
         self.mock_add_user = self.patcher_add_user.start()
 
+        self.patcher_user_exists = patch('dynamo.ZoeBotTable.user_exists')
+        self.mock_user_exists = self.patcher_user_exists.start()
+        self.mock_user_exists.return_value = True
+
+        self.patcher_delete_user = patch('dynamo.ZoeBotTable.delete_user')
+        self.mock_delete_user = self.patcher_delete_user.start()
+
+        self.patcher_get_all_users = patch('dynamo.ZoeBotTable.get_all_users')
+        self.mock_get_all_users = self.patcher_get_all_users.start()
+        self.mock_get_all_users.return_value = ['']
+
         self.patcher_get_puuid_by_riot_id = patch('league.RiotAPI.get_puuid_by_riot_id')
         self.mock_get_puuid_by_riot_id = self.patcher_get_puuid_by_riot_id.start()
         self.mock_get_puuid_by_riot_id.return_value = ''
 
+        self.patcher_get_name_by_puuid = patch('league.RiotAPI.get_name_by_puuid')
+        self.mock_get_name_by_puuid = self.patcher_get_name_by_puuid.start()
+        self.mock_get_name_by_puuid.return_value = ''
+
     def tearDown(self):
         self.patcher_guild_exists.stop()
         self.patcher_get_guild.stop()
-        self.patcher_get_puuid_by_riot_id.stop()
         self.patcher_add_user.stop()
-
-    # TODO: tests not fully refined, does not test exceptions, conditions, etc
+        self.patcher_user_exists.stop()
+        self.patcher_delete_user.stop()
+        self.patcher_get_all_users.stop()
+        self.patcher_get_puuid_by_riot_id.stop()
+        self.patcher_get_name_by_puuid.stop()       
 
     def test_add_user_guild_dne(self):
         self.mock_guild_exists.return_value = False
@@ -65,14 +82,44 @@ class TestCommands(unittest.TestCase):
     def test_add_user(self):
         res = self.league_init('adduser', self.data)
         self.assertEqual(res, 'player registered')
-    
-    # def test_delete_user(self):
-    #     res = self.league_init('deluser', self.data)
-    #     self.assertEqual(res, 'player deleted')
 
-    # def test_userlist(self):
-    #     res = self.league_init('userlist', self.data)
-    #     self.assertEqual(res, 'no users are registered')
+    def test_delete_user_guild_dne(self):
+        self.mock_guild_exists.return_value = False
+        res = self.league_init('deluser', self.data)
+        self.assertEqual(res, 'guild not registered')
+
+    def test_delete_user_invalid_username(self):
+        self.mock_get_puuid_by_riot_id.side_effect = Exception()
+        res = self.league_init('deluser', self.data)
+        self.assertEqual(res, 'please enter a valid username')
+
+    def test_delete_user_dne(self):
+        self.mock_user_exists.return_value = False
+        res = self.league_init('deluser', self.data)
+        self.assertEqual(res, 'player not registered')
+    
+    def test_delete_user(self):
+        res = self.league_init('deluser', self.data)
+        self.assertEqual(res, 'player deleted')
+
+    def test_userlist_guild_dne(self):
+        self.mock_guild_exists.return_value = False
+        res = self.league_init('userlist', self.data)
+        self.assertEqual(res, 'guild not registered')
+
+    def test_userlist_error(self):
+        self.mock_get_name_by_puuid.side_effect = Exception()
+        res = self.league_init('userlist', self.data)
+        self.assertEqual(res, 'no users are registered')
+
+    def test_userlist_zero(self):
+        self.mock_get_all_users.return_value = []
+        res = self.league_init('userlist', self.data)
+        self.assertEqual(res, 'no users are registered')
+
+    def test_userlist(self):
+        res = self.league_init('userlist', self.data)
+        self.assertEqual(res, '')
 
     # def test_init_guild(self):
     #     res = self.server_init('setup', self.data)
