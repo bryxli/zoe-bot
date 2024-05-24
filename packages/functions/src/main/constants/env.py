@@ -13,10 +13,7 @@ if get_local_status():
     TOKEN = config.get("token")
     STAGE = "dev"
 else:
-    if os.environ.get("SET_AWS_REGION") != None:
-        AWS_REGION = os.environ.get("SET_AWS_REGION")
-    else: 
-        AWS_REGION = "us-east-1"
+    AWS_REGION = os.environ.get("SET_AWS_REGION")
     DISCORD_PUBLIC_KEY = os.environ.get("DISCORD_PUBLIC_KEY")
     RIOT_KEY = os.environ.get("RIOT_KEY")
     TOKEN = os.environ.get("TOKEN")

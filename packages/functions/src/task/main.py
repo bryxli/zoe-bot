@@ -24,10 +24,7 @@ if args.local: # pragma: no cover
     RIOT_KEY = config.get("riot_key")
     STAGE = "dev"
 else:
-    if os.environ.get("SET_AWS_REGION") != None:
-        AWS_REGION = os.environ.get("SET_AWS_REGION")
-    else: 
-        AWS_REGION = "us-east-1"
+    AWS_REGION = os.environ.get("SET_AWS_REGION")
     RIOT_KEY = os.environ.get("RIOT_KEY")
     STAGE = os.environ.get("STAGE")
 
