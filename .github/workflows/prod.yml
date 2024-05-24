@@ -61,7 +61,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: arn:aws:iam::${{secrets.AWS_ACCOUNT_ID}}:role/GitHub
-          role-duration-seconds: 3600 #adjust as needed for your build time
+          role-duration-seconds: 600
           aws-region: ${{secrets.AWS_REGION}}
       - name: Deploy prod app
         run: |

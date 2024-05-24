@@ -39,6 +39,12 @@ jobs:
           pip install -r src/layers/dynamo/requirements.txt
           pip install -r src/layers/league/requirements.txt
           pip install coverage
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::${{secrets.AWS_ACCOUNT_ID}}:role/GitHub
+          role-duration-seconds: 60
+          aws-region: ${{secrets.AWS_REGION}}
       - name: Run unit tests
         run: |
           coverage run -m unittest
@@ -80,7 +86,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: arn:aws:iam::${{secrets.AWS_ACCOUNT_ID}}:role/GitHub
-          role-duration-seconds: 3600 #adjust as needed for your build time
+          role-duration-seconds: 600
           aws-region: ${{secrets.AWS_REGION}}
       - name: Deploy dev app
         run: |
