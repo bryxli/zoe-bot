@@ -11,19 +11,36 @@ class TestRegister(unittest.TestCase):
         sys.path.append(directory)
 
         with patch('builtins.open', create=True) as mock_open:
-            mock_template = MagicMock()
-            mock_template.read.return_value = '{"foo": "bar"}'
-            mock_open.return_value.__enter__.return_value = mock_template
+            mock_yaml = MagicMock()
+            mock_yaml.read.return_value = '[{ "name": "" }]'
+            mock_open.return_value.__enter__.return_value = mock_yaml
             
-            import register.main as main
-            self.main = main
+            from register.main import handler
+            self.handler = handler
 
         sys.path.remove(directory)
 
+    def setUp(self):
+        self.patcher_requests_post = patch('requests.post')
+        self.mock_requests_post = self.patcher_requests_post.start()
+        self.mock_requests_post_res = MagicMock()
+        self.mock_requests_post_res.status_code = 201
+        self.mock_requests_post.return_value = self.mock_requests_post_res
+
+    def tearDown(self):
+        self.patcher_requests_post.stop()
+
     def test_register(self):
-        # result = self.main.handler()
-        
-        self.assertEqual('result', 'result')
+        self.handler(None, None)
+
+    # TODO: test_register_429 creates infinite loop due to status never getting past 429
+    # def test_register_429(self):
+    #     self.mock_requests_post_res.status_code = 429
+    #     self.handler(None, None)
+
+    def test_register_error(self):
+        self.mock_requests_post_res.status_code = 1
+        self.handler(None, None)
 
 if __name__ == '__main__':
     unittest.main()
