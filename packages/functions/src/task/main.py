@@ -13,7 +13,7 @@ parser.add_argument("--local", type=bool, default=False)
 
 args = parser.parse_args()
 
-if args.local:
+if args.local: # pragma: no cover
     sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../layers/dynamo/python')))
     sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../layers/league/python')))
 
@@ -72,7 +72,6 @@ def process_user_data(user_data, guild_id, webhook_url, puuid, match):
                     champion_name = participant["championName"]
                     kda = str(round(participant["challenges"]["kda"], 2))
                     win = participant["win"]
-                                    
                     if win:
                         t = Template(random.choice(template['win']))
                     else:
