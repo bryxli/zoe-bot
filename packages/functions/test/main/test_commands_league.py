@@ -3,7 +3,7 @@ import os
 import unittest
 from unittest.mock import patch
 
-class TestCommands(unittest.TestCase):
+class TestCommandsLeague(unittest.TestCase):
     
     def __init__(self, methodName='runTest') -> None:
         super().__init__(methodName)

@@ -4,7 +4,7 @@ import os
 import unittest
 from unittest.mock import MagicMock, patch
 
-class TestCommands(unittest.TestCase):
+class TestCommandsServer(unittest.TestCase):
     
     def __init__(self, methodName='runTest') -> None:
         super().__init__(methodName)

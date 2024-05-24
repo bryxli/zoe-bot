@@ -54,5 +54,5 @@ def handler(event, context):
         if failed is not None:
             upload_command(failed)
 
-if __name__ == '__main__':
+if __name__ == '__main__': # pragma: no cover
     handler(None, None)

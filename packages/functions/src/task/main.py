@@ -100,5 +100,5 @@ def handler(event, context):
     for guild in data:
         process_guild(guild)
 
-if __name__ == '__main__':
+if __name__ == '__main__': # pragma: no cover
     handler(None, None)
