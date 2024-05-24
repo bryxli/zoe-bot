@@ -3,7 +3,7 @@ import sys
 
 from argument_parser import get_local_status
 
-if get_local_status():
+if get_local_status(): # pragma: no cover
     sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../layers/dynamo/python')))
     sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../layers/league/python')))
 

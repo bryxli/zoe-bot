@@ -1,7 +1,7 @@
 import sys
 import os
 import unittest
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch
 
 class TestCommands(unittest.TestCase):
     
@@ -11,10 +11,8 @@ class TestCommands(unittest.TestCase):
         directory = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../src/main'))
         sys.path.append(directory)
 
-        from commands.league_commands import init as league_init
-        from commands.server_commands import init as server_init
-        self.league_init = league_init
-        self.server_init = server_init
+        from commands.league_commands import init
+        self.init = init
 
         self.data = {
             'guild_id': '1',
@@ -71,71 +69,55 @@ class TestCommands(unittest.TestCase):
 
     def test_add_user_guild_dne(self):
         self.mock_guild_exists.return_value = False
-        res = self.league_init('adduser', self.data)
+        res = self.init('adduser', self.data)
         self.assertEqual(res, 'guild not registered')
 
     def test_add_user_invalid_username(self):
         self.mock_get_puuid_by_riot_id.side_effect = Exception()
-        res = self.league_init('adduser', self.data)
+        res = self.init('adduser', self.data)
         self.assertEqual(res, 'please enter a valid username')
 
     def test_add_user(self):
-        res = self.league_init('adduser', self.data)
+        res = self.init('adduser', self.data)
         self.assertEqual(res, 'player registered')
 
     def test_delete_user_guild_dne(self):
         self.mock_guild_exists.return_value = False
-        res = self.league_init('deluser', self.data)
+        res = self.init('deluser', self.data)
         self.assertEqual(res, 'guild not registered')
 
     def test_delete_user_invalid_username(self):
         self.mock_get_puuid_by_riot_id.side_effect = Exception()
-        res = self.league_init('deluser', self.data)
+        res = self.init('deluser', self.data)
         self.assertEqual(res, 'please enter a valid username')
 
     def test_delete_user_dne(self):
         self.mock_user_exists.return_value = False
-        res = self.league_init('deluser', self.data)
+        res = self.init('deluser', self.data)
         self.assertEqual(res, 'player not registered')
     
     def test_delete_user(self):
-        res = self.league_init('deluser', self.data)
+        res = self.init('deluser', self.data)
         self.assertEqual(res, 'player deleted')
 
     def test_userlist_guild_dne(self):
         self.mock_guild_exists.return_value = False
-        res = self.league_init('userlist', self.data)
+        res = self.init('userlist', self.data)
         self.assertEqual(res, 'guild not registered')
 
     def test_userlist_error(self):
         self.mock_get_name_by_puuid.side_effect = Exception()
-        res = self.league_init('userlist', self.data)
+        res = self.init('userlist', self.data)
         self.assertEqual(res, 'no users are registered')
 
     def test_userlist_zero(self):
         self.mock_get_all_users.return_value = []
-        res = self.league_init('userlist', self.data)
+        res = self.init('userlist', self.data)
         self.assertEqual(res, 'no users are registered')
 
     def test_userlist(self):
-        res = self.league_init('userlist', self.data)
+        res = self.init('userlist', self.data)
         self.assertEqual(res, '')
-
-    # def test_init_guild(self):
-    #     res = self.server_init('setup', self.data)
-    #     self.assertEqual(res, 'guild already exists')
-
-    # def test_delete_guild(self):
-    #     res = self.server_init('reset', self.data)
-    #     self.assertEqual(res, 'guild deleted')            
-
-    # def test_change_region(self):
-    #     res = self.server_init('region', self.data)
-    #     self.assertEqual(res, 'region not found') 
-
-    # def test_acknowledge(self):
-    #     res = self.server_init('acknowledge', self.data)
-    #     self.assertEqual(res, 'successfully acknowledged')  
 
 if __name__ == '__main__':
     unittest.main()
