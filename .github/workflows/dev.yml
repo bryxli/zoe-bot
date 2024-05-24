@@ -43,7 +43,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: arn:aws:iam::${{secrets.AWS_ACCOUNT_ID}}:role/GitHub
-          role-duration-seconds: 60
+          role-duration-seconds: 900
           aws-region: ${{secrets.AWS_REGION}}
       - name: Run unit tests
         run: |
@@ -86,7 +86,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: arn:aws:iam::${{secrets.AWS_ACCOUNT_ID}}:role/GitHub
-          role-duration-seconds: 600
+          role-duration-seconds: 900
           aws-region: ${{secrets.AWS_REGION}}
       - name: Deploy dev app
         run: |
