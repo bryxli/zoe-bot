@@ -1,7 +1,7 @@
 import sys
 import os
 import unittest
-from unittest.mock import patch
+from unittest.mock import patch, MagicMock
 
 class TestCommands(unittest.TestCase):
     
@@ -17,11 +17,11 @@ class TestCommands(unittest.TestCase):
         self.server_init = server_init
 
         self.data = {
-            "guild_id": 1,
-            "data": {
-                "options": [
-                    {"value": "foo"}, 
-                    {"value": "bar"}
+            'guild_id': '1',
+            'data': {
+                'options': [
+                    {'value': ''}, 
+                    {'value': ''}
                 ]
             }
         }
@@ -35,15 +35,20 @@ class TestCommands(unittest.TestCase):
 
         self.patcher_get_guild = patch('dynamo.ZoeBotTable.get_guild')
         self.mock_get_guild = self.patcher_get_guild.start()
-        self.mock_get_guild.return_value = {'region': {'S': 'NA'}}
+        self.mock_get_guild.return_value = {'region': {'S': ''}}
 
-        # self.patcher_get_puuid = patch('league.RiotApi.get_puuid_by_riot_id')
-        # self.mock_get_puuid_by_riot_id = self.patcher_get_puuid.start()
+        self.patcher_add_user = patch('dynamo.ZoeBotTable.add_user')
+        self.mock_add_user = self.patcher_add_user.start()
+
+        self.patcher_get_puuid_by_riot_id = patch('league.RiotAPI.get_puuid_by_riot_id')
+        self.mock_get_puuid_by_riot_id = self.patcher_get_puuid_by_riot_id.start()
+        self.mock_get_puuid_by_riot_id.return_value = ''
 
     def tearDown(self):
         self.patcher_guild_exists.stop()
         self.patcher_get_guild.stop()
-        # self.patcher_get_puuid.stop()
+        self.patcher_get_puuid_by_riot_id.stop()
+        self.patcher_add_user.stop()
 
     # TODO: tests not fully refined, does not test exceptions, conditions, etc
 
@@ -52,14 +57,14 @@ class TestCommands(unittest.TestCase):
         res = self.league_init('adduser', self.data)
         self.assertEqual(res, 'guild not registered')
 
-    # def test_add_user_invalid_username(self):
-    #     self.mock_get_puuid_by_riot_id.return_value = Exception()
-    #     res = self.league_init('adduser', self.data)
-    #     self.assertEqual(res, 'please enter a valid username')
+    def test_add_user_invalid_username(self):
+        self.mock_get_puuid_by_riot_id.side_effect = Exception()
+        res = self.league_init('adduser', self.data)
+        self.assertEqual(res, 'please enter a valid username')
 
-    # def test_add_user(self): # need to set "valid" puuid
-    #     res = self.league_init('adduser', self.data)
-    #     self.assertEqual(res, 'player registered')
+    def test_add_user(self):
+        res = self.league_init('adduser', self.data)
+        self.assertEqual(res, 'player registered')
     
     # def test_delete_user(self):
     #     res = self.league_init('deluser', self.data)
