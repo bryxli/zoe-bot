@@ -12,43 +12,43 @@ permissions:
   contents: read
 
 jobs:
-  # unit-tests:
-  #   environment: dev
-  #   runs-on: ubuntu-latest
-  #   env:
-  #     SET_AWS_REGION: ${{secrets.AWS_REGION}}
-  #     RIOT_KEY: ${{secrets.RIOT_KEY}}
-  #     DISCORD_PUBLIC_KEY: ${{secrets.DISCORD_PUBLIC_KEY}}
-  #     APPLICATION_ID: ${{secrets.APPLICATION_ID}}
-  #     TOKEN: ${{secrets.TOKEN}}
-  #   defaults:
-  #     run:
-  #       working-directory: ./packages/functions
-  #   steps:
-  #     - name: Git clone the repository
-  #       uses: actions/checkout@v4
-  #     - name: Set up Python
-  #       uses: actions/setup-python@v5
-  #       with:
-  #         python-version: 3.9
-  #     - name: Install dependencies
-  #       run: |
-  #         pip install -r src/main/requirements.txt
-  #         pip install -r src/register/requirements.txt
-  #         pip install -r src/task/requirements.txt
-  #         pip install -r src/layers/dynamo/requirements.txt
-  #         pip install -r src/layers/league/requirements.txt
-  #         pip install coverage
-  #     - name: Configure AWS credentials
-  #       uses: aws-actions/configure-aws-credentials@v4
-  #       with:
-  #         role-to-assume: arn:aws:iam::${{secrets.AWS_ACCOUNT_ID}}:role/ZoeBotApplication
-  #         role-duration-seconds: 900
-  #         aws-region: ${{secrets.AWS_REGION}}
-  #     - name: Run unit tests
-  #       run: |
-  #         coverage run -m unittest
-  #         coverage report --show-missing
+  unit-tests:
+    environment: dev
+    runs-on: ubuntu-latest
+    env:
+      SET_AWS_REGION: ${{secrets.AWS_REGION}}
+      RIOT_KEY: ${{secrets.RIOT_KEY}}
+      DISCORD_PUBLIC_KEY: ${{secrets.DISCORD_PUBLIC_KEY}}
+      APPLICATION_ID: ${{secrets.APPLICATION_ID}}
+      TOKEN: ${{secrets.TOKEN}}
+    defaults:
+      run:
+        working-directory: ./packages/functions
+    steps:
+      - name: Git clone the repository
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.9
+      - name: Install dependencies
+        run: |
+          pip install -r src/main/requirements.txt
+          pip install -r src/register/requirements.txt
+          pip install -r src/task/requirements.txt
+          pip install -r src/layers/dynamo/requirements.txt
+          pip install -r src/layers/league/requirements.txt
+          pip install coverage
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::${{secrets.AWS_ACCOUNT_ID}}:role/ZoeBotApplication
+          role-duration-seconds: 900
+          aws-region: ${{secrets.AWS_REGION}}
+      - name: Run unit tests
+        run: |
+          coverage run -m unittest
+          coverage report --show-missing
 
   create-config:
     environment: dev
@@ -71,7 +71,7 @@ jobs:
 
   deploy:
     needs:
-      # - unit-tests
+      - unit-tests
       - create-config
     runs-on: ubuntu-latest
     steps:
