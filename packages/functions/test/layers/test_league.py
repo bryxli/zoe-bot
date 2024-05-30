@@ -1,7 +1,6 @@
 import sys
 import os
 import unittest
-from unittest.mock import MagicMock
 
 class TestLeagueLayer(unittest.TestCase):
     def __init__(self, methodName='runTest') -> None:
