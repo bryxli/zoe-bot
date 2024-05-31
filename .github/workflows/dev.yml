@@ -12,7 +12,7 @@ permissions:
   contents: read
 
 jobs:
-  unit-tests:
+  automated-tests:
     environment: dev
     runs-on: ubuntu-latest
     env:
@@ -49,6 +49,9 @@ jobs:
         run: |
           coverage run -m unittest
           coverage report --show-missing
+      - name: Run acceptance tests
+        run: |
+          behave
 
   create-config:
     environment: dev
@@ -71,7 +74,7 @@ jobs:
 
   deploy:
     needs:
-      - unit-tests
+      - automated-tests
       - create-config
     runs-on: ubuntu-latest
     steps:

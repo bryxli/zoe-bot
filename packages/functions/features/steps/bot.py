@@ -1,6 +1,4 @@
 from behave import *
-import logging
-logging.basicConfig(level=logging.INFO)
 
 @then('bot sends {output}')
 def step_bot_return(context, output):
@@ -40,4 +38,4 @@ def step_help(context):
 
 @given('speak')
 def step_speak(context):
-    pass
+    raise Exception
