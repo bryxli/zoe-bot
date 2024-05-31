@@ -1,3 +1,11 @@
+---
+name: General issue template
+about: General issue template for zoe-bot
+title: ""
+labels: ""
+assignees: ""
+---
+
 ### Expected Behaviour / Enhancement
 
 _What did you expect to happen when you encountered this issue? What would this enhancement do?_
