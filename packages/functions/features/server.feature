@@ -40,7 +40,7 @@ Feature: Server command scenarios
             | region | output                                                |
             | KR     | guild region changed                                  |
             | foo    | region not found                                      |
-            |        | BR EUNE EUW JP KR LAN LAS NA OCE TR RU PH SG TH TW VN |
+            | ""     | BR EUNE EUW JP KR LAN LAS NA OCE TR RU PH SG TH TW VN |
 
     Scenario Outline: region with valid guild unacknowledged
         Given guild has been initialized

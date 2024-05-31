@@ -2,7 +2,7 @@ Feature: League command scenarios
 
     Scenario Outline: adduser with valid guild
         Given guild has been initialized
-        When adduser <gameName>:<tag> to guild
+        When adduser <gameName>:<tag>
         Then bot sends <output>
 
         Examples:
@@ -13,7 +13,7 @@ Feature: League command scenarios
 
     Scenario Outline: adduser with invalid guild
         Given guild has not been initialized
-        When adduser <gameName>:<tag> to guild
+        When adduser <gameName>:<tag>
         Then bot sends <output>
 
         Examples:
@@ -22,7 +22,7 @@ Feature: League command scenarios
 
     Scenario Outline: deluser with valid guild
         Given guild has been initialized
-        When deluser <gameName>:<tag> from guild
+        When deluser <gameName>:<tag>
         Then bot sends <output>
 
         Examples:
@@ -33,7 +33,7 @@ Feature: League command scenarios
 
     Scenario Outline: deluser with invalid guild
         Given guild has not been initialized
-        When deluser <gameName>:<tag> from guild
+        When deluser <gameName>:<tag>
         Then bot sends <output>
 
         Examples:
