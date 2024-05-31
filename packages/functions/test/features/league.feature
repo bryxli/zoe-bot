@@ -22,7 +22,6 @@ Feature: League command scenarios
 
     Scenario Outline: deluser with valid guild
         Given guild has been initialized
-        And
         When deluser <gameName>:<tag> from guild
         Then bot sends <output>
 
