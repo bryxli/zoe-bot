@@ -82,6 +82,8 @@ def change_region(data):
     return REGION_SUCCESS
 
 def acknowledge():
+    if not db.guild_exists(guild_id):
+        return GUILD_DOES_NOT_EXIST
     updates = {
         'acknowledgment' : {'Value': {'BOOL': True}, 'Action': 'PUT'}
     }

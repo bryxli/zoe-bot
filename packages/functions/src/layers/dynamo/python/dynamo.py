@@ -36,12 +36,14 @@ class ZoeBotTable:
             TableName=self.table_name,
             Item=item
         )
+        return True
 
     def destroy_guild(self, guild_id):
         self.client.delete_item(
             TableName=self.table_name,
             Key={'guild_id': {'N': guild_id}}
         )
+        return True
 
     def update_guild(self, guild_id, updates):  
         self.client.update_item(
@@ -49,6 +51,7 @@ class ZoeBotTable:
             Key={'guild_id': {'N': guild_id}},
             AttributeUpdates=updates
         )
+        return True
 
     def get_all_users(self, guild_id):
         response = self.client.get_item(
@@ -75,6 +78,7 @@ class ZoeBotTable:
             UpdateExpression='SET userlist = list_append(userlist, :user)',
             ExpressionAttributeValues=expression_values
         )
+        return True
 
     def delete_user(self, guild_id, puuid): # TODO: rather than using index, remove by querying the puuid key
         userlist = self.get_all_users(guild_id)
@@ -84,10 +88,12 @@ class ZoeBotTable:
             Key={'guild_id': {'N': guild_id}},
             UpdateExpression=f'REMOVE userlist[{index}]',
         )
+        return True
 
     def update_user(self, guild_id, puuid, gameId):
         self.delete_user(guild_id, puuid)
         self.add_user(guild_id, puuid, gameId)
+        return True
 
     def check_acknowledgment(self, guild_id):
         return self.get_guild(guild_id)['acknowledgment']['BOOL']

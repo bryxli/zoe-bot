@@ -31,7 +31,7 @@ async def interactions():
 @verify_key_decorator(DISCORD_PUBLIC_KEY)
 def interact(raw_request):
     if raw_request["type"] == 1:
-        response_data = {"type": 1} 
+        response_data = {"type": 1}
     else:
         data = raw_request["data"]
         command_name = data["name"]
@@ -53,5 +53,5 @@ def interact(raw_request):
 
     return jsonify(response_data)
 
-if __name__ == '__main__':
+if __name__ == '__main__': # pragma: no cover
     logger.error("main function interaction is currently only supported on AWS")

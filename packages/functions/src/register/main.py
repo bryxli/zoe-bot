@@ -13,7 +13,7 @@ args = parser.parse_args()
 logger = logging.getLogger("function-register")
 logger.setLevel(logging.INFO)
 
-if args.local:
+if args.local: # pragma: no cover
     config_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../../configs/config.json'))
     with open(config_path, "r") as config_file:
         config = json.load(config_file)
@@ -54,5 +54,5 @@ def handler(event, context):
         if failed is not None:
             upload_command(failed)
 
-if __name__ == '__main__':
+if __name__ == '__main__': # pragma: no cover
     handler(None, None)

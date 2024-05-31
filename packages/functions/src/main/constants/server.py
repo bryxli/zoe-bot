@@ -8,7 +8,7 @@ DELETE_SUCCESS = 'guild deleted'
 REGION_SUCCESS = 'guild region changed'
 ACKNOWLEDGE_SUCCESS = 'successfully acknowledged'
 
-GUILD_EXISTS = 'guild aready exists'
+GUILD_EXISTS = 'guild already exists'
 GUILD_DOES_NOT_EXIST = 'guild not registered'
 REGION_DOES_NOT_EXIST = 'region not found'
 
