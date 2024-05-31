@@ -50,8 +50,7 @@ jobs:
           coverage run -m unittest
           coverage report --show-missing
       - name: Run acceptance tests
-        run: |
-          behave
+        run: behave
 
   create-config:
     environment: dev

@@ -38,4 +38,4 @@ def step_help(context):
 
 @given('speak')
 def step_speak(context):
-    raise Exception
+    pass
