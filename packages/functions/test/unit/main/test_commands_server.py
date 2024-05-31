@@ -9,7 +9,7 @@ class TestCommandsServer(unittest.TestCase):
     def __init__(self, methodName='runTest') -> None:
         super().__init__(methodName)
 
-        directory = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../src/main'))
+        directory = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../src/main'))
         sys.path.append(directory)
 
         from commands.server_commands import init

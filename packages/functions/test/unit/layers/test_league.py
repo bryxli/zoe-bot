@@ -7,14 +7,14 @@ class TestLeagueLayer(unittest.TestCase):
     def __init__(self, methodName='runTest') -> None:
         super().__init__(methodName)
 
-        directory = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../src/layers/league/python'))
+        directory = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../src/layers/league/python'))
         sys.path.append(directory)
 
         from league import RiotAPI
 
         self.api_key = os.environ.get("RIOT_KEY")
         if self.api_key is None:
-            config_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../../configs/config.json'))
+            config_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../../../configs/config.json'))
             with open(config_path, "r") as config_file:
                 config = json.load(config_file)
             self.api_key = config.get("riot_key")

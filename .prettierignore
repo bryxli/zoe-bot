@@ -15,3 +15,4 @@ Dockerfile
 **/*.sh
 **/*.jpg
 **/*.ttf
+**/*.feature
