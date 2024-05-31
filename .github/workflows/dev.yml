@@ -38,7 +38,7 @@ jobs:
           pip install -r src/task/requirements.txt
           pip install -r src/layers/dynamo/requirements.txt
           pip install -r src/layers/league/requirements.txt
-          pip install coverage
+          pip install -r test/requirements.txt
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
