@@ -116,10 +116,6 @@ class TestCommandsServer(unittest.TestCase):
         res = self.init('region', self.data)
         self.assertEqual(res, 'guild region changed')
 
-    def test_change_region(self):
-        res = self.init('region', self.data)
-        self.assertEqual(res, 'guild region changed')
-
     def test_acknowledge_dne(self):
         self.mock_guild_exists.return_value = False
         res = self.init('acknowledge', self.data)
