@@ -1,9 +1,9 @@
 Feature: Main command scenarios
 
     Scenario: help
-        Given help
+        When help
         Then bot sends command information
 
     Scenario: speak
-        Given speak
+        When speak
         Then bot sends a random voice line

@@ -1,7 +1,7 @@
 import sys
 import os
 import unittest
-from unittest.mock import MagicMock, patch
+from unittest.mock import patch
 
 class TestTask(unittest.TestCase):
     def __init__(self, methodName='runTest') -> None:
@@ -10,13 +10,8 @@ class TestTask(unittest.TestCase):
         directory = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../src'))
         sys.path.append(directory)
 
-        with patch('builtins.open', create=True) as mock_open:
-            mock_template = MagicMock()
-            mock_template.read.return_value = '{"win": [""], "lose": [""]}'
-            mock_open.return_value.__enter__.return_value = mock_template
-
-            from task.main import handler
-            self.handler = handler
+        from task.main import handler
+        self.handler = handler
 
         sys.path.remove(directory)
 

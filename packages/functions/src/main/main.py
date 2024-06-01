@@ -1,6 +1,7 @@
 import json
 import random
 import logging
+import os
 from flask import Flask, jsonify, request
 from mangum import Mangum
 from asgiref.wsgi import WsgiToAsgi
@@ -15,7 +16,9 @@ import commands.league_commands
 logger = logging.getLogger("function-main")
 logger.setLevel(logging.INFO)
 
-with open("template.json") as file:
+template_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'template.json')
+
+with open(template_path) as file:
     template = json.load(file)
 
 app = Flask(__name__)

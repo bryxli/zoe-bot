@@ -1,41 +1,54 @@
 from behave import *
 
+from util.bot_util import BotUtil
+client = BotUtil()
+
 @then('bot sends {output}')
 def step_bot_return(context, output):
-    pass
+    assert(context.response == output)
 
 @when('setup')
 def step_setup(context):
-    pass
+    context.response = ''
 
 @when('reset')
 def step_reset(context):
-    pass
+    context.response = ''
 
 @when('region {region}')
 def step_region(context, region):
-    pass
+    context.response = ''
 
 @when('acknowledge')
 def step_acknowledge(context):
-    pass
+    context.response = ''
 
 @when('adduser {gameName}:{tag}')
 def step_adduser(context, gameName, tag):
-    pass
+    context.response = ''
 
 @when('deluser {gameName}:{tag}')
 def step_deluser(context, gameName, tag):
-    pass
+    context.response = ''
 
 @when('userlist')
 def step_userlist(context):
-    pass
+    context.response = ''
 
-@given('help')
+@when('help')
 def step_help(context):
-    pass
+    raw_request = {
+        'type': 0,
+        'data': { 'name': 'help' }
+    }
+    res = client.send_command(raw_request)
+    context.response = res
 
-@given('speak')
+@when('speak')
 def step_speak(context):
-    pass
+    raw_request = {
+        'type': 0,
+        'data': { 'name': 'speak' }
+    }
+    res = client.send_command(raw_request)
+    context.response = res
