@@ -10,10 +10,14 @@ class ZoeBotTable:
         return self.client.scan(TableName=self.table_name)
 
     def guild_exists(self, guild_id):
-        response = self.client.get_item(
-            TableName=self.table_name,
-            Key={'guild_id': {'N': guild_id}}
-        )
+        response = []
+        try:
+            response = self.client.get_item(
+                TableName=self.table_name,
+                Key={'guild_id': {'N': guild_id}}
+            )
+        except:
+            pass
         return 'Item' in response
 
     def get_guild(self, guild_id):
