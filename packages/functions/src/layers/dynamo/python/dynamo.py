@@ -20,6 +20,9 @@ class ZoeBotTable:
             )
         except Exception as e:
             logging.warning(f"guild_exists exception: {e}")
+            logging.warning(f"boto3 region: {self.region}")
+            logging.warning(f"boto3 table name: {self.table_name}")
+            logging.warning(f"guild_id search: {guild_id}")
             pass
         return 'Item' in response
 
