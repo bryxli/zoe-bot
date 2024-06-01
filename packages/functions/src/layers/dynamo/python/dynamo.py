@@ -6,8 +6,9 @@ class ZoeBotTable:
     def __init__(self, region, stage):
         self.region = region
         self.client = boto3.client('dynamodb', region_name=self.region)
-        self.table_name = f'{stage}-zoe-bot-db'
-        logging.warning(f"stage name: {stage}")
+        self.stage = stage
+        self.table_name = f'{self.stage}-zoe-bot-db'
+        logging.warning(f"stage name: {self.stage}")
 
     def get_all(self):
         return self.client.scan(TableName=self.table_name)
