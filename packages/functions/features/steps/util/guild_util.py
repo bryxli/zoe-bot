@@ -19,8 +19,7 @@ class GuildUtil:
             with open(config_path, "r") as config_file:
                 config = json.load(config_file)
             self.region = config.get("aws_region")
-        self.stage = "dev"
-        self.db = ZoeBotTable(self.region, self.stage)
+        self.db = ZoeBotTable(self.region, "dev")
 
         sys.path.remove(directory)
 
