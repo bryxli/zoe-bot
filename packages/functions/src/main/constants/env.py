@@ -1,9 +1,7 @@
 import os
 import json
 
-from argument_parser import get_local_status
-
-if get_local_status():
+if os.environ.get("SET_AWS_REGION") is None:
     config_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../../../configs/config.json'))
     with open(config_path, "r") as config_file:
         config = json.load(config_file)

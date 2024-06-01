@@ -1,9 +1,13 @@
 import os
 import sys
+import argparse
 
-from argument_parser import get_local_status
+parser = argparse.ArgumentParser()
+parser.add_argument("--local", type=bool, default=False)
 
-if get_local_status(): # pragma: no cover
+args = parser.parse_args()
+
+if args.local: # pragma: no cover
     sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../layers/dynamo/python')))
     sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../layers/league/python')))
 
