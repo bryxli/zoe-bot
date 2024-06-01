@@ -36,7 +36,7 @@ class GuildUtil:
         }
         self.db.update_guild(GUILD_ID, UPDATES)
 
-    def add_users(self):
-        pass # TODO
+    def add_users(self): # TODO: add users from feature file to userlist
+        pass
 
         

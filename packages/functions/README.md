@@ -21,6 +21,8 @@
 
 # Backlog
 
+- Acceptance test refinement - adduser, deluser
+- Acceptance test implementation - userlist
 - Userlist - timeout caused by discord limitation
 - Region - explore option to use a drop down &? implementation
 - Dynamo - query by puuid key in delete_user

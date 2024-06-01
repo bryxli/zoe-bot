@@ -56,7 +56,7 @@ Feature: Server command scenarios
             | region | output                                                |
             | KR     | guild region changed                                  |
             | foo    | region not found                                      |
-            # TODO: create test for empty region
+            # TODO: create test case for empty region (not throwing KeyError Exception)
             # | ""     | BR EUNE EUW JP KR LAN LAS NA OCE TR RU PH SG TH TW VN |
 
 

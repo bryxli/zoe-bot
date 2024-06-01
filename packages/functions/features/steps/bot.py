@@ -9,6 +9,12 @@ logging.basicConfig(level=logging.INFO)
 
 GUILD_ID = '1'
 
+def request(context, raw_request):
+    res = client.send_command(raw_request)
+    data = json.loads(res)
+    context.response = data['data']['content']
+    logging.info(f"Bot returned: {context.response}")
+
 @then('bot sends {output}')
 def step_bot_return(context, output):
     assert(context.response == output)
@@ -23,9 +29,7 @@ def step_setup(context):
         'guild_id': GUILD_ID,
         'channel_id': 1
     }
-    res = client.send_command(raw_request)
-    data = json.loads(res)
-    context.response = data['data']['content']
+    request(context, raw_request)
 
 @when('reset')
 def step_reset(context):
@@ -36,9 +40,7 @@ def step_reset(context):
         },
         'guild_id': GUILD_ID
     }
-    res = client.send_command(raw_request)
-    data = json.loads(res)
-    context.response = data['data']['content']
+    request(context, raw_request)
 
 @when('region {region}')
 def step_region(context, region):
@@ -50,9 +52,7 @@ def step_region(context, region):
         },
         'guild_id': GUILD_ID
     }
-    res = client.send_command(raw_request)
-    data = json.loads(res)
-    context.response = data['data']['content']
+    request(context, raw_request)
 
 @when('acknowledge')
 def step_acknowledge(context):
@@ -63,21 +63,41 @@ def step_acknowledge(context):
         },
         'guild_id': GUILD_ID
     }
-    res = client.send_command(raw_request)
-    data = json.loads(res)
-    context.response = data['data']['content']
+    request(context, raw_request)
 
 @when('adduser {gameName}:{tag}')
 def step_adduser(context, gameName, tag):
-    context.response = ''
+    raw_request = {
+        'type': 0,
+        'data': {
+            'name': 'adduser',
+            'options': [
+                { 'value': gameName },
+                { 'value': tag }
+            ]
+        },
+        'guild_id': GUILD_ID
+    }
+    request(context, raw_request)
 
 @when('deluser {gameName}:{tag}')
 def step_deluser(context, gameName, tag):
-    context.response = ''
+    raw_request = {
+        'type': 0,
+        'data': {
+            'name': 'deluser',
+            'options': [
+                { 'value': gameName },
+                { 'value': tag }
+            ]
+        },
+        'guild_id': GUILD_ID
+    }
+    request(context, raw_request)
 
 @when('userlist')
-def step_userlist(context):
-    context.response = ''
+def step_userlist(context): # TODO: create step function to send userlist request
+    pass
 
 @when('help')
 def step_help(context):
