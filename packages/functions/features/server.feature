@@ -1,14 +1,14 @@
 Feature: Server command scenarios
 
-    # Scenario Outline: setup
-    #     Given guild has not been initialized
-    #     When setup
-    #     Then bot sends <output>
+    Scenario Outline: setup
+        Given guild has not been initialized
+        When setup
+        Then bot sends <output>
 
-    #     Examples:
-    #         | output               |
-    #         | guild initialized    |
-    #         | guild already exists |
+        Examples:
+            | output               |
+            | guild initialized    |
+            | guild already exists |
 
     # Scenario Outline: reset
     #     Given guild has been initialized

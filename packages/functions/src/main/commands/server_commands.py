@@ -28,8 +28,11 @@ def init(command, data):
     return output
 
 def init_guild(data):
-    if db.guild_exists(guild_id):
-        return GUILD_EXISTS
+    try:
+        if db.guild_exists(guild_id):
+            return GUILD_EXISTS
+    except:
+        pass
     
     channel_id = data["channel_id"]
     

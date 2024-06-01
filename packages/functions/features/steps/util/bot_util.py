@@ -30,13 +30,11 @@ class BotUtil:
         sys.path.remove(directory)
 
     def send_command(self, data):
-        res = self.app.post('/', json=data)
-        res_json = res.get_json()
-        res_str = str(res_json)
+        res = str(self.app.post('/', json=data).get_json())
 
-        if '/setup - create guild instance' in res_str:
+        if '/setup - create guild instance' in res:
             return 'command information'
         elif data['data']['name'] == 'speak':
             return 'a random voice line'
 
-        return res_str
+        return res

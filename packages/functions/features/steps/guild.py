@@ -1,16 +1,19 @@
 from behave import *
 
+from util.guild_util import GuildUtil
+client = GuildUtil()
+
 @given('guild has not been initialized')
 def step_guild_not_init(context):
-    pass
+    client.delete_guild()
 
 @given('guild has been initialized')
 def step_guild_init(context):
-    pass
+    client.create_guild()
 
 @given('guild has been acknowledged')
 def step_guild_acknowledged(context):
-    pass
+    client.acknowledge()
 
 @given('a set of added players')
 def step_add_player_set(context):
