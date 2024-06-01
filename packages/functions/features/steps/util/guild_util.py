@@ -2,7 +2,7 @@ import sys
 import os
 import json
 
-class DynamoUtil:
+class GuildUtil:
     def __init__(self):
         directory = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../src/layers/dynamo/python'))
         sys.path.append(directory)
