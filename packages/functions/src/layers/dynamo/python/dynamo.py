@@ -16,7 +16,10 @@ class ZoeBotTable:
                 TableName=self.table_name,
                 Key={'guild_id': {'N': guild_id}}
             )
-        except:
+        except Exception as e:
+            import logging
+            logging.basicConfig(level=logging.WARNING)
+            logging.warning(f"guild_exists exception: {e}")
             pass
         return 'Item' in response
 

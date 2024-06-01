@@ -1,7 +1,6 @@
 import sys
 import os
 import json
-import time
 
 GUILD_ID = '1'
 WEBHOOK_ID = ''
@@ -27,20 +26,17 @@ class GuildUtil:
 
     def delete_guild(self):
         self.db.destroy_guild(GUILD_ID)
-        time.sleep(1)
 
     def create_guild(self):
         self.db.create_guild(GUILD_ID, WEBHOOK_ID, WEBHOOK_URL)
-        time.sleep(1)
 
     def acknowledge(self):
         UPDATES = {
             'acknowledgment' : {'Value': {'BOOL': True}, 'Action': 'PUT'}
         }
         self.db.update_guild(GUILD_ID, UPDATES)
-        time.sleep(1)
 
     def add_users(self): # TODO: add users from feature file to userlist
-        time.sleep(1)
+        pass
 
         
