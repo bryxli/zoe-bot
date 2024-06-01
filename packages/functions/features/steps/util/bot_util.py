@@ -30,7 +30,7 @@ class BotUtil:
         sys.path.remove(directory)
 
     def send_command(self, data):
-        res = str(self.app.post('/', json=data).get_json())
+        res = str(self.app.post('/', json=data).get_json()).replace("'", '"')
 
         if '/setup - create guild instance' in res:
             return 'command information'

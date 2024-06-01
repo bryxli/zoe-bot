@@ -1,7 +1,11 @@
+import logging
+import json
 from behave import *
 
 from util.bot_util import BotUtil
+
 client = BotUtil()
+logging.basicConfig(level=logging.INFO)
 
 GUILD_ID = '1'
 
@@ -9,7 +13,7 @@ GUILD_ID = '1'
 def step_bot_return(context, output):
     assert(context.response == output)
 
-@when('setup') # TODO: webhook creation returns {'message': '401: Unauthorized', 'code': 0}
+@when('setup')
 def step_setup(context):
     raw_request = {
         'type': 0,
@@ -17,22 +21,51 @@ def step_setup(context):
             'name': 'setup'
         },
         'guild_id': GUILD_ID,
-        'channel_id': 1016953904644247632
+        'channel_id': 1
     }
     res = client.send_command(raw_request)
-    context.response = res
+    data = json.loads(res)
+    context.response = data['data']['content']
 
 @when('reset')
 def step_reset(context):
-    context.response = ''
+    raw_request = {
+        'type': 0,
+        'data': {
+            'name': 'reset'
+        },
+        'guild_id': GUILD_ID
+    }
+    res = client.send_command(raw_request)
+    data = json.loads(res)
+    context.response = data['data']['content']
 
 @when('region {region}')
 def step_region(context, region):
-    context.response = ''
+    raw_request = {
+        'type': 0,
+        'data': {
+            'name': 'region',
+            'options': [{ 'value': region }]
+        },
+        'guild_id': GUILD_ID
+    }
+    res = client.send_command(raw_request)
+    data = json.loads(res)
+    context.response = data['data']['content']
 
 @when('acknowledge')
 def step_acknowledge(context):
-    context.response = ''
+    raw_request = {
+        'type': 0,
+        'data': {
+            'name': 'acknowledge'
+        },
+        'guild_id': GUILD_ID
+    }
+    res = client.send_command(raw_request)
+    data = json.loads(res)
+    context.response = data['data']['content']
 
 @when('adduser {gameName}:{tag}')
 def step_adduser(context, gameName, tag):
