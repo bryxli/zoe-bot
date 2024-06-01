@@ -1,4 +1,6 @@
 import boto3
+import logging
+logging.basicConfig(level=logging.WARNING)
 
 class ZoeBotTable:
     def __init__(self, region, stage):
@@ -17,8 +19,6 @@ class ZoeBotTable:
                 Key={'guild_id': {'N': guild_id}}
             )
         except Exception as e:
-            import logging
-            logging.basicConfig(level=logging.WARNING)
             logging.warning(f"guild_exists exception: {e}")
             pass
         return 'Item' in response
@@ -39,10 +39,11 @@ class ZoeBotTable:
             'userlist': {'L': []},
             'acknowledgment' : {'BOOL': False}
         }
-        self.client.put_item(
+        res = self.client.put_item(
             TableName=self.table_name,
             Item=item
         )
+        logging.warning(f'create guild response: {res}')
         return True
 
     def destroy_guild(self, guild_id):
