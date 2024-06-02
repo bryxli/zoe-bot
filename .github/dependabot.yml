@@ -26,6 +26,10 @@ updates:
       interval: "weekly"
     target-branch: "dependencies"
   - package-ecosystem: "pip"
+    directory: "/packages/functions"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "pip"
     directory: "/packages/functions/src/layers/dynamo"
     schedule:
       interval: "weekly"
