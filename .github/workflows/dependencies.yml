@@ -4,9 +4,6 @@ on:
     branches:
       - "dependencies"
 
-concurrency:
-  group: dependabot
-
 permissions:
   contents: write
   pull-requests: write

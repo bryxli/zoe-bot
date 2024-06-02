@@ -4,9 +4,6 @@ on:
     branches-ignore:
       - "dependencies"
 
-concurrency:
-  group: ${{ github.repository }}
-
 permissions:
   id-token: write
   contents: write
@@ -87,6 +84,8 @@ jobs:
           path: config.json
 
   deploy:
+    concurrency:
+      group: deploy
     needs:
       - automated-tests
       - create-config
