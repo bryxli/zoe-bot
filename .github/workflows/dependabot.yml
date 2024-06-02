@@ -1,0 +1,67 @@
+name: Dependabot
+on:
+  pull_request:
+    branches:
+      - "main"
+
+concurrency:
+  group: dependabot
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  automated-tests:
+    environment: dev
+    runs-on: ubuntu-latest
+    if: github.actor == 'dependabot[bot]'
+    env:
+      SET_AWS_REGION: ${{secrets.AWS_REGION}}
+      RIOT_KEY: ${{secrets.RIOT_KEY}}
+      DISCORD_PUBLIC_KEY: ${{secrets.DISCORD_PUBLIC_KEY}}
+      APPLICATION_ID: ${{secrets.APPLICATION_ID}}
+      TOKEN: ${{secrets.TOKEN}}
+    defaults:
+      run:
+        working-directory: ./packages/functions
+    steps:
+      - name: Git clone the repository
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.9
+      - name: Install dependencies
+        run: |
+          pip install -r src/main/requirements.txt
+          pip install -r src/register/requirements.txt
+          pip install -r src/task/requirements.txt
+          pip install -r src/layers/dynamo/requirements.txt
+          pip install -r src/layers/league/requirements.txt
+          pip install -r requirements.txt
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::${{secrets.AWS_ACCOUNT_ID}}:role/ZoeBotApplication
+          role-duration-seconds: 900
+          aws-region: ${{secrets.AWS_REGION}}
+      - name: Run unit tests
+        run: |
+          coverage run -m unittest
+          coverage report --show-missing
+      - name: Run acceptance tests
+        run: behave
+
+  dependabot:
+    needs: automated-tests
+    runs-on: ubuntu-latest
+    if: github.actor == 'dependabot[bot]'
+    env:
+      PR_URL: ${{github.event.pull_request.html_url}}
+      GH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+    steps:
+      - name: Approve PR
+        run: gh pr review --approve "$PR_URL"
+      - name: Merge PR
+        run: gh pr merge --auto --merge --delete-branch "$PR_URL"

@@ -15,6 +15,7 @@ jobs:
   automated-tests:
     environment: dev
     runs-on: ubuntu-latest
+    if: github.actor != 'dependabot[bot]'
     env:
       SET_AWS_REGION: ${{secrets.AWS_REGION}}
       RIOT_KEY: ${{secrets.RIOT_KEY}}
@@ -55,6 +56,7 @@ jobs:
   create-config:
     environment: dev
     runs-on: ubuntu-latest
+    if: github.actor != 'dependabot[bot]'
     env:
       AWS_REGION: ${{secrets.AWS_REGION}}
       RIOT_KEY: ${{secrets.RIOT_KEY}}
@@ -76,6 +78,7 @@ jobs:
       - automated-tests
       - create-config
     runs-on: ubuntu-latest
+    if: github.actor != 'dependabot[bot]'
     steps:
       - name: Git clone the repository
         uses: actions/checkout@v4
