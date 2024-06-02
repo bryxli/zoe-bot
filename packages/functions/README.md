@@ -8,6 +8,8 @@
   4. [register function](src/register)
   5. [task function](src/task)
 
+To run tests, `pip install` in this directory
+
 - Unit tests - run unittest
 
   1. `coverage run -m unittest`

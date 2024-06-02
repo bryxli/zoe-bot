@@ -1,11 +1,7 @@
 import os
 import json
 
-import logging
-logging.basicConfig(level=logging.WARNING)
-
 if os.environ.get("SET_AWS_REGION") is None:
-    logging.warning('this should not be ran in actions workflow')
     config_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../../../configs/config.json'))
     with open(config_path, "r") as config_file:
         config = json.load(config_file)
@@ -23,7 +19,3 @@ else:
         STAGE = "dev"
     else:
         STAGE = os.environ.get("STAGE")
-    logging.warning(f'env region: {AWS_REGION}')
-    logging.warning(f'env public key: {DISCORD_PUBLIC_KEY}')
-    logging.warning(f'env token: {TOKEN}')
-    logging.warning(f'env stage: {STAGE}')

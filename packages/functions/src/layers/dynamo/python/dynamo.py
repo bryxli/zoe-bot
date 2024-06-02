@@ -1,13 +1,10 @@
 import boto3
-import logging
-logging.basicConfig(level=logging.WARNING)
 
 class ZoeBotTable:
     def __init__(self, region, stage):
         self.region = region
         self.client = boto3.client('dynamodb', region_name=self.region)
         self.table_name = f'{stage}-zoe-bot-db'
-        logging.warning(f"stage name: {stage}")
 
     def get_all(self):
         return self.client.scan(TableName=self.table_name)
@@ -19,11 +16,7 @@ class ZoeBotTable:
                 TableName=self.table_name,
                 Key={'guild_id': {'N': guild_id}}
             )
-        except Exception as e:
-            logging.warning(f"guild_exists exception: {e}")
-            logging.warning(f"boto3 region: {self.region}")
-            logging.warning(f"boto3 table name: {self.table_name}")
-            logging.warning(f"guild_id search: {guild_id}")
+        except:
             pass
         return 'Item' in response
 
@@ -43,11 +36,10 @@ class ZoeBotTable:
             'userlist': {'L': []},
             'acknowledgment' : {'BOOL': False}
         }
-        res = self.client.put_item(
+        self.client.put_item(
             TableName=self.table_name,
             Item=item
         )
-        logging.warning(f'create guild response: {res}')
         return True
 
     def destroy_guild(self, guild_id):
