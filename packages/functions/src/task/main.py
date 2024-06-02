@@ -37,7 +37,9 @@ logger.setLevel(logging.INFO)
 db = ZoeBotTable(AWS_REGION, STAGE)
 lol = RiotAPI(RIOT_KEY)
 
-with open("template.json") as file:
+template_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'template.json')
+
+with open(template_path) as file:
     template = json.load(file)
 
 def process_guild(guild):

@@ -8,16 +8,23 @@
   4. [register function](src/register)
   5. [task function](src/task)
 
-- Test - run unit tests
+To run tests, `pip install` in this directory
+
+- Unit tests - run unittest
 
   1. `coverage run -m unittest`
   2. `coverage report --show-missing`
+
+- Acceptance tests - run behave
+
+  1. `behave`
 
 - Run function in desired function directory - `python3 main.py --local True`
 
 # Backlog
 
-- Testing - test refinement
+- Acceptance test refinement - adduser, deluser
+- Acceptance test implementation - userlist
 - Userlist - timeout caused by discord limitation
 - Region - explore option to use a drop down &? implementation
 - Dynamo - query by puuid key in delete_user

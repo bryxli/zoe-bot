@@ -9,10 +9,11 @@ concurrency:
 
 permissions:
   id-token: write
-  contents: read
+  contents: write
+  pull-requests: write
 
 jobs:
-  unit-tests:
+  automated-tests:
     environment: dev
     runs-on: ubuntu-latest
     env:
@@ -38,7 +39,7 @@ jobs:
           pip install -r src/task/requirements.txt
           pip install -r src/layers/dynamo/requirements.txt
           pip install -r src/layers/league/requirements.txt
-          pip install coverage
+          pip install -r requirements.txt
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -49,10 +50,26 @@ jobs:
         run: |
           coverage run -m unittest
           coverage report --show-missing
+      - name: Run acceptance tests
+        run: behave
+
+  automated-merge:
+    needs: automated-tests
+    runs-on: ubuntu-latest
+    if: github.actor == 'dependabot[bot]'
+    env:
+      PR_URL: ${{github.event.pull_request.html_url}}
+      GH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+    steps:
+      - name: Approve PR
+        run: gh pr review --approve "$PR_URL"
+      - name: Merge PR
+        run: gh pr merge --auto --merge --delete-branch "$PR_URL"
 
   create-config:
     environment: dev
     runs-on: ubuntu-latest
+    if: github.actor != 'dependabot[bot]'
     env:
       AWS_REGION: ${{secrets.AWS_REGION}}
       RIOT_KEY: ${{secrets.RIOT_KEY}}
@@ -71,9 +88,10 @@ jobs:
 
   deploy:
     needs:
-      - unit-tests
+      - automated-tests
       - create-config
     runs-on: ubuntu-latest
+    if: github.actor != 'dependabot[bot]'
     steps:
       - name: Git clone the repository
         uses: actions/checkout@v4

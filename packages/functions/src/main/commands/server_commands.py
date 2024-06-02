@@ -38,10 +38,15 @@ def init_guild(data):
         'name': 'zœ',
     }
     create_webhook_url = f"https://discordapp.com/api/channels/{channel_id}/webhooks"
+    webhook_id = ''
+    webhook_url = ''
 
-    webhook = requests.post(create_webhook_url, headers=headers, data=json.dumps(body))
-    webhook_id = webhook.json()["id"]
-    webhook_url = webhook.json()["url"]
+    try:
+        webhook = requests.post(create_webhook_url, headers=headers, data=json.dumps(body))
+        webhook_id = webhook.json()["id"]
+        webhook_url = webhook.json()["url"]
+    except:
+        pass
 
     db.create_guild(guild_id, webhook_id, webhook_url)
     return SETUP_SUCCESS

@@ -29,24 +29,19 @@ updates:
     directory: "/packages/functions/src/layers/dynamo"
     schedule:
       interval: "weekly"
-    target-branch: "dependencies"
   - package-ecosystem: "pip"
     directory: "/packages/functions/src/layers/league"
     schedule:
       interval: "weekly"
-    target-branch: "dependencies"
   - package-ecosystem: "pip"
     directory: "/packages/functions/src/main"
     schedule:
       interval: "weekly"
-    target-branch: "dependencies"
   - package-ecosystem: "pip"
     directory: "/packages/functions/src/register"
     schedule:
       interval: "weekly"
-    target-branch: "dependencies"
   - package-ecosystem: "pip"
     directory: "/packages/functions/src/task"
     schedule:
       interval: "weekly"
-    target-branch: "dependencies"
