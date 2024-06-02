@@ -9,13 +9,13 @@ concurrency:
 
 permissions:
   id-token: write
-  contents: read
+  contents: write
+  pull-requests: write
 
 jobs:
   automated-tests:
     environment: dev
     runs-on: ubuntu-latest
-    if: github.actor != 'dependabot[bot]'
     env:
       SET_AWS_REGION: ${{secrets.AWS_REGION}}
       RIOT_KEY: ${{secrets.RIOT_KEY}}
@@ -52,6 +52,19 @@ jobs:
           coverage report --show-missing
       - name: Run acceptance tests
         run: behave
+
+  dependabot:
+    needs: automated-tests
+    runs-on: ubuntu-latest
+    if: github.actor == 'dependabot[bot]'
+    env:
+      PR_URL: ${{github.event.pull_request.html_url}}
+      GH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+    steps:
+      - name: Approve PR
+        run: gh pr review --approve "$PR_URL"
+      - name: Merge PR
+        run: gh pr merge --auto --merge --delete-branch "$PR_URL"
 
   create-config:
     environment: dev
