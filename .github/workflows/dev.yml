@@ -106,8 +106,6 @@ jobs:
     steps:
       - name: Approve PR
         run: gh pr review --approve "$PR_URL"
-      - name: Merge PR
-        run: gh pr merge --auto --merge --delete-branch "$PR_URL"
 
   merge:
     needs: approve
