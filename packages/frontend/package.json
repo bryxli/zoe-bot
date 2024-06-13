@@ -11,9 +11,9 @@
     "test:watch": "jest --watch"
   },
   "dependencies": {
-    "@aws-sdk/client-dynamodb": "^3.584.0",
-    "@aws-sdk/lib-dynamodb": "^3.592.0",
-    "@aws-sdk/util-dynamodb": "^3.588.0",
+    "@aws-sdk/client-dynamodb": "^3.592.0",
+    "@aws-sdk/lib-dynamodb": "^3.588.0",
+    "@aws-sdk/util-dynamodb": "^3.592.0",
     "bootstrap": "^5.3.3",
     "next": "14.2.3",
     "react": "^18",
@@ -23,7 +23,7 @@
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.4.5",
-    "@testing-library/react": "^15.0.7",
+    "@testing-library/react": "^16.0.0",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
