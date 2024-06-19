@@ -22,19 +22,6 @@ jobs:
           automatic_release_tag: latest
           files: LICENSE
 
-  unit-tests:
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./packages/frontend
-    steps:
-      - name: Git clone the repository
-        uses: actions/checkout@v4
-      - name: Run unit tests
-        run: |
-          npm i
-          npm run test
-
   create-config:
     environment: prod
     runs-on: ubuntu-latest
@@ -58,7 +45,6 @@ jobs:
     concurrency:
       group: deploy
     needs:
-      - unit-tests
       - create-config
     runs-on: ubuntu-latest
     steps:

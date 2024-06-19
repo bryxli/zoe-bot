@@ -7,7 +7,7 @@ permissions:
   pull-requests: write
 
 jobs:
-  automated-tests: # TODO: run frontend unit and acceptance tests
+  automated-tests:
     environment: dev
     runs-on: ubuntu-latest
     env:
@@ -22,11 +22,18 @@ jobs:
     steps:
       - name: Git clone the repository
         uses: actions/checkout@v4
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::${{secrets.AWS_ACCOUNT_ID}}:role/ZoeBotApplication
+          role-duration-seconds: 900
+          aws-region: ${{secrets.AWS_REGION}}
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: 3.9
-      - name: Install dependencies
+      - name: Install function dependencies
         run: |
           pip install -r src/main/requirements.txt
           pip install -r src/register/requirements.txt
@@ -34,18 +41,22 @@ jobs:
           pip install -r src/layers/dynamo/requirements.txt
           pip install -r src/layers/league/requirements.txt
           pip install -r requirements.txt
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          role-to-assume: arn:aws:iam::${{secrets.AWS_ACCOUNT_ID}}:role/ZoeBotApplication
-          role-duration-seconds: 900
-          aws-region: ${{secrets.AWS_REGION}}
       - name: Run unit tests
         run: |
           coverage run -m unittest
           coverage report --show-missing
       - name: Run acceptance tests
         run: behave
+
+      - name: Install frontend dependencies
+        run: npm i
+        working-directory: ./packages/frontend
+      - name: Run unit tests
+        run: npm run test
+        working-directory: ./packages/frontend
+      - name: Run acceptance tests
+        run: echo # TODO: run frontend acceptance test
+        working-directory: ./packages/frontend
 
   create-config:
     environment: dev
