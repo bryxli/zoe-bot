@@ -22,7 +22,9 @@ jobs:
           automatic_release_tag: latest
           files: LICENSE
 
-  create-config:
+  deploy:
+    concurrency:
+      group: deploy
     environment: prod
     runs-on: ubuntu-latest
     env:
@@ -32,35 +34,18 @@ jobs:
       APPLICATION_ID: ${{secrets.APPLICATION_ID}}
       TOKEN: ${{secrets.TOKEN}}
     steps:
-      - name: Create config.json
-        run: |
-          echo "{ \"aws_region\": \"$AWS_REGION\", \"riot_key\": \"$RIOT_KEY\", \"discord_public_key\": \"$DISCORD_PUBLIC_KEY\", \"application_id\": \"$APPLICATION_ID\", \"token\": \"$TOKEN\" }" > config.json
-      - name: Upload config.json
-        uses: actions/upload-artifact@v4
-        with:
-          name: config
-          path: config.json
-
-  deploy:
-    concurrency:
-      group: deploy
-    needs:
-      - create-config
-    runs-on: ubuntu-latest
-    steps:
-      - name: Git clone the repository
-        uses: actions/checkout@v4
-      - name: Download config.json
-        uses: actions/download-artifact@v4
-        with:
-          name: config
-          path: configs
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: arn:aws:iam::${{secrets.AWS_ACCOUNT_ID}}:role/ZoeBotActions
           role-duration-seconds: 900
           aws-region: ${{secrets.AWS_REGION}}
+
+      - name: Git clone the repository
+        uses: actions/checkout@v4
+      - name: Create config.json
+        run: |
+          echo "{ \"aws_region\": \"$AWS_REGION\", \"riot_key\": \"$RIOT_KEY\", \"discord_public_key\": \"$DISCORD_PUBLIC_KEY\", \"application_id\": \"$APPLICATION_ID\", \"token\": \"$TOKEN\" }" > configs/config.json
       - name: Deploy prod app
         run: |
           npm i
