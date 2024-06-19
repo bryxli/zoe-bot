@@ -8,6 +8,8 @@ permissions:
 
 jobs:
   automated-tests:
+    concurrency:
+      group: test
     environment: dev
     runs-on: ubuntu-latest
     env:
