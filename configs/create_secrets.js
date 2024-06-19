@@ -155,6 +155,7 @@ const createEnvSecret = async (
 const createRepoSecrets = async () => {
   const publicKey = await getPublicKey();
 
+  await createSecret(publicKey, "PAT", pat);
   await createSecret(publicKey, "AWS_ACCOUNT_ID", accountId);
   await createSecret(publicKey, "AWS_REGION", region);
   await createSecret(publicKey, "RIOT_KEY", riotKey);
@@ -163,6 +164,7 @@ const createRepoSecrets = async () => {
 const createDependabotRepoSecrets = async () => {
   const publicKey = await getDependabotPublicKey();
 
+  await createDependabotSecret(publicKey, "PAT", pat);
   await createDependabotSecret(publicKey, "AWS_ACCOUNT_ID", accountId);
   await createDependabotSecret(publicKey, "AWS_REGION", region);
   await createDependabotSecret(publicKey, "RIOT_KEY", riotKey);
