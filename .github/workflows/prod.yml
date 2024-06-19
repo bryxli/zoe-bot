@@ -9,18 +9,18 @@ permissions:
   contents: write
 
 jobs:
-  unit-tests:
+  release:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./packages/frontend
     steps:
-      - name: Git clone the repository
+      - name: Checkout code
         uses: actions/checkout@v4
-      - name: Run unit tests
-        run: |
-          npm i
-          npm run test
+      - name: Generate release
+        uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{secrets.GITHUB_TOKEN}}"
+          prerelease: false
+          automatic_release_tag: latest
+          files: LICENSE
 
   create-config:
     environment: prod
@@ -45,7 +45,6 @@ jobs:
     concurrency:
       group: deploy
     needs:
-      - unit-tests
       - create-config
     runs-on: ubuntu-latest
     steps:

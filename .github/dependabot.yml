@@ -9,17 +9,14 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
-    target-branch: "dependencies"
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
       interval: "weekly"
-    target-branch: "dependencies"
   - package-ecosystem: "npm"
     directory: "/configs"
     schedule:
       interval: "weekly"
-    target-branch: "dependencies"
   - package-ecosystem: "npm"
     directory: "/packages/frontend"
     schedule:
