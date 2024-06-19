@@ -1,8 +1,5 @@
 name: Dev
-on:
-  pull_request:
-    branches-ignore:
-      - "dependencies"
+on: pull_request
 
 permissions:
   id-token: write
@@ -10,7 +7,7 @@ permissions:
   pull-requests: write
 
 jobs:
-  automated-tests:
+  automated-tests: # TODO: run frontend unit and acceptance tests
     environment: dev
     runs-on: ubuntu-latest
     env:
