@@ -9,6 +9,19 @@ permissions:
   contents: write
 
 jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Generate release
+        uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{secrets.GITHUB_TOKEN}}"
+          prerelease: false
+          automatic_release_tag: latest
+          files: LICENSE
+
   unit-tests:
     runs-on: ubuntu-latest
     defaults:
