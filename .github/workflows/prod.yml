@@ -25,6 +25,7 @@ jobs:
   deploy:
     concurrency:
       group: deploy
+    needs: release
     environment: prod
     runs-on: ubuntu-latest
     env:
