@@ -16,3 +16,4 @@ Dockerfile
 **/*.jpg
 **/*.ttf
 **/*.feature
+**/*.properties
