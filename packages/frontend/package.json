@@ -13,7 +13,7 @@
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^3.584.0",
     "@aws-sdk/lib-dynamodb": "^3.600.0",
-    "@aws-sdk/util-dynamodb": "^3.588.0",
+    "@aws-sdk/util-dynamodb": "^3.602.0",
     "bootstrap": "^5.3.3",
     "next": "14.2.4",
     "react": "^18",
