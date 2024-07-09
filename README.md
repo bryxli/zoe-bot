@@ -23,6 +23,7 @@ Discord bot that traverses through the Riot Games API to find information about 
   - [Create Secrets](#create-secrets)
     - [Automated Setup](#automated-setup)
     - [Manual Setup](#manual-setup)
+- [Status](#status)
 
 ## Prerequisites
 
@@ -164,3 +165,7 @@ Instructions to deploy SST apps using GitHub Actions can be found [here](https:/
    - TOKEN
 
 4. Repeat step 3 for prod
+
+## Status
+
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=bryxli_zoe-bot&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=bryxli_zoe-bot) [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=bryxli_zoe-bot&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=bryxli_zoe-bot) [![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=bryxli_zoe-bot&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=bryxli_zoe-bot) [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=bryxli_zoe-bot&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=bryxli_zoe-bot)
