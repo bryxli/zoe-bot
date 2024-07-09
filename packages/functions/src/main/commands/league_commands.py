@@ -38,6 +38,8 @@ def add_user(data):
         puuid = lol.get_puuid_by_riot_id(gameName, tagLine, db.get_guild(guild_id)['region']['S'])
     except:
         return INVALID_USERNAME
+    if db.user_exists(guild_id, puuid):
+        return PLAYER_EXISTS
     db.add_user(guild_id, puuid)
     return ADDUSER_SUCCESS
 

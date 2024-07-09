@@ -96,8 +96,13 @@ def step_deluser(context, gameName, tag):
     request(context, raw_request)
 
 @when('userlist')
-def step_userlist(context): # TODO: create step function to send userlist request
-    pass
+def step_userlist(context):
+    raw_request = {
+        'type': 0,
+        'data': { 'name': 'userlist' },
+        'guild_id': GUILD_ID
+    }
+    request(context, raw_request)
 
 @when('help')
 def step_help(context):
@@ -116,3 +121,8 @@ def step_speak(context):
     }
     res = client.send_command(raw_request)
     context.response = res
+
+@given('a set of added players')
+def step_add_player_set(context):
+    for row in context.table:
+        step_adduser(context, row['gameName'], row['tag'])
