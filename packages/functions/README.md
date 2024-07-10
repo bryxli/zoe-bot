@@ -23,9 +23,8 @@ To run tests, `pip install` in this directory
 
 # Backlog
 
-- Acceptance test refinement - adduser, deluser
-- Acceptance test implementation - userlist
 - Userlist - timeout caused by discord limitation
 - Region - explore option to use a drop down &? implementation
 - Dynamo - query by puuid key in delete_user
 - Dynamo - explore strategies to lower number of dynamo calls &? implementation
+- Register acceptance test - sad path error
