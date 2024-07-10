@@ -13,6 +13,6 @@ export default {
   },
   async stacks(app) {
     app.stack(InfraStack).stack(BotStack);
-    app.stage !== "dev" && await app.stack(WebStack); // Do not deploy to dev
+    await app.stack(WebStack);
   },
 } satisfies SSTConfig;
