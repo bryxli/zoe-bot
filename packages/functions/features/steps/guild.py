@@ -14,7 +14,3 @@ def step_guild_init(context):
 @given('guild has been acknowledged')
 def step_guild_acknowledged(context):
     client.acknowledge()
-
-@given('a set of added players')
-def step_add_player_set(context): #T TODO
-    pass
