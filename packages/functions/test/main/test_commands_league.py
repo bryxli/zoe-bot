@@ -78,8 +78,13 @@ class TestCommandsLeague(unittest.TestCase):
         self.assertEqual(res, 'please enter a valid username')
 
     def test_add_user(self):
+        self.mock_user_exists.return_value = False
         res = self.init('adduser', self.data)
         self.assertEqual(res, 'player registered')
+
+    def test_add_user_exists(self):
+        res = self.init('adduser', self.data)
+        self.assertEqual(res, 'player already exists')
 
     def test_delete_user_guild_dne(self):
         self.mock_guild_exists.return_value = False
