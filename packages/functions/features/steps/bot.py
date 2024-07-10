@@ -44,11 +44,13 @@ def step_reset(context):
 
 @when('region {region}')
 def step_region(context, region):
+    opts = { 'value': region } if region != '""' else {}
+
     raw_request = {
         'type': 0,
         'data': {
             'name': 'region',
-            'options': [{ 'value': region }]
+            'options': [opts]
         },
         'guild_id': GUILD_ID
     }
