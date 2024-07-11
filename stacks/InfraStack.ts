@@ -38,11 +38,24 @@ export function InfraStack({ app, stack }: StackContext) {
     }),
   });
 
+  const apiLayer = new lambda.LayerVersion(stack, "util-api-layer", {
+    code: lambda.Code.fromAsset("packages/functions/src/layers/api", {
+      bundling: {
+        image: lambda.Runtime.PYTHON_3_9.bundlingImage,
+        command: [
+          "bash",
+          "-c",
+          "cp -R /asset-input/* /asset-output/ && pip install -r requirements.txt -t /asset-output/python/",
+        ],
+      },
+    }),
+  });
+
   const api = new Api(stack, "api", {
     defaults: {
       function: {
         runtime: "python3.9",
-        layers: [dynamoLayer, leagueLayer],
+        layers: [dynamoLayer],
         permissions: [table],
         memorySize: 1024,
         timeout: "5 minutes",
@@ -59,15 +72,39 @@ export function InfraStack({ app, stack }: StackContext) {
     },
     routes: {
       "GET /guild": "packages/functions/src/api/guild/get.handler",
-      "POST /guild/setup": "packages/functions/src/api/guild/setup.handler",
+      "POST /guild/setup": {
+        function: {
+          handler: "packages/functions/src/api/guild/setup.handler",
+          layers: [apiLayer],
+        },
+      },
       "POST /guild/region": "packages/functions/src/api/guild/region.handler",
-      "POST /guild/reset": "packages/functions/src/api/guild/delete.handler",
+      "POST /guild/reset": {
+        function: {
+          handler: "packages/functions/src/api/guild/delete.handler",
+          layers: [apiLayer],
+        },
+      },
       "POST /guild/acknowledge":
         "packages/functions/src/api/guild/acknowledge.handler",
-      "GET /league": "packages/functions/src/api/league/get.handler",
-      "POST /league/account": "packages/functions/src/api/league/add.handler",
-      "DELETE /league/account":
-        "packages/functions/src/api/league/delete.handler",
+      "POST /league/account": {
+        function: {
+          handler: "packages/functions/src/api/league/add.handler",
+          layers: [leagueLayer],
+        },
+      },
+      "DELETE /league/account": {
+        function: {
+          handler: "packages/functions/src/api/league/delete.handler",
+          layers: [leagueLayer],
+        },
+      },
+      "GET /league/userlist": {
+        function: {
+          handler: "packages/functions/src/api/league/userlist.handler",
+          layers: [leagueLayer],
+        },
+      },
     },
   });
 

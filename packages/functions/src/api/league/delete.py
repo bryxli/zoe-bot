@@ -1,2 +1,48 @@
+import json
+import os
+
+from ..auth import auth
+from dynamo import ZoeBotTable
+from league import RiotAPI
+
+RIOT_KEY = os.environ.get("RIOT_KEY") # TODO: local build logic
+
+db = ZoeBotTable('us-east-1', 'dev')
+lol = RiotAPI(RIOT_KEY)
+
 def handler(event, context):
-    return 'api/league/delete'
+    params = json.loads(event['body'])
+    if 'apiKey' not in params or not auth(params['apiKey']):
+        return {
+            'statusCode': 401,
+            'body': 'unauthorized'
+        }
+    if not db.guild_exists(params['guildId']):
+        return {
+            'statusCode': 404,
+            'body': 'guild not found'
+        }
+    
+    gameName = params['gameName']
+    tagLine = params['tagLine']
+
+    try:
+        puuid = lol.get_puuid_by_riot_id(gameName, tagLine, db.get_guild(params['guildId'])['region']['S'])
+    except:
+        return {
+            'statusCode': 400,
+            'body': 'invalid username'
+        }
+
+    # TODO: db.user_exists and db.delete_user both call get_all_users, consolidate to avoid unecessary calls
+    if not db.user_exists(params['guildId'], puuid):
+        return {
+            'statusCode': 404,
+            'body': 'user not found'
+        }
+
+    db.delete_user(params['guildId'], puuid)
+
+    return {
+        'statusCode': 200
+    }

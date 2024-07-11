@@ -1,6 +1,6 @@
 import json
 import os
-import requests # TODO: needs to be added to a requirements.txt for api, currently relies on layer for dependency
+import requests
 
 from ..auth import auth
 from dynamo import ZoeBotTable
@@ -10,12 +10,13 @@ TOKEN = os.environ.get("TOKEN") # TODO: local build logic
 db = ZoeBotTable('us-east-1', 'dev')
 
 def handler(event, context):
-    if not auth(event['apiKey']):
+    params = json.loads(event['body'])
+    if 'apiKey' not in params or not auth(params['apiKey']):
         return {
             'statusCode': 401,
             'body': 'unauthorized'
         }
-    if db.guild_exists(event['guildId']):
+    if db.guild_exists(params['guildId']):
         return {
             'statusCode': 409,
             'body': 'guild already exists'
@@ -25,7 +26,7 @@ def handler(event, context):
     body = {
         'name': 'zœ',
     }
-    create_webhook_url = f"https://discordapp.com/api/channels/{event['channelId']}/webhooks"
+    create_webhook_url = f"https://discordapp.com/api/channels/{params['channelId']}/webhooks"
     webhook_id = ''
     webhook_url = ''
 
@@ -39,7 +40,7 @@ def handler(event, context):
             'body': f'error creating webhook: {e}'
         }
 
-    db.create_guild(event['guildId'], webhook_id, webhook_url)
+    db.create_guild(params['guildId'], webhook_id, webhook_url)
 
     return {
         'statusCode': 201

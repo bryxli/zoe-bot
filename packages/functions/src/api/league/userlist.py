@@ -23,25 +23,19 @@ def handler(event, context):
             'body': 'guild not found'
         }
 
-    gameName = params['gameName']
-    tagLine = params['tagLine']
-
-    try:
-        puuid = lol.get_puuid_by_riot_id(gameName, tagLine, db.get_guild(params['guildId'])['region']['S'])
-    except:
-        return {
-            'statusCode': 400,
-            'body': 'invalid username'
-        }
-
-    if db.user_exists(params['guildId'], puuid):
-        return {
-            'statusCode': 409,
-            'body': 'user already exists'
-        }
-    
-    db.add_user(params['guildId'], puuid)
+    accountlist = db.get_all_users(params['guildId'])
+    users = []
+    for puuid in accountlist:
+        try:
+            account_name = lol.get_name_by_puuid(puuid, db.get_guild(params['guildId'])['region']['S'])
+            users.append(account_name)
+        except Exception as e:
+            return {
+                'statusCode': 400,
+                'body': f'failed to retrieve summoner name: {e}'
+            }
 
     return {
-        'statusCode': 200
+        'statusCode': 200,
+        'body': json.dumps(users)
     }
