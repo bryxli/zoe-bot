@@ -9,6 +9,7 @@ const repo = config.repo;
 const accountId = config.aws_account_id;
 const region = config.aws_region;
 const riotKey = config.riot_key;
+const apiKey = config.api_key;
 
 const octokit = new Octokit({
   auth: pat,
@@ -159,6 +160,7 @@ const createRepoSecrets = async () => {
   await createSecret(publicKey, "AWS_ACCOUNT_ID", accountId);
   await createSecret(publicKey, "AWS_REGION", region);
   await createSecret(publicKey, "RIOT_KEY", riotKey);
+  await createSecret(publicKey, "API_KEY", apiKey);
 };
 
 const createDependabotRepoSecrets = async () => {
@@ -168,6 +170,7 @@ const createDependabotRepoSecrets = async () => {
   await createDependabotSecret(publicKey, "AWS_ACCOUNT_ID", accountId);
   await createDependabotSecret(publicKey, "AWS_REGION", region);
   await createDependabotSecret(publicKey, "RIOT_KEY", riotKey);
+  await createDependabotSecret(publicKey, "API_KEY", apiKey);
 };
 
 const createEnvSecrets = async () => {

@@ -1,0 +1,44 @@
+import os
+import requests # TODO: needs to be added to a requirements.txt for api, currently relies on layer for dependency
+
+from ..auth import auth
+from dynamo import ZoeBotTable
+
+TOKEN = os.environ.get("TOKEN") # TODO: local build logic
+
+db = ZoeBotTable('us-east-1', 'dev')
+
+def handler(event, context):
+    if not auth(event['apiKey']):
+        return {
+            'statusCode': 401,
+            'body': 'unauthorized'
+        }
+    if not db.guild_exists(event['guildId']):
+        return {
+            'statusCode': 404,
+            'body': 'guild not found'
+        }
+    if not db.check_acknowledgment(event['guildId']):
+        return {
+            'statusCode': 403,
+            'body': 'not acknowledged'
+        }
+
+    webhook_id = db.get_webhook(event['guildId'])
+    headers = {"Authorization": f"Bot {TOKEN}"}
+    delete_webhook_url = f"https://discordapp.com/api/webhooks/{webhook_id}"
+
+    try:
+        requests.delete(delete_webhook_url, headers=headers)
+    except Exception as e:
+        return {
+            'statusCode': 500,
+            'body': f'error deleting webhook: {e}'
+        }
+
+    db.destroy_guild(event['guildId'])
+
+    return {
+        'statusCode': 200
+    }

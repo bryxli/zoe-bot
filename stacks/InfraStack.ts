@@ -43,6 +43,7 @@ export function InfraStack({ app, stack }: StackContext) {
       function: {
         runtime: "python3.9",
         layers: [dynamoLayer, leagueLayer],
+        permissions: [table],
         memorySize: 1024,
         timeout: "5 minutes",
         architecture: "x86_64",
@@ -52,22 +53,23 @@ export function InfraStack({ app, stack }: StackContext) {
           SET_AWS_REGION: config.aws_region,
           TOKEN: config.token,
           STAGE: app.stage,
+          API_KEY: config.api_key,
         },
       },
     },
     routes: {
-      "GET /guild": "packages/functions/src/api/guild.get_guild",
-      "POST /guild/setup": "packages/functions/src/api/guild.setup_guild",
-      "POST /guild/region": "packages/functions/src/api/guild.change_region",
-      "POST /guild/reset": "packages/functions/src/api/guild.delete_guild",
-      "POST /guild/acknowledge": "packages/functions/src/api/guild.acknowledge",
-      "GET /league": "packages/functions/src/api/league.get_user",
-      "POST /league/account": "packages/functions/src/api/league.add_user",
-      "DELETE /league/account": "packages/functions/src/api/league.delete_user",
+      "GET /guild": "packages/functions/src/api/guild/get.handler",
+      "POST /guild/setup": "packages/functions/src/api/guild/setup.handler",
+      "POST /guild/region": "packages/functions/src/api/guild/region.handler",
+      "POST /guild/reset": "packages/functions/src/api/guild/delete.handler",
+      "POST /guild/acknowledge":
+        "packages/functions/src/api/guild/acknowledge.handler",
+      "GET /league": "packages/functions/src/api/league/get.handler",
+      "POST /league/account": "packages/functions/src/api/league/add.handler",
+      "DELETE /league/account":
+        "packages/functions/src/api/league/delete.handler",
     },
   });
-
-  api.bind([table]);
 
   return {
     table,

@@ -34,6 +34,7 @@ jobs:
       DISCORD_PUBLIC_KEY: ${{secrets.DISCORD_PUBLIC_KEY}}
       APPLICATION_ID: ${{secrets.APPLICATION_ID}}
       TOKEN: ${{secrets.TOKEN}}
+      API_KEY: ${{secrets.API_KEY}}
     steps:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
@@ -46,7 +47,7 @@ jobs:
         uses: actions/checkout@v4
       - name: Create config.json
         run: |
-          echo "{ \"aws_region\": \"$AWS_REGION\", \"riot_key\": \"$RIOT_KEY\", \"discord_public_key\": \"$DISCORD_PUBLIC_KEY\", \"application_id\": \"$APPLICATION_ID\", \"token\": \"$TOKEN\" }" > configs/config.json
+          echo "{ \"aws_region\": \"$AWS_REGION\", \"riot_key\": \"$RIOT_KEY\", \"api_key\": \"$API_KEY\", \"discord_public_key\": \"$DISCORD_PUBLIC_KEY\", \"application_id\": \"$APPLICATION_ID\", \"token\": \"$TOKEN\" }" > configs/config.json
       - name: Deploy prod app
         run: |
           npm ci
