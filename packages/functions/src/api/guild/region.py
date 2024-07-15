@@ -1,9 +1,9 @@
 import json
 
-from ..auth import auth
+from ..common import auth, AWS_REGION, STAGE
 from dynamo import ZoeBotTable
 
-db = ZoeBotTable('us-east-1', 'dev')
+db = ZoeBotTable(AWS_REGION, STAGE)
 
 def handler(event, context):
     params = json.loads(event['body'])

@@ -1,9 +1,9 @@
 import json
 
-from ..util import get_common_guild_params, validate_params
+from ..common import get_common_guild_params, validate_params, AWS_REGION, STAGE
 from dynamo import ZoeBotTable
 
-db = ZoeBotTable('us-east-1', 'dev')
+db = ZoeBotTable(AWS_REGION, STAGE)
 
 def handler(event, context):
     params, missing_params = get_common_guild_params(event)

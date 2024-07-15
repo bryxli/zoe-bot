@@ -2,12 +2,12 @@ import json
 import os
 import requests
 
-from ..auth import auth
+from ..common import auth, AWS_REGION, STAGE
 from dynamo import ZoeBotTable
 
 TOKEN = os.environ.get("TOKEN") # TODO: local build logic
 
-db = ZoeBotTable('us-east-1', 'dev')
+db = ZoeBotTable(AWS_REGION, STAGE)
 
 def handler(event, context):
     params = json.loads(event['body'])

@@ -1,7 +1,7 @@
 from dynamo import ZoeBotTable
-from ..util import get_common_league_params, validate_params, get_puuid
+from ..common import get_common_league_params, validate_params, get_puuid, AWS_REGION, STAGE
 
-db = ZoeBotTable('us-east-1', 'dev')
+db = ZoeBotTable(AWS_REGION, STAGE)
 
 def handler(event, context):
     params, missing_params = get_common_league_params(event)

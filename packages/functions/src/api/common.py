@@ -1,14 +1,31 @@
 import json
 import os
 
-from .auth import auth
 from dynamo import ZoeBotTable
 from league import RiotAPI
 
-RIOT_KEY = os.environ.get("RIOT_KEY")  # TODO: local build logic
+if os.environ.get("API_KEY") is None:
+    config_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../../configs/config.json'))
+    with open(config_path, "r") as config_file:
+        config = json.load(config_file)
+    API_KEY = config.get("api_key")
+    RIOT_KEY = config.get("riot_key")
+    AWS_REGION = config.get("aws_region")
+    STAGE = "dev"
+else:
+    API_KEY = os.environ.get("API_KEY")
+    RIOT_KEY = os.environ.get("RIOT_KEY")
+    AWS_REGION = os.environ.get("SET_AWS_REGION")
+    if os.environ.get("STAGE") == None:
+        STAGE = "dev"
+    else:
+        STAGE = os.environ.get("STAGE")
 
-db = ZoeBotTable('us-east-1', 'dev')
+db = ZoeBotTable(AWS_REGION, STAGE)
 lol = RiotAPI(RIOT_KEY)
+
+def auth(key):
+    return key == API_KEY
 
 def get_common_params(event, required):
     params = json.loads(event['body'])
