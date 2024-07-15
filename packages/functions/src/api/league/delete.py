@@ -1,54 +1,32 @@
-import json
-import os
-
-from ..auth import auth
 from dynamo import ZoeBotTable
-from league import RiotAPI
-
-RIOT_KEY = os.environ.get("RIOT_KEY") # TODO: local build logic
+from ..util import get_common_league_params, validate_params, get_puuid
 
 db = ZoeBotTable('us-east-1', 'dev')
-lol = RiotAPI(RIOT_KEY)
 
 def handler(event, context):
-    params = json.loads(event['body'])
-    missing_params = [param for param in ['apiKey', 'guildId', 'gameName', 'tagLine'] if param not in params]
+    params, missing_params = get_common_league_params(event)
+    validation_response = validate_params(params, missing_params)
+    if validation_response:
+        return validation_response
 
-    if missing_params:
-        return {
-            'statusCode': 400,
-            'body': f'missing parameters: {", ".join(missing_params)}'
-        }
-    if 'apiKey' not in params or not auth(params['apiKey']):
-        return {
-            'statusCode': 401,
-            'body': 'unauthorized'
-        }
-    if not db.guild_exists(params['guildId']):
-        return {
-            'statusCode': 404,
-            'body': 'guild not found'
-        }
-    
     gameName = params['gameName']
     tagLine = params['tagLine']
+    guild_id = params['guildId']
 
-    try:
-        puuid = lol.get_puuid_by_riot_id(gameName, tagLine, db.get_guild(params['guildId'])['region']['S'])
-    except:
+    puuid = get_puuid(gameName, tagLine, guild_id)
+    if not puuid:
         return {
             'statusCode': 400,
             'body': 'invalid username'
         }
 
-    # TODO: db.user_exists and db.delete_user both call get_all_users, consolidate to avoid unecessary calls
-    if not db.user_exists(params['guildId'], puuid):
+    if not db.user_exists(guild_id, puuid):
         return {
             'statusCode': 404,
             'body': 'user not found'
         }
 
-    db.delete_user(params['guildId'], puuid)
+    db.delete_user(guild_id, puuid)
 
     return {
         'statusCode': 200

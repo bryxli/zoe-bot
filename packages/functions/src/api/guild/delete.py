@@ -1,8 +1,7 @@
-import json
 import os
 import requests
 
-from ..auth import auth
+from ..util import get_common_guild_params, validate_params
 from dynamo import ZoeBotTable
 
 TOKEN = os.environ.get("TOKEN") # TODO: local build logic
@@ -10,24 +9,12 @@ TOKEN = os.environ.get("TOKEN") # TODO: local build logic
 db = ZoeBotTable('us-east-1', 'dev')
 
 def handler(event, context):
-    params = json.loads(event['body'])
-    missing_params = [param for param in ['apiKey', 'guildId'] if param not in params]
+    params, missing_params = get_common_guild_params(event)
 
-    if missing_params:
-        return {
-            'statusCode': 400,
-            'body': f'missing parameters: {", ".join(missing_params)}'
-        }
-    if 'apiKey' not in params or not auth(params['apiKey']):
-        return {
-            'statusCode': 401,
-            'body': 'unauthorized'
-        }
-    if not db.guild_exists(params['guildId']):
-        return {
-            'statusCode': 404,
-            'body': 'guild not found'
-        }
+    validation_response = validate_params(params, missing_params)
+    if validation_response:
+        return validation_response
+    
     if not db.check_acknowledgment(params['guildId']):
         return {
             'statusCode': 403,
