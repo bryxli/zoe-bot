@@ -1,0 +1,273 @@
+{
+  "info": {
+    "_postman_id": "47575908-dbda-47f7-b35f-352eaab7133e",
+    "name": "zoe-dev",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "36916822"
+  },
+  "item": [
+    {
+      "name": "setup guild",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"guildId\":\"1016953904644247632\",\r\n  \"channelId\":\"1094924227322327070\",\r\n  \"apiKey\":{{API_KEY}}\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://ry709kicbj.execute-api.us-east-1.amazonaws.com/guild/setup",
+          "protocol": "https",
+          "host": [
+            "ry709kicbj",
+            "execute-api",
+            "us-east-1",
+            "amazonaws",
+            "com"
+          ],
+          "path": ["guild", "setup"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "get guild",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"guildId\":\"1016953904644247632\",\r\n  \"apiKey\":{{API_KEY}}\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://ry709kicbj.execute-api.us-east-1.amazonaws.com/guild",
+          "protocol": "https",
+          "host": [
+            "ry709kicbj",
+            "execute-api",
+            "us-east-1",
+            "amazonaws",
+            "com"
+          ],
+          "path": ["guild"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "acknowledge guild",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"guildId\":\"1016953904644247632\",\r\n  \"apiKey\":{{API_KEY}}\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://ry709kicbj.execute-api.us-east-1.amazonaws.com/guild/acknowledge",
+          "protocol": "https",
+          "host": [
+            "ry709kicbj",
+            "execute-api",
+            "us-east-1",
+            "amazonaws",
+            "com"
+          ],
+          "path": ["guild", "acknowledge"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "reset guild",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"guildId\":\"1016953904644247632\",\r\n  \"apiKey\":{{API_KEY}}\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://ry709kicbj.execute-api.us-east-1.amazonaws.com/guild/reset",
+          "protocol": "https",
+          "host": [
+            "ry709kicbj",
+            "execute-api",
+            "us-east-1",
+            "amazonaws",
+            "com"
+          ],
+          "path": ["guild", "reset"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "change region",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"guildId\":\"1016953904644247632\",\r\n  \"leagueRegion\":\"na\",\r\n  \"apiKey\":{{API_KEY}}\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://ry709kicbj.execute-api.us-east-1.amazonaws.com/guild/region",
+          "protocol": "https",
+          "host": [
+            "ry709kicbj",
+            "execute-api",
+            "us-east-1",
+            "amazonaws",
+            "com"
+          ],
+          "path": ["guild", "region"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "add account",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"guildId\":\"1016953904644247632\",\r\n  \"gameName\":\"bryxli\",\r\n  \"tagLine\":\"NA1\",\r\n  \"apiKey\":{{API_KEY}}\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://ry709kicbj.execute-api.us-east-1.amazonaws.com/league/account",
+          "protocol": "https",
+          "host": [
+            "ry709kicbj",
+            "execute-api",
+            "us-east-1",
+            "amazonaws",
+            "com"
+          ],
+          "path": ["league", "account"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "delete account",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"guildId\":\"1016953904644247632\",\r\n  \"gameName\":\"bryxli\",\r\n  \"tagLine\":\"NA1\",\r\n  \"apiKey\":{{API_KEY}}\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://ry709kicbj.execute-api.us-east-1.amazonaws.com/league/account",
+          "protocol": "https",
+          "host": [
+            "ry709kicbj",
+            "execute-api",
+            "us-east-1",
+            "amazonaws",
+            "com"
+          ],
+          "path": ["league", "account"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "userlist",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"guildId\":\"1016953904644247632\",\r\n  \"apiKey\":{{API_KEY}}\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://ry709kicbj.execute-api.us-east-1.amazonaws.com/league/userlist",
+          "protocol": "https",
+          "host": [
+            "ry709kicbj",
+            "execute-api",
+            "us-east-1",
+            "amazonaws",
+            "com"
+          ],
+          "path": ["league", "userlist"]
+        }
+      },
+      "response": []
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "exec": [""]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "exec": [""]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "API_KEY",
+      "value": "",
+      "type": "string"
+    }
+  ]
+}

@@ -6,30 +6,32 @@ import { InfraStack } from "./InfraStack";
 export async function WebStack({ app, stack }: StackContext) {
   const { table } = use(InfraStack);
 
-  const site = new NextjsSite(stack, "frontend", {
-    path: "packages/frontend",
-    environment: await loadEnvironment(),
-    bind: [table],
-  });
+  if (app.stage !== "dev") {
+    async function loadEnvironment() {
+      const defaultEnv = {
+        APPLICATION_ID: config.application_id,
+        RIOT_API_KEY: config.riot_key,
+        TOKEN: config.token,
+      };
 
-  stack.addOutputs({
-    URL: site.url,
-  });
-}
+      try {
+        const data = await fs.readFile("deploy-prod.json", "utf-8");
+        const deployConfig = JSON.parse(data);
 
-async function loadEnvironment() {
-  const defaultEnv = {
-    APPLICATION_ID: config.application_id,
-    RIOT_API_KEY: config.riot_key,
-    TOKEN: config.token,
-  }
+        return { ...defaultEnv, URL: deployConfig.URL };
+      } catch (err) {
+        return { ...defaultEnv, URL: "" };
+      }
+    }
 
-  try {
-    const data = await fs.readFile('deploy-prod.json', "utf-8");
-    const deployConfig = JSON.parse(data);
+    const site = new NextjsSite(stack, "frontend", {
+      path: "packages/frontend",
+      environment: await loadEnvironment(),
+      bind: [table],
+    });
 
-    return { ...defaultEnv, URL: deployConfig.URL };
-  } catch (err) {
-    return { ...defaultEnv, URL: "" };
+    stack.addOutputs({
+      URL: site.url,
+    });
   }
 }

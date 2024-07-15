@@ -8,33 +8,7 @@ import * as triggers from "aws-cdk-lib/triggers";
 import * as config from "../configs/config.json";
 
 export function BotStack({ app, stack }: StackContext) {
-  const { table } = use(InfraStack);
-
-  const dynamoLayer = new lambda.LayerVersion(stack, "util-dynamo-layer", {
-    code: lambda.Code.fromAsset("packages/functions/src/layers/dynamo", {
-      bundling: {
-        image: lambda.Runtime.PYTHON_3_9.bundlingImage,
-        command: [
-          "bash",
-          "-c",
-          "cp -R /asset-input/* /asset-output/ && pip install -r requirements.txt -t /asset-output/python/",
-        ],
-      },
-    }),
-  });
-
-  const leagueLayer = new lambda.LayerVersion(stack, "util-league-layer", {
-    code: lambda.Code.fromAsset("packages/functions/src/layers/league", {
-      bundling: {
-        image: lambda.Runtime.PYTHON_3_9.bundlingImage,
-        command: [
-          "bash",
-          "-c",
-          "cp -R /asset-input/* /asset-output/ && pip install -r requirements.txt -t /asset-output/python/",
-        ],
-      },
-    }),
-  });
+  const { table, dynamoLayer, leagueLayer } = use(InfraStack);
 
   const functionCode = lambda.Code.fromAsset(
     "packages/functions/src/register",

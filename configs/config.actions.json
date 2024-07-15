@@ -5,6 +5,7 @@
   "aws_account_id": "<AWS ACCOUNT ID>",
   "aws_region": "<AWS REGION>",
   "riot_key": "<RIOT API KEY>",
+  "api_key": "<API KEY>",
   "dev": {
     "discord_public_key": "<DISCORD PUBLIC KEY>",
     "application_id": "<DISCORD APPLICATION ID>",
