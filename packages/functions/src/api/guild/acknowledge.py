@@ -7,7 +7,15 @@ db = ZoeBotTable('us-east-1', 'dev')
 
 def handler(event, context):
     params = json.loads(event['body'])
-    if 'apiKey' not in params or not auth(params['apiKey']):        return {
+    missing_params = [param for param in ['apiKey', 'guildId'] if param not in params]
+
+    if missing_params:
+        return {
+            'statusCode': 400,
+            'body': f'missing parameters: {", ".join(missing_params)}'
+        }
+    if 'apiKey' not in params or not auth(params['apiKey']):
+        return {
             'statusCode': 401,
             'body': 'unauthorized'
         }
