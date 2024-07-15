@@ -1,13 +1,10 @@
 import json
-import os
 
-from ..util import get_common_guild_params, validate_params
+from ..common import get_common_guild_params, validate_params, AWS_REGION, STAGE, RIOT_KEY
 from dynamo import ZoeBotTable
 from league import RiotAPI
 
-RIOT_KEY = os.environ.get("RIOT_KEY") # TODO: local build logic
-
-db = ZoeBotTable('us-east-1', 'dev')
+db = ZoeBotTable(AWS_REGION, STAGE)
 lol = RiotAPI(RIOT_KEY)
 
 def handler(event, context):

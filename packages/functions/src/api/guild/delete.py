@@ -1,12 +1,9 @@
-import os
 import requests
 
-from ..util import get_common_guild_params, validate_params
+from ..common import get_common_guild_params, validate_params, AWS_REGION, STAGE, TOKEN
 from dynamo import ZoeBotTable
 
-TOKEN = os.environ.get("TOKEN") # TODO: local build logic
-
-db = ZoeBotTable('us-east-1', 'dev')
+db = ZoeBotTable(AWS_REGION, STAGE)
 
 def handler(event, context):
     params, missing_params = get_common_guild_params(event)
