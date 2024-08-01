@@ -1,6 +1,6 @@
 import json
 
-from ..common import auth, AWS_REGION, STAGE
+from src.api.common import auth, AWS_REGION, STAGE
 from dynamo import ZoeBotTable
 
 db = ZoeBotTable(AWS_REGION, STAGE)
