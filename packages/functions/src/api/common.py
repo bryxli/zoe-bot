@@ -30,7 +30,7 @@ def auth(key):
     return key == API_KEY
 
 def get_common_params(event, required):
-    params = json.loads(event['body'])
+    params = json.loads(event)['body']
     missing_params = [param for param in required if param not in params]
     return params, missing_params
 
