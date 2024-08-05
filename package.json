@@ -28,7 +28,7 @@
     "prettier": "^3.3.3",
     "sst": "^2.43.4",
     "ts-node": "^10.9.1",
-    "typescript": "^5.5.3"
+    "typescript": "^5.5.4"
   },
   "workspaces": [
     "packages/*"
