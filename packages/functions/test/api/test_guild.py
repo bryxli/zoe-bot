@@ -67,8 +67,18 @@ class TestApiGuild(unittest.TestCase):
 
             return handler(event, None)
 
-    def get(self, event, params=None): # todo
-        pass
+    def get(self, event, params=None):
+        directory = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../src/api'))
+        sys.path.append(directory)
+
+        if params == 'test_guild_dne':
+            self.dynamo_mock.ZoeBotTable.return_value.guild_exists = MagicMock(return_value=False)
+
+        with patch.dict(sys.modules, {'dynamo': self.dynamo_mock, 'league': MagicMock()}):
+            from guild.get import handler
+            sys.path.remove(directory)
+
+            return handler(event, None)
 
     def region(self, event, params=None): # todo
         pass
@@ -125,17 +135,25 @@ class TestApiGuild(unittest.TestCase):
     #     res = self.delete(json.dumps(self.event_data))
     #     self.assertEqual(res['statusCode'], 200)
 
-    def test_get_missing_params(self): # todo
-        pass
+    def test_get_missing_params(self):
+        event_missing_params = {
+            'body': {}
+        }
+        res = self.get(json.dumps(event_missing_params))
+        self.assertEqual(res['statusCode'], 400)
 
-    def test_get_api_key(self): # todo
-        pass
+    def test_get_api_key(self):
+        self.mock_auth.return_value = False
+        res = self.get(json.dumps(self.event_data))
+        self.assertEqual(res['statusCode'], 401)
 
-    def test_get_guild_dne(self): # todo
-        pass
+    def test_get_guild_dne(self):
+        res = self.get(json.dumps(self.event_data), 'test_guild_dne')
+        self.assertEqual(res['statusCode'], 404)
 
-    def test_get_success(self): # todo
-        pass
+    # def test_get_success(self):
+    #     res = self.get(json.dumps(self.event_data))
+    #     self.assertEqual(res['statusCode'], 200)
 
     # TODO: create region and acknowledge tests
 
