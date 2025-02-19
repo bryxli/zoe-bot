@@ -70,6 +70,7 @@ def process_user_data(user_data, guild_id, webhook_url, puuid, match):
             for participant in match["participants"]:
                 if participant["puuid"] == puuid:
 
+                    print(participant)
                     summoner_name = participant["summonerName"]
                     champion_name = participant["championName"]
                     kda = str(round(participant["challenges"]["kda"], 2))
