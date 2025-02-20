@@ -1,6 +1,8 @@
-CONFIGS=("configs/config.json" "configs/config.actions.json")
+#!/bin/sh
 
-for file in "${CONFIGS[@]}"; do
+CONFIGS="configs/config.json configs/config.actions.json"
+
+for file in $CONFIGS; do
     git reset "$file"
 done
 
