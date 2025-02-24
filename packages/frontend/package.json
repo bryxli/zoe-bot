@@ -29,7 +29,7 @@
     "@types/react-dom": "^18",
     "autoprefixer": "^10",
     "eslint": "^9.9.0",
-    "eslint-config-next": "14.2.5",
+    "eslint-config-next": "15.1.7",
     "eslint-plugin-jest-dom": "^5.4.0",
     "eslint-plugin-testing-library": "^6.2.2",
     "husky": "^9.1.4",
