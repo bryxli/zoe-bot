@@ -22,7 +22,7 @@
   "devDependencies": {
     "@tsconfig/node18": "^18.2.4",
     "aws-cdk-lib": "2.181.1",
-    "constructs": "10.3.0",
+    "constructs": "10.4.2",
     "husky": "^9.1.4",
     "lint-staged": "^15.4.3",
     "prettier": "^3.5.3",
