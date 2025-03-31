@@ -23,7 +23,7 @@
     "@tsconfig/node18": "^18.2.4",
     "aws-cdk-lib": "2.184.0",
     "constructs": "10.4.2",
-    "husky": "^9.1.4",
+    "husky": "^9.1.7",
     "lint-staged": "^15.5.0",
     "prettier": "^3.5.3",
     "sst": "^2.48.2",
