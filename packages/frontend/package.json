@@ -15,7 +15,7 @@
     "@aws-sdk/lib-dynamodb": "^3.767.0",
     "@aws-sdk/util-dynamodb": "^3.772.0",
     "bootstrap": "^5.3.3",
-    "next": "15.2.3",
+    "next": "15.2.4",
     "react": "^18",
     "react-bootstrap": "^2.10.4",
     "react-dom": "^18",
