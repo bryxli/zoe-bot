@@ -1,4 +1,4 @@
-from ..common import get_common_guild_params, validate_params, AWS_REGION, STAGE
+from src.api.common import get_common_guild_params, validate_params, AWS_REGION, STAGE
 from dynamo import ZoeBotTable
 
 db = ZoeBotTable(AWS_REGION, STAGE)

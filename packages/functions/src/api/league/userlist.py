@@ -1,6 +1,6 @@
 import json
 
-from ..common import get_common_guild_params, validate_params, AWS_REGION, STAGE, RIOT_KEY
+from src.api.common import get_common_guild_params, validate_params, AWS_REGION, STAGE, RIOT_KEY
 from dynamo import ZoeBotTable
 from league import RiotAPI
 
