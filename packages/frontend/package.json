@@ -16,7 +16,7 @@
     "@aws-sdk/util-dynamodb": "^3.788.0",
     "bootstrap": "^5.3.3",
     "next": "15.2.4",
-    "react": "^18",
+    "react": "^19",
     "react-bootstrap": "^2.10.4",
     "react-dom": "^18",
     "twisted": "^1.61.2"
@@ -25,7 +25,7 @@
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.3.0",
     "@types/node": "^22",
-    "@types/react": "^18",
+    "@types/react": "^19",
     "@types/react-dom": "^18",
     "autoprefixer": "^10",
     "eslint": "^9.9.0",
