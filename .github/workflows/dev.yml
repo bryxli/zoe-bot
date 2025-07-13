@@ -62,46 +62,46 @@ jobs:
         run: echo # TODO: run frontend acceptance test
         working-directory: ./packages/frontend
 
-  deploy:
-    concurrency:
-      group: deploy
-    needs: automated-tests
-    environment: dev
-    runs-on: ubuntu-latest
-    env:
-      AWS_REGION: ${{secrets.AWS_REGION}}
-      RIOT_KEY: ${{secrets.RIOT_KEY}}
-      DISCORD_PUBLIC_KEY: ${{secrets.DISCORD_PUBLIC_KEY}}
-      APPLICATION_ID: ${{secrets.APPLICATION_ID}}
-      TOKEN: ${{secrets.TOKEN}}
-      API_KEY: ${{secrets.API_KEY}}
-    steps:
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          role-to-assume: arn:aws:iam::${{secrets.AWS_ACCOUNT_ID}}:role/ZoeBotActions
-          role-duration-seconds: 3600
-          aws-region: ${{secrets.AWS_REGION}}
+  # deploy:
+  #   concurrency:
+  #     group: deploy
+  #   needs: automated-tests
+  #   environment: dev
+  #   runs-on: ubuntu-latest
+  #   env:
+  #     AWS_REGION: ${{secrets.AWS_REGION}}
+  #     RIOT_KEY: ${{secrets.RIOT_KEY}}
+  #     DISCORD_PUBLIC_KEY: ${{secrets.DISCORD_PUBLIC_KEY}}
+  #     APPLICATION_ID: ${{secrets.APPLICATION_ID}}
+  #     TOKEN: ${{secrets.TOKEN}}
+  #     API_KEY: ${{secrets.API_KEY}}
+  #   steps:
+  #     - name: Configure AWS credentials
+  #       uses: aws-actions/configure-aws-credentials@v4
+  #       with:
+  #         role-to-assume: arn:aws:iam::${{secrets.AWS_ACCOUNT_ID}}:role/ZoeBotActions
+  #         role-duration-seconds: 3600
+  #         aws-region: ${{secrets.AWS_REGION}}
 
-      - name: Git clone the repository
-        uses: actions/checkout@v4
-      - name: Create config.json
-        run: |
-          echo "{ \"aws_region\": \"$AWS_REGION\", \"riot_key\": \"$RIOT_KEY\", \"api_key\": \"$API_KEY\", \"discord_public_key\": \"$DISCORD_PUBLIC_KEY\", \"application_id\": \"$APPLICATION_ID\", \"token\": \"$TOKEN\" }" > configs/config.json
-      - name: Deploy dev app
-        run: |
-          npm ci
-          npm run deploy
+  #     - name: Git clone the repository
+  #       uses: actions/checkout@v4
+  #     - name: Create config.json
+  #       run: |
+  #         echo "{ \"aws_region\": \"$AWS_REGION\", \"riot_key\": \"$RIOT_KEY\", \"api_key\": \"$API_KEY\", \"discord_public_key\": \"$DISCORD_PUBLIC_KEY\", \"application_id\": \"$APPLICATION_ID\", \"token\": \"$TOKEN\" }" > configs/config.json
+  #     - name: Deploy dev app
+  #       run: |
+  #         npm ci
+  #         npm run deploy
 
-  approve:
-    needs: deploy
-    runs-on: ubuntu-latest
-    env:
-      PR_URL: ${{github.event.pull_request.html_url}}
-      GH_TOKEN: ${{secrets.GITHUB_TOKEN}}
-    steps:
-      - name: Approve PR
-        run: gh pr review --approve "$PR_URL"
+  # approve:
+  #   needs: deploy
+  #   runs-on: ubuntu-latest
+  #   env:
+  #     PR_URL: ${{github.event.pull_request.html_url}}
+  #     GH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+  #   steps:
+  #     - name: Approve PR
+  #       run: gh pr review --approve "$PR_URL"
 
   # merge:
   #   needs: approve
