@@ -103,13 +103,13 @@ jobs:
       - name: Approve PR
         run: gh pr review --approve "$PR_URL"
 
-  merge:
-    needs: approve
-    runs-on: ubuntu-latest
-    if: github.actor == 'dependabot[bot]'
-    env:
-      PR_URL: ${{github.event.pull_request.html_url}}
-      GH_TOKEN: ${{secrets.PAT}}
-    steps:
-      - name: Merge PR
-        run: gh pr merge --auto --merge --delete-branch "$PR_URL"
+  # merge:
+  #   needs: approve
+  #   runs-on: ubuntu-latest
+  #   if: github.actor == 'dependabot[bot]'
+  #   env:
+  #     PR_URL: ${{github.event.pull_request.html_url}}
+  #     GH_TOKEN: ${{secrets.PAT}}
+  #   steps:
+  #     - name: Merge PR
+  #       run: gh pr merge --auto --merge --delete-branch "$PR_URL"
