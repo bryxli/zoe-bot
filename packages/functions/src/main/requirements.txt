@@ -1,5 +1,5 @@
 asgiref==3.9.0
 discord-interactions==0.4.0
-Flask==3.1.1
+Flask==3.1.2
 mangum==0.17.0
 requests==2.32.4
