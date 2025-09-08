@@ -1,2 +1,2 @@
 coverage==7.8.2
-behave==1.2.6
+behave==1.3.3
