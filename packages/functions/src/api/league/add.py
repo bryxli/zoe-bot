@@ -1,5 +1,5 @@
 from dynamo import ZoeBotTable
-from ..common import get_common_league_params, validate_params, get_puuid, AWS_REGION, STAGE
+from src.api.common import get_common_league_params, validate_params, get_puuid, AWS_REGION, STAGE
 
 db = ZoeBotTable(AWS_REGION, STAGE)
 

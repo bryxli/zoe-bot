@@ -1,13 +1,13 @@
 import json
 import requests
 
-from ..common import auth, AWS_REGION, STAGE, TOKEN
+from src.api.common import auth, AWS_REGION, STAGE, TOKEN
 from dynamo import ZoeBotTable
 
 db = ZoeBotTable(AWS_REGION, STAGE)
 
 def handler(event, context):
-    params = json.loads(event['body'])
+    params = json.loads(event)['body']
     missing_params = [param for param in ['apiKey', 'guildId', 'channelId'] if param not in params]
 
     if missing_params:

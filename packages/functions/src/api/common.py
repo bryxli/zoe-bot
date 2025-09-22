@@ -4,7 +4,7 @@ import os
 from dynamo import ZoeBotTable
 from league import RiotAPI
 
-if os.environ.get("API_KEY") is None:
+if os.environ.get("SET_AWS_REGION") is None:
     config_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../../configs/config.json'))
     with open(config_path, "r") as config_file:
         config = json.load(config_file)
@@ -30,7 +30,7 @@ def auth(key):
     return key == API_KEY
 
 def get_common_params(event, required):
-    params = json.loads(event['body'])
+    params = json.loads(event)['body']
     missing_params = [param for param in required if param not in params]
     return params, missing_params
 
