@@ -9,40 +9,50 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+    open-pull-requests-limit: 0
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
       interval: "weekly"
+    open-pull-requests-limit: 0
   - package-ecosystem: "npm"
     directory: "/configs"
     schedule:
       interval: "weekly"
+    open-pull-requests-limit: 0
   - package-ecosystem: "npm"
     directory: "/packages/frontend"
     schedule:
       interval: "weekly"
+    open-pull-requests-limit: 0
     target-branch: "dependencies"
   - package-ecosystem: "pip"
     directory: "/packages/functions"
     schedule:
       interval: "weekly"
+    open-pull-requests-limit: 0
   - package-ecosystem: "pip"
     directory: "/packages/functions/src/layers/dynamo"
     schedule:
       interval: "weekly"
+    open-pull-requests-limit: 0
   - package-ecosystem: "pip"
     directory: "/packages/functions/src/layers/league"
     schedule:
       interval: "weekly"
+    open-pull-requests-limit: 0
   - package-ecosystem: "pip"
     directory: "/packages/functions/src/main"
     schedule:
       interval: "weekly"
+    open-pull-requests-limit: 0
   - package-ecosystem: "pip"
     directory: "/packages/functions/src/register"
     schedule:
       interval: "weekly"
+    open-pull-requests-limit: 0
   - package-ecosystem: "pip"
     directory: "/packages/functions/src/task"
     schedule:
       interval: "weekly"
+    open-pull-requests-limit: 0
